@@ -1,0 +1,74 @@
+<template name="sidebar">
+    <div class="ui sidebar small inverted vertical menu">
+        <div class="item">
+            <img class="ui fluid small image" src="./images/banner/steemstemlogoback.png"> 
+        </div>
+        <a id="feed" class="item">
+            <i class="home icon"></i>  Home
+        </a>
+        <div class="ui inverted vertical menu">
+        <div class="item">
+            {{#with mainuser}}
+            <i  class="user icon"></i> {{name}} 
+            {{/with}} 
+            {{#with guestuser}}
+            <i href="/{{guestuser}}" class="user icon"></i> {{guestuser}} 
+             {{/with}}
+        </div>
+        {{#with mainuser}}
+        <a id="blog" href="/@{{name}}" class="item">My Blog</a>
+        <a id="comments" href="/@{{name}}/comments" class="item">Comments</a>
+        <a id="replies" href="/@{{name}}/replies" class="item">Replies</a>
+        <a id="rewards" href="/@{{name}}/rewards" class="item">Rewards</a>
+        <a id="wallet" href="/@{{name}}/wallet" class="item">Wallet</a>
+        {{/with}} 
+    </div>
+        {{#unless mainuser}}
+        <a class="item" id="login">
+                {{translator 'COMMON_LOGIN'}}
+        </a>
+        <a class="item" id="signup" href="/signup">
+            {{translator 'COMMON_SIGNUP'}}
+        </a>
+        {{/unless}} 
+        
+        {{#with mainuser}}
+        <a href="/create" class="item">
+              <i class="edit icon"></i>  New post
+            </a>
+            <div class="ui divider"></div>
+        <a class="item" id="logout">
+            <i class="external icon"></i>    {{translator 'COMMON_LOGOUT'}}
+        </a>
+        {{/with}} 
+        {{#unless mainuser}}
+        {{#if guestuser}}
+        <a class="item" id="guest-logout">
+            Quit Guest Mode
+        </a>
+        {{else}}
+        <a class="item" id="guest-login">
+            Continue as Guest
+        </a>
+        {{/if}}
+        {{/unless}} 
+        <div class="item">
+            {{bindsearch}}
+            <div class="ui right aligned category search item">
+                <div class="ui transparent inverted icon input">
+                    <input class="prompt" type="text" placeholder="Search ...">
+                    <i class="search link icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </div>
+        <div class="item">
+            {{#each customTags}}
+            <div>
+            <a id="tag">#{{category}}</a>
+        </div>
+            {{/each}}
+        </div>
+    </div>
+
+</template>

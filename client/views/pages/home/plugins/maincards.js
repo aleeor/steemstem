@@ -1,0 +1,6 @@
+
+
+
+Template.maincards.rendered = function () {
+
+}

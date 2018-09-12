@@ -1,0 +1,42 @@
+<template name="comment">
+    <div class="ui comments">
+        <div class="comment">
+            <a href="/@{{author}}" class="avatar">
+                <img src="https://steemitimages.com/u/{{author}}/avatar/">
+            </a>
+            <div class="content">
+                <a href="/@{{author}}" class="author">{{author}}</a>
+                <div class="metadata">
+                    <div class="date">{{DisplayTimeCreated created}}</div>
+                </div>
+                <div class="text">
+                    {{{remarkableFormatter body}}}
+                    <span class="left floated">
+                            <i class="dollar sign icon"></i> {{displayPayout pending_payout_value total_payout_value curator_payout_value}}</span>
+                            {{#if mainuser}} 
+                            <span class="right floated">
+                                {{#if equals net_votes 0}}
+                                <i id="vote" class="heart outline icon"></i>{{net_votes}} likes
+                                {{else}}
+                                    <i id="vote" class="heart icon"></i>{{net_votes}} likes
+                                {{/if}}
+                            </span>
+                            {{else}}
+                            <span class="right floated" data-tooltip="You need a Steem account for this!" style="opacity:1">
+                                    {{#if equals net_votes 0}}
+                                    <i  class="heart outline icon"></i>{{net_votes}} likes
+                                    {{else}}
+                                        <i  class="heart icon"></i>{{net_votes}} likes
+                                    {{/if}}
+                                </span>
+                            {{/if}}
+
+                    {{>reply data=this isRootComment=false }}
+                </div>
+                <div class="comments">
+                    {{#each currentCommentsSubcomments this}} {{>comment}} {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

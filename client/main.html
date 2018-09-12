@@ -1,0 +1,42 @@
+<head>
+  <title>SteemStem</title>
+  <link rel="shortcut icon" type="image/png" href="./images/rocket.png">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+</head>
+
+<body>
+
+</body>
+
+<template name="mainlayout">
+   
+  {{> Template.dynamic template=sidebar}}
+  <div class="pusher side">
+  	<div class="ui container fluid">
+        <div class="sixteen wide column"> 
+          {{> Template.dynamic template=top}} 
+          {{#if settingsLoaded}}
+          {{> Template.dynamic template=topmenu}}   
+          <article class="article">
+            {{> Template.dynamic template=main}}
+          </article>
+          {{/if}}
+          {{> footer}}          
+        </div>
+        <!-- <div class="sixteen wide column mobile only tablet only">
+          {{> Template.dynamic template=topmenu}}   
+          <article>
+            {{> Template.dynamic template=main}}
+          </article>
+          {{> footer}}          
+        </div> -->
+    </div>
+  </div>
+
+</template>
+
+
+
+
+

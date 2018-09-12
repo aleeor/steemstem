@@ -1,0 +1,20 @@
+<template name="reply">
+    <div class="actions">
+        {{#if ../permlink}}
+        <a class="reply-action action-{{../permlink}}">Reply</a>
+        <form class="ui reply-{{../permlink}} form">
+            <i class="window close outline icon"></i>
+            <div class="field">
+                <textarea id="reply-content-{{../permlink}}"></textarea>
+            </div>
+            <div id="submit-comment" class="ui primary submit labeled icon button">
+                <i class="icon edit"></i> Add Reply
+            </div>
+        </form>
+        {{else}}
+        {{#with currentArticle}}
+            {{>reply data=this isRootComment=false}}
+        {{/with}}
+        {{/if}}
+    </div>
+</template>

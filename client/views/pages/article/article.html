@@ -1,0 +1,28 @@
+<template name="article">
+    <div class="ui container">
+        <div class="ui grid two column stackable padded">
+            <div class="three wide column">
+                {{>profilecard}}
+                <!-- {{>profileplaylist}} -->
+            </div>
+            <div id="articleside" class="nine wide column">
+                {{>content}}
+                <div class="row">
+                    {{>comments}}
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui items">
+                    {{#if currentSuggestions}} <h5>Popular from this author</h5> {{#each currentSuggestions}} 
+                    {{#unless equals this.permlink currentArticle.permlink}}
+                    {{> horizontalpost}} {{/unless}} 
+                    {{/each}} 
+                    {{else}} 
+                    {{#each whitelistedContent}} 
+                    {{>horizontalpost}}
+                    {{/each}} {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

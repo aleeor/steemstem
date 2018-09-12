@@ -1,0 +1,49 @@
+<template name="upvote">
+    {{#if equals active_votes.length 0}}
+    {{else}}
+    <span class="left floated upvote">
+        <i class="dollar sign icon"></i> {{displayPayout pending_payout_value total_payout_value curator_payout_value}}</span>
+    <div class="ui upvote popup center large left">
+        <div class='ui mini middle aligned divided list'>
+            {{#each displayVotersTop active_votes 0}}
+            <div class='ui item'><a href='/c/{{voter}}'>
+                    <div class='content'>
+                        <div class='header'>
+                            {{voter}}
+                            <span> (${{displayPayoutUpvote rsharespercent (displayPayout
+                                ../pending_payout_value ../total_payout_value ../curator_payout_value)}})</span>
+                        </div>
+                    </div>
+                </a></div>
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
+    {{#if equals active_votes.length 0}}
+    <span class="right floated">
+        {{#if mainuser}}
+        {{#if MainUserRate this}}
+        <i id="vote" class="heart icon teal"></i>{{active_votes.length}}
+        {{else}}
+        <i id="vote" class="heart outline like icon"></i>{{active_votes.length}}
+        {{/if}}
+        {{else}}
+        <span class="right floated" data-tooltip="You need a Steem account for this!" style="opacity:1">
+            <i class="heart outline like icon"></i>{{active_votes.length}}</span>
+        {{/if}}
+    </span>
+    {{else}}
+    <span class="right floated upvote">
+        {{#if mainuser}}
+        {{#if MainUserRate this}}
+        <i id="vote" class="heart icon teal"></i>{{active_votes.length}}
+        {{else}}
+        <i id="vote" class="heart outline like icon"></i>{{active_votes.length}}
+        {{/if}}
+        {{else}}
+        <span class="right floated" data-tooltip="You need a Steem account for this!" style="opacity:1">
+            <i class="heart outline like icon"></i>{{active_votes.length}}</span>
+        {{/if}}
+    </span>
+    {{/if}}
+</template>

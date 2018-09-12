@@ -1,0 +1,41 @@
+<template name="drafts">
+    <div class="ui message">
+        <h4>SteemStem Recommendations</h4>
+        <p>
+            "Remember to properly credit your pictures and cite your sources"
+        </p>
+        <p>
+            "Pictures must be copyrighted for commercial use"
+        </p>
+        <p>
+            "Be original: re-phrasing other websites is rarely considered valuable"
+        </p>
+    </div>
+    {{#if drafts}}
+    <div class="ui message items">
+       <h4> Saved Drafts </h4>
+       {{#each drafts}}
+        <div class="ui item draft">
+            <div class="ui tiny image">
+                {{#if imgFromBody this}}
+                <img data-src="{{imgFromBody this}}">
+                {{/if}}
+            </div>
+            <div class="content">
+                <a class="header">{{title}}</a>
+                <div class="meta">
+                    Updated :
+                    <a>{{DisplayTimeCreated last_update}}</a>
+                </div>
+                <div class="description post h {{permlink}}">
+                    {{xssShortFormatter body}}
+                </div>
+            </div>
+            <div class="ui mini button icon remove">
+                <i class="icon remove"></i>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+</template>

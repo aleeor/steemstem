@@ -1,0 +1,32 @@
+<template name="horizontalpost">
+    <div class="h item">
+        <div class="ui card fluid">
+            <div class="content">
+                <a href="/@{{author}}">
+                    <img class="ui avatar image" src="https://steemitimages.com/u/{{author}}/avatar"> {{#if
+                    isWhitelisted author}} {{author}}
+                    <i class="ui icon check green"></i>
+                    {{else}} {{author}} {{/if}}
+                </a>
+
+            </div>
+            <div class="image">
+                {{#if imgFromBody this}}
+                <img class="ui image post" src="{{imgFromBody this}}"> {{/if}}
+            </div>
+            <div class="content">
+                <a class="header">{{title}}</a>
+                <p class="description post h {{permlink}} ">{{shortDescription (xssShortFormatter (remarkableFormatter body))}}
+                </p>
+                {{>upvote}}
+            </div>
+            <div class="ui menu content">
+                {{>share}}
+                <!-- <span class="right floated">
+                    <i class="clock outline icon"></i>
+                    {{DisplayTimeCreated created}}
+                </span> -->
+            </div>
+        </div>
+    </div>
+</template>

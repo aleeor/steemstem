@@ -1,0 +1,58 @@
+<template name="profile">
+    <div class="ui container">
+        <div class="ui grid two column stackable padded">
+            <div class="three wide column">
+                {{>profilecard}}
+                {{>personalfeed}}
+            </div>
+            <div id="articleside" class="nine wide column">
+                    <div class="ui top attached tabular menu profile">
+                            <a id="blog" class="active item" data-tab="first">Blog</a>
+                            <a id="comments" class="item" data-tab="second">Comments</a>
+                            <a id="replies" class="item" data-tab="third">Replies</a>
+                            <a id="rewards" class="item" data-tab="fourth">Rewards</a>
+                            <a id="wallet" class="item" data-tab="fifth">Wallet</a>
+                          </div>
+                          <div class="ui bottom attached active tab segment" data-tab="first">
+                                {{#if currentAuthorBlog}}
+                                {{#each currentAuthorBlog}}
+                                    {{>horizontalpost}}
+                                    <div class="ui divider"></div>
+                                {{/each}}
+                            {{else}}
+                            <div class="ui large centered inline text loader visible">
+                                    Loading content...
+                                </div>
+                            {{/if}}
+                          </div>
+                          <div class="ui bottom attached tab segment" data-tab="second">
+                            {{>usercomments}}
+                          </div>
+                          <div class="ui bottom attached tab segment" data-tab="third">
+                                {{>userreplies}}
+                              </div>
+                          <div class="ui bottom attached tab segment" data-tab="fourth">
+                                {{>userrewards}}
+                          </div>
+                          <div class="ui bottom attached tab segment" data-tab="fifth">
+                                {{>wallet}}
+                              </div>
+            </div>
+            <div class="four wide column">
+                    <div class="ui items">
+                        {{#if currentSuggestions}} <h5>Popular from this author</h5>
+                            {{#each currentSuggestions}} 
+                            {{#unless equals this.permlink currentArticle.permlink}}
+                            {{> horizontalpost}} 
+                            {{/unless}} 
+                            {{/each}} 
+                            {{else}} 
+                            {{#each whitelistedContent}} 
+                            {{> horizontalpost}} 
+                            {{/each}} 
+                        {{/if}}
+                    </div>
+            </div>
+        </div>
+    </div>
+</template>

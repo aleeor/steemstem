@@ -1,0 +1,99 @@
+<template name="wallet">
+    {{#with currentAuthor}}
+    <div class="ui items">
+            {{#if equals currentAuthor.name mainuser.name}}
+        <div class="item">
+            {{#if pendingReward this}}
+            <button id="claim" class="ui fluid teal left labeled button icon">
+                <i class="money icon"></i>
+                Claim : {{{displayReward this}}}
+            </button>
+            {{/if}}
+        </div>
+        {{/if}}
+        <div class="item">
+            <div class="middle aligned content">
+                <div class="ui left aligned header">
+                    STEEM
+                </div>
+                <div class="ui dropdown right floated">
+                    <a class="text">{{balance}}</a>
+                    {{#if equals currentAuthor.name mainuser.name}}
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">Transfer</div>
+                        <div class="item">Transfer to Savings</div>
+                        <div class="item">Power Up</div>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="description">
+                    <p>Tradeable tokens that may be transferred anywhere at anytime.
+                        Steem can be converted to STEEM POWER in a process called powering up.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="item">
+            <div class="middle aligned content">
+                <div class="ui left aligned header">
+                    STEEM POWER
+                </div>
+                <div class="ui dropdown right floated">
+                    <a class="text">{{DisplaySteemPower vesting_shares delegated_vesting_shares
+                        received_vesting_share}}</a>
+                    {{#if equals currentAuthor.name mainuser.name}}
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">Power Down</div>
+                        <div class="item">Delegate</div>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="description">
+                    <p>Influence tokens which give you more control over post payouts and allow you to earn on curation
+                        rewards.
+                        Part of hightouch's STEEM POWER is currently delegated. Delegation is donated for influence or
+                        to help new users perform actions on steemit. Your delegation amount can fluctuate.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="item">
+            <div class="middle aligned content">
+                <div class="ui left aligned header">
+                    SAVINGS
+                </div>
+                <div class="ui dropdown right floated">
+                    <a class="text">{{savings_balance}}</a>
+                    {{#if equals currentAuthor.name mainuser.name}}
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item">Widthdraw STEEM</div>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="description">
+                    <p>Balances subject to 3 day withdraw waiting period.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="item">
+            <div class="middle aligned content">
+                <div class="ui left aligned header">
+                    ESTIMATED ACCOUNT VALUE
+                </div>
+                <div class="ui dropdown right floated">
+                    <a class="text">{{EstimateAccount this}}$</a>
+                </div>
+                <div class="description">
+                    <p>The estimated value is based on an average value of Steem in US dollars.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/with}}
+    <div class="ui divider"></div>
+    {{>usertransfer}}
+</template>

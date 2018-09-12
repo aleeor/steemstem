@@ -1,0 +1,31 @@
+<template name="maincards">
+    <div class="ui four stackable doubling cards">
+        {{#if searchedContents}}
+        {{#each searchedContents}}
+        {{> post}}
+        {{/each}}
+        <div class="ui divider"></div>
+        <div class="ui large centered inline text loader">
+            Adding more content...
+        </div>
+
+        {{else}} {{#if trendingContent}} {{#each trendingContent}} {{>post}} {{/each}}
+        <div class="ui divider"></div>
+        <div class="ui large centered inline text loader">
+            Adding more content...
+        </div>
+
+        {{else}}
+        <div class="ui container fluid">
+            <h3>There is no content in your language today</h3>
+        </div>
+        <!-- <div class="ui container grid rocket">
+                <img src="./images/rocketload.png">
+            </div>
+            <script>
+                $('.grid.rocket').transition('fly left', '3000ms').transition('fly right', '3000ms')
+            </script>  -->
+        {{/if}}
+        {{/if}}
+    </div>
+</template>
