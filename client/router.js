@@ -4,7 +4,7 @@ import { Session } from "meteor/session";
 FlowRouter.route('/', {
     name: 'home',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         $('.actived').removeClass('actived')
         $('.steemstem.home').addClass('actived')
         Session.set('currentFilter', false)
@@ -23,28 +23,28 @@ FlowRouter.route('/', {
 FlowRouter.route('/admin', {
     name: 'admin',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "admin", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "admin", topmenu: "topmenu" });
     }
 });
 
 FlowRouter.route('/faq', {
     name: 'faq',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "faq", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "faq", topmenu: "topmenu" });
     }
 });
 
 FlowRouter.route('/aboutus', {
     name: 'aboutus',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "aboutus", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "aboutus", topmenu: "topmenu" });
     }
 });
 
 FlowRouter.route('/create', {
     name: 'create',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", topmenu: "topmenu" });
     }
 });
 
@@ -69,7 +69,7 @@ FlowRouter.route('/login', {
 FlowRouter.route('/@:user', {
     name: 'profile',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','blog')
         User.add(params.user, function (error) {
@@ -90,7 +90,7 @@ FlowRouter.route('/@:user', {
 FlowRouter.route('/@:user/comments', {
     name: 'profile',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','comments')
         User.add(params.user, function (error) {
@@ -111,7 +111,7 @@ FlowRouter.route('/@:user/comments', {
 FlowRouter.route('/@:user/replies', {
     name: 'profile',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','replies')
         User.add(params.user, function (error) {
@@ -132,7 +132,7 @@ FlowRouter.route('/@:user/replies', {
 FlowRouter.route('/@:user/rewards', {
     name: 'profile',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','rewards')
         User.add(params.user, function (error) {
@@ -153,7 +153,7 @@ FlowRouter.route('/@:user/rewards', {
 FlowRouter.route('/@:user/wallet', {
     name: 'profile',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','wallet')
         User.add(params.user, function (error) {
@@ -174,7 +174,7 @@ FlowRouter.route('/@:user/wallet', {
 FlowRouter.route('/:tag', {
     name: 'create',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         Session.set('isonreply', false)
         Session.set('visiblecontent',18)
     }
@@ -186,7 +186,7 @@ FlowRouter.route('/:tag', {
 FlowRouter.route('/@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
@@ -223,7 +223,7 @@ FlowRouter.route('/@:user/:permlink', {
 FlowRouter.route('//@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
@@ -268,7 +268,7 @@ FlowRouter.route('//@:user/:permlink', {
 FlowRouter.route('/:tag/@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", top: "topbanner", topmenu: "topmenu" });
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         FlowRouter.setQueryParams({ params: null, queryParams: null });
         FlowRouter.go('/')
         FlowRouter.go('/@' + params.user + '/' + params.permlink)

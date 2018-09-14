@@ -1,6 +1,5 @@
 Content = new Mongo.Collection(null)
 
-
 Content.getCreatedContent = function (tag, limit, type, cb) {
     var query = {
         tag: tag,
@@ -26,8 +25,6 @@ Content.getCreatedContent = function (tag, limit, type, cb) {
         }
     })
 }
-
-//@dna-polymerase
 
 Content.getContentByAuthor = function (author, lastPermlink, cb) {
     var now = new Date();

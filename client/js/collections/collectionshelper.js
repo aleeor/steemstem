@@ -107,7 +107,7 @@ Template.registerHelper('currentSuggestions', function () {
 
     else {
         return Content.find({ author: Session.get('user') },
-            { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }
+            { sort: { upvoted: -1 }, limit: 6 }
         ).fetch()
     }
 })

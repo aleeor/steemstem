@@ -10,12 +10,10 @@
 </body>
 
 <template name="mainlayout">
-   
   {{> Template.dynamic template=sidebar}}
   <div class="pusher side">
   	<div class="ui container fluid">
         <div class="sixteen wide column"> 
-          {{> Template.dynamic template=top}} 
           {{#if settingsLoaded}}
           {{> Template.dynamic template=topmenu}}   
           <article class="article">
@@ -24,16 +22,8 @@
           {{/if}}
           {{> footer}}          
         </div>
-        <!-- <div class="sixteen wide column mobile only tablet only">
-          {{> Template.dynamic template=topmenu}}   
-          <article>
-            {{> Template.dynamic template=main}}
-          </article>
-          {{> footer}}          
-        </div> -->
     </div>
   </div>
-
 </template>
 
 
