@@ -1,58 +1,86 @@
 <template name="profile">
     <div class="ui container">
+        {{#if isBlacklisted currentAuthor.name}}
+        <div class="ui grid centered column stackable padded" style="margin-top:3em;">
+            <h4>This user is blacklisted</h4>
+        </div>
+        {{else}}
+
         <div class="ui grid two column stackable padded">
             <div class="three wide column">
+                {{#with currentAuthor}}
                 {{>profilecard}}
                 {{>personalfeed}}
+                {{/with}}
             </div>
             <div id="articleside" class="nine wide column">
-                    <div class="ui top attached tabular menu profile">
-                            <a id="blog" class="active item" data-tab="first">Blog</a>
-                            <a id="comments" class="item" data-tab="second">Comments</a>
-                            <a id="replies" class="item" data-tab="third">Replies</a>
-                            <a id="rewards" class="item" data-tab="fourth">Rewards</a>
-                            <a id="wallet" class="item" data-tab="fifth">Wallet</a>
-                          </div>
-                          <div class="ui bottom attached active tab segment" data-tab="first">
-                                {{#if currentAuthorBlog}}
-                                {{#each currentAuthorBlog}}
-                                    {{>horizontalpost}}
-                                    <div class="ui divider"></div>
-                                {{/each}}
-                            {{else}}
-                            <div class="ui large centered inline text loader visible">
-                                    Loading content...
-                                </div>
-                            {{/if}}
-                          </div>
-                          <div class="ui bottom attached tab segment" data-tab="second">
-                            {{>usercomments}}
-                          </div>
-                          <div class="ui bottom attached tab segment" data-tab="third">
-                                {{>userreplies}}
-                              </div>
-                          <div class="ui bottom attached tab segment" data-tab="fourth">
-                                {{>userrewards}}
-                          </div>
-                          <div class="ui bottom attached tab segment" data-tab="fifth">
-                                {{>wallet}}
-                              </div>
+                <div class="ui top attached tabular menu profile borderless">
+                    <a id="blog" class="active item" data-tab="first">Blog</a>
+                    <a id="comments" class="item" data-tab="second">Comments</a>
+                    <a id="replies" class="item" data-tab="third">Replies</a>
+                    <a id="rewards" class="item" data-tab="fourth">Rewards</a>
+                    <a id="wallet" class="item" data-tab="fifth">Wallet</a>
+                </div>
+                <div class="ui bottom attached active tab borderless" data-tab="first" style="padding-top: 0px;">
+                    {{#if currentAuthorBlog}}
+                    <div class="ui items blog">
+                        {{#each currentAuthorBlog}}
+                        {{#if equals author currentAuthor.name}}
+                        {{>post}}
+                        {{else}}
+                        <div style="float:right;margin-right: -1px;" class="ui mini teal button">
+                            <i class="share icon"></i>ReSteem / Shared
+                        </div>
+                        {{>post}}
+                        {{/if}}
+                        <div class="ui divider"></div>
+                        {{/each}}
+                    </div>
+                    {{else}}
+                    <div class="ui large centered inline text loader visible">
+                        Loading content...
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="ui bottom attached tab borderless" data-tab="second">
+                    {{>usercomments}}
+                </div>
+                <div class="ui bottom attached tab borderless" data-tab="third">
+                    {{>userreplies}}
+                </div>
+                <div class="ui bottom attached tab borderless" data-tab="fourth">
+                    {{>userrewards}}
+                </div>
+                <div class="ui bottom attached tab borderless" data-tab="fifth">
+                    {{>wallet}}
+                </div>
             </div>
             <div class="four wide column">
-                    <div class="ui items">
+                <div class="ui top attached tabular menu borderless" style="height: 43px;">
+                    <a class="item active" data-tab="sixth">
                         {{#if currentSuggestions}} <h5>Popular from this author</h5>
-                            {{#each currentSuggestions}} 
-                            {{#unless equals this.permlink currentArticle.permlink}}
-                            {{> horizontalpost}} 
-                            {{/unless}} 
-                            {{/each}} 
-                            {{else}} 
-                            {{#each whitelistedContent}} 
-                            {{> horizontalpost}} 
-                            {{/each}} 
+                        {{else}}
+                        <h5>Our suggestions</h5>
+                        {{/if}}
+                    </a>
+                </div>
+                <div class="ui bottom attached tab active borderless npdg" data-tab="sixth">
+                    <div class="ui divided cards">
+                        {{#if currentSuggestions}}
+                        {{#each currentSuggestions}}
+                        {{#unless equals this.permlink currentArticle.permlink}}
+                        {{> card}}
+                        {{/unless}}
+                        {{/each}}
+                        {{else}}
+                        {{#each whitelistedContent}}
+                        {{> card}}
+                        {{/each}}
                         {{/if}}
                     </div>
+                </div>
             </div>
         </div>
+        {{/if}}
     </div>
 </template>

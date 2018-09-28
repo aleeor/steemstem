@@ -1,32 +1,29 @@
 <template name="horizontalpost">
-    <div class="h item">
-        <div class="ui card fluid">
-            <div class="content">
-                <a href="/@{{author}}">
-                    <img class="ui avatar image" src="https://steemitimages.com/u/{{author}}/avatar"> {{#if
-                    isWhitelisted author}} {{author}}
-                    <i class="ui icon check green"></i>
-                    {{else}} {{author}} {{/if}}
-                </a>
-
+    <div class="item" style="margin:0em;box-shadow: 0px 0px 7px #00000069;">
+        <div class="content" style="padding: 1em;">
+            <a href="/@{{author}}/{{permlink}}" class="header">{{title}}</a>
+            <span class="tags">{{#each json_metadata.tags}}
+                {{#unless equals this 'steemstem'}}
+                <a href="/{{this}}" class="ui mini {{colorByCategory this}} label">{{this}}</a>{{/unless}}{{/each}}
+            </span>
+            <div class="meta">
+                <!-- <img class="ui avatar image" src="https://steemitimages.com/u/{{author}}/avatar"> -->
+                <span class="category"> <a href="/@{{author}}">by {{#if
+                        isWhitelisted author}}{{author}} ({{displayReputation author_reputation}})
+                        <i class="ui icon check green"></i>
+                        {{else}}{{author}} ({{displayReputation author_reputation}}) {{/if}}</a> </span>
             </div>
-            <div class="image">
-                {{#if imgFromBody this}}
-                <img class="ui image post" src="{{imgFromBody this}}"> {{/if}}
+            <div class="ui small left floated image">
+                <img src="{{imgFromBody this}}">
             </div>
-            <div class="content">
-                <a class="header">{{title}}</a>
-                <p class="description post h {{permlink}} ">{{shortDescription (xssShortFormatter (remarkableFormatter body))}}
-                </p>
-                {{>upvote}}
-            </div>
-            <div class="ui menu content">
-                {{>share}}
-                <!-- <span class="right floated">
-                    <i class="clock outline icon"></i>
-                    {{DisplayTimeCreated created}}
-                </span> -->
-            </div>
+            {{shortDescription (xssShortFormatter (remarkableFormatter body))}}
+        </div>
+    </div>
+    <div class="item" style="margin:0px;    padding: 0em 0em 1em 0em;">
+        <div class="ui label fluid noradius">
+            <span class="ui  mini label top left floated">
+                <i class="clock outline icon"></i> {{DisplayTimeFrom created}}
+            </span> {{>upvote}}
         </div>
     </div>
 </template>

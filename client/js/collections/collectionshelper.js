@@ -1,32 +1,30 @@
-Template.registerHelper('trendingContent', function () {
-    if (Session.get('lang')) {
-        if (Session.get('unfiltered')) {
-            return Content.find(
-                {
-                    $or: [{ "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][0] },
-                    { "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][1] },
-                    { "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][2] },
-                    { "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][3] }
-
-                    ]
-                },
-                { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch()
+Template.registerHelper('steemStemContent', function () {
+    if(Content.find().fetch())
+    {
+        if (Session.get('currentSearch')) {
+            if (Session.get('unfiltered')) {
+                return Content.find(
+                    {
+                        "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang')
+                    },
+                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+            }
+            else {
+                return Content.find(
+                    { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang') },
+                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+            }
         }
         else {
-            return Content.find(
-                {
-                    $or: [{ type: 'steemstem', "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][0] },
-                    { type: 'steemstem', "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][1] },
-                    { type: 'steemstem', "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][2] },
-                    { type: 'steemstem', "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][3] }
-
-                    ]
-                },
-                { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch()
+            if (Session.get('unfiltered')) {
+                return Content.find({ language: Session.get('lang') },
+                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+            }
+            else {
+                return Content.find({ type: 'steemstem', language: Session.get('lang') },
+                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+            }
         }
-    }
-    else {
-        return Content.find({ sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch()
     }
 })
 
@@ -35,81 +33,44 @@ Template.registerHelper('whitelistedContent', function () {
         var whitelist = Session.get('settings').whitelist
         var contents = [];
         for (i = 0; i < whitelist.length; i++) {
-            if (Content.findOne({type:'steemstem', author: whitelist[i] })) {
+            if (Content.findOne({ type: 'steemstem', author: whitelist[i] }, { sort: { created: -1 } })) {
                 contents.push(Content.findOne({ author: whitelist[i] }))
             }
 
         }
+        contents.sort(function(a,b){
+            var da = new Date(a.created).getTime();
+            var db = new Date(b.created).getTime();
+            
+            return da > db ? -1 : da < db ? 1 : 0
+          });
         return contents
-    }
-})
-
-Template.registerHelper('searchedContents', function () {
-    if (Session.get('currentSearch')) {
-        if (Session.get('lang')) {
-            if (Session.get('unfiltered')) 
-                {
-                    return Content.find(
-                        {
-                            $or: [{ search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][0] },
-                            { search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][1] },
-                            { search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][2] },
-                            { search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][3] }
-        
-                            ]
-                        },
-                        { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch()
-                }
-                else
-                {
-                    return Content.find(
-                        {
-                            $or: [{ type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][0] },
-                            { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][1] },
-                            { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][2] },
-                            { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][3] }
-        
-                            ]
-                        },
-                        { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch()
-                }
-        }
-
-        else {
-            return Content.find({ search: new RegExp('.*' + Session.get('currentSearch'), 'i') }, { limit: Session.get('visiblecontent') }).fetch()
-        }
     }
 })
 
 Template.registerHelper('currentSuggestions', function () {
     if (Session.get('lang') && Content.find(
         {
-            $or: [{ author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][0] },
-            { author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][1] },
-            { author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][2] },
-            { author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][3] }
-
-            ]
+            type: 'steemstem', author: Session.get('user')
         },
-        { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch() >= 1
+        { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch() >= 1
     ) {
         return Content.find(
             {
-                $or: [{ author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][0] },
-                { author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][1] },
-                { author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][2] },
-                { author: Session.get('user'), "json_metadata.tags": Session.get('settings').languages[sessionStorage.getItem('lang')][3] }
-
-                ]
+                type: 'steemstem', author: Session.get('user')
             },
-            { sort: { upvoted: -1 }, limit: Session.get('visiblecontent') }).fetch()
+            { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
     }
 
     else {
-        return Content.find({ author: Session.get('user') },
-            { sort: { upvoted: -1 }, limit: 6 }
+        return Content.find({ type: 'steemstem', author: Session.get('user') },
+            { sort: { upvoted: -1, created: -1 }, limit: 6 }
         ).fetch()
     }
+})
+
+Template.registerHelper('promoted', function () {
+    return Promoted.find({},{ sort: { created: -1 }}).fetch()
 })
 
 Template.registerHelper('currentArticle', function () {
@@ -152,14 +113,13 @@ Template.registerHelper('currentAuthorHistory', function (limit) {
 })
 
 Template.registerHelper('currentAuthorBlog', function (comment) {
-    if(!Content.findOne({ type: 'blog', from:Session.get('user') }))
-    {
+    if (!Content.findOne({ type: 'blog', from: Session.get('user') })) {
         Blog.getContentByBlog(Session.get('user'), 20, 'blog', function (error) {
             if (error) {
-              console.log(error)
+                console.log(error)
             }
-          })
+        })
     }
-      else
-    return Content.find({ type: 'blog', from:Session.get('user') }).fetch()
+    else
+        return Content.find({ type: 'blog', from: Session.get('user') }, { sort: { created: -1 } }).fetch()
 })

@@ -4,7 +4,6 @@
         {{#if equals type 'comment'}}
         <div class="ui fluid card">
             <div class="content">
-                <img class="right floated mini ui image" src="https://steemitimages.com/u/{{name}}/avatar">
                 <div class="header">
                         {{name}}                
                         <span class="meta">
@@ -12,8 +11,8 @@
                             </span>
                     </div>
                 <div class="description shorter">
-                    <a class="user shorter">
-                        {{parent_permlink}}/{{permlink}}
+                    <a href="/@{{name}}/{{permlink}}" class="user shorter">
+                        @{{name}}/{{permlink}}
                     </a>
                 </div>
             </div>

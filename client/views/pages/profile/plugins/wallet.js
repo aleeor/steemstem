@@ -1,5 +1,4 @@
 Template.wallet.rendered = function () {
-  $('.ui.dropdown').dropdown()
 }
 
 
@@ -26,9 +25,6 @@ Template.wallet.helpers({
   }
 })
 
-
-
-
 Template.wallet.events({
   'click #claim': function (event) {
     var user = MainUser.findOne()
@@ -38,9 +34,6 @@ Template.wallet.events({
         console.log(error)
       }
       else {
-        User.add(localStorage.username, function (error) {
-          if (error) console.log(error)
-        })
         MainUser.add(localStorage.username, function (error) {
           if (error) {
             console.log(error)
@@ -48,5 +41,13 @@ Template.wallet.events({
         })
       }
     })
-  }
+  },
+  'click .transfer': function (event) {
+      event.preventDefault()
+      event.stopPropagation();
+      $('.ui.transfer.modal').remove()
+      $('article').append(Blaze.toHTMLWithData(Template.transfermodal, {data:this}));
+      $('.ui.transfer.modal').modal('setting', 'transition', 'scale').modal('show')
+      Template.transfermodal.init()
+  },
 })

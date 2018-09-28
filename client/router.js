@@ -17,6 +17,12 @@ FlowRouter.route('/', {
         //     }
         // })
         Session.set('visiblecontent',18)
+        if(!sessionStorage.tos)
+        {
+            $('.ui.tos.modal').remove()
+            $('article').append(Blaze.toHTMLWithData(Template.tosmodal, { project: this }));
+            $('.ui.tos.modal').modal('setting', 'transition', 'scale').modal('show')
+        }
     }
 });
 
@@ -31,6 +37,13 @@ FlowRouter.route('/faq', {
     name: 'faq',
     action: function (params, queryParams) {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "faq", topmenu: "topmenu" });
+    }
+});
+
+FlowRouter.route('/tos', {
+    name: 'tos',
+    action: function (params, queryParams) {
+        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "tos", topmenu: "topmenu" });
     }
 });
 
@@ -83,6 +96,11 @@ FlowRouter.route('/@:user', {
                 console.log(error)
             }
         })
+        Followers.loadFollowers(params.user, function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
         $('.menu.profile .item').tab('change tab', 'first')
     }
 });
@@ -100,6 +118,11 @@ FlowRouter.route('/@:user/comments', {
         })
         if(!PersonalHistory.findOne({author:params.user}))
         PersonalHistory.getPersonalHistory(params.user, function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
+        Followers.loadFollowers(params.user, function (error) {
             if (error) {
                 console.log(error)
             }
@@ -125,6 +148,11 @@ FlowRouter.route('/@:user/replies', {
                 console.log(error)
             }
         })
+        Followers.loadFollowers(params.user, function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
         $('.menu.profile .item').tab('change tab', 'third')
     }
 });
@@ -142,6 +170,11 @@ FlowRouter.route('/@:user/rewards', {
         })
         if(!PersonalHistory.findOne({author:params.user}))
         PersonalHistory.getPersonalHistory(params.user, function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
+        Followers.loadFollowers(params.user, function (error) {
             if (error) {
                 console.log(error)
             }
@@ -167,6 +200,11 @@ FlowRouter.route('/@:user/wallet', {
                 console.log(error)
             }
         })
+        Followers.loadFollowers(params.user, function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
         $('.menu.profile .item').tab('change tab', 'fifth')
     }
 });
@@ -175,6 +213,7 @@ FlowRouter.route('/:tag', {
     name: 'create',
     action: function (params, queryParams) {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
+        Session.set('currentSearch',params.tag)
         Session.set('isonreply', false)
         Session.set('visiblecontent',18)
     }
@@ -197,19 +236,25 @@ FlowRouter.route('/@:user/:permlink', {
                 }
             })
         }
-        if (!Comments.findOne({ permlink: params.permlink })) {
-            Comments.loadComments(params.user, params.permlink, function (error) {
-                if (error) {
-                    console.log(error)
-                }
-            })
-        }
+        // if (!Comments.findOne({ permlink: params.permlink })) {
+        //     Comments.loadComments(params.user, params.permlink, function (error) {
+        //         if (error) {
+        //             console.log(error)
+        //         }
+        //     })
+        // }
         User.add(params.user, function (error) {
             if (error) {
                 console.log(error)
             }
         })
         Blog.getContentByBlog(params.user, 20, 'blog', function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
+        window.scrollTo(0,0)
+        Followers.loadFollowers(params.user, function (error) {
             if (error) {
                 console.log(error)
             }

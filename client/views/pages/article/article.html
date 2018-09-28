@@ -1,9 +1,10 @@
 <template name="article">
     <div class="ui container">
-        <div class="ui grid two column stackable padded">
+        <div class="ui grid two column stackable">
             <div class="three wide column">
+                {{#with currentAuthor}}
                 {{>profilecard}}
-                <!-- {{>profileplaylist}} -->
+                {{/with}}
             </div>
             <div id="articleside" class="nine wide column">
                 {{>content}}
@@ -12,15 +13,28 @@
                 </div>
             </div>
             <div class="four wide column">
-                <div class="ui items">
-                    {{#if currentSuggestions}} <h5>Popular from this author</h5> {{#each currentSuggestions}} 
-                    {{#unless equals this.permlink currentArticle.permlink}}
-                    {{> horizontalpost}} {{/unless}} 
-                    {{/each}} 
-                    {{else}} 
-                    {{#each whitelistedContent}} 
-                    {{>horizontalpost}}
-                    {{/each}} {{/if}}
+                <div class="ui top attached tabular menu borderless">
+                    <a class="item active" data-tab="seventh">
+                        {{#if currentSuggestions}} <h5>Popular from this author</h5>
+                        {{else}}
+                        <h5>Our suggestions</h5>
+                        {{/if}}
+                    </a>
+                </div>
+                <div class="ui bottom attached tab active borderless npdg"  data-tab="seventh">
+                    <div class="ui divided cards">
+                        {{#if currentSuggestions}}
+                        {{#each currentSuggestions}}
+                        {{#unless equals this.permlink currentArticle.permlink}}
+                        {{> card}}
+                        {{/unless}}
+                        {{/each}}
+                        {{else}}
+                        {{#each whitelistedContent}}
+                        {{> card}}
+                        {{/each}}
+                        {{/if}}
+                    </div>
                 </div>
             </div>
         </div>

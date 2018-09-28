@@ -4,7 +4,7 @@ import moment from 'moment-with-locales-es6'
 import showdown from 'showdown'
 import Remarkable from 'remarkable';
 
-var Autolinker = require( 'autolinker' );
+var Autolinker = require('autolinker');
 
 const steemMarkdown = require('steem-markdown-only')
 
@@ -31,6 +31,15 @@ Template.registerHelper('imgFromBody', function (project) {
     }
 })
 
+Template.registerHelper('isBlacklisted', function (name) {
+    if(!Session.get('settings').blacklist.includes(result[i].author))
+    return false
+    else
+    return true
+});
+
+
+
 Template.registerHelper('translator', function (code) {
     return translate(code);
 });
@@ -45,28 +54,28 @@ Template.registerHelper('xssFormatter', function (text) {
 Template.registerHelper('remarkableFormatter', function (text) {
     text = steemMarkdown(text)
     var autolinker = new Autolinker({
-        urls : {
-            schemeMatches : true,
-            wwwMatches    : true,
-            tldMatches    : true
+        urls: {
+            schemeMatches: true,
+            wwwMatches: true,
+            tldMatches: true
         },
-        email       : true,
-        phone       : true,
-        mention     : 'steemit',
-        hashtag     : 'steemit',
-        stripPrefix : false,
-        stripTrailingSlash : false,
-        newWindow   : true,
-    
-        truncate : {
-            length   : 0,
-            location : 'end'
-        },
-    
-        className : ''
-    } );
+        email: true,
+        phone: true,
+        mention: 'steemit',
+        hashtag: 'steemit',
+        stripPrefix: false,
+        stripTrailingSlash: false,
+        newWindow: true,
 
-    return autolinker.link( text );
+        truncate: {
+            length: 0,
+            location: 'end'
+        },
+
+        className: ''
+    });
+
+    return autolinker.link(text);
 })
 
 function parseURL($string) {
@@ -81,8 +90,14 @@ function parseURL($string) {
     )
 }
 
+Template.registerHelper('isFollowing', function (following) {
+    var followers = Followers.findOne({ follower: MainUser.find().fetch()[0].name, following: following })
+    if (followers) return true
+    return false;
+})
+
 Template.registerHelper('shortDescription', function (string) {
-    return     string.slice(0, 200) + " ..."
+    return string.slice(0, 150) + " ..."
 })
 
 Template.registerHelper('xssShortFormatter', function (text) {
@@ -134,6 +149,14 @@ Template.registerHelper('colorfromcategory', function (tags) {
     }
 })
 
+Template.registerHelper('colorByCategory', function (tag) {
+    var colors = Session.get('customtags')
+    if (colors.find(item => item.category === tag) && tag != "steemstem") {
+        var item = colors.find(item => item.category === tag)
+        return item.color
+    }
+})
+
 Template.registerHelper('xssTxtFormatter', function (text) {
     if (!text) return text;
     var converter = new showdown.Converter(),
@@ -152,6 +175,10 @@ Template.registerHelper('xssTxtFormatter', function (text) {
     return text;
 })
 
+
+Template.registerHelper('inequals', function (a, b) {
+    return a !== b;
+});
 
 Template.registerHelper('equals', function (a, b) {
     return a === b;
@@ -195,7 +222,7 @@ Template.registerHelper('EstimateAccount', function (user) {
         var balanceVests = parseFloat(user.vesting_shares.split(' ')[0])
         var balanceSbd = parseFloat(user.sbd_balance.split(' ')[0])
         var balanceUsd = 0
-    
+
         balanceUsd += Coins.findOne({ 'id': 'steem' }).price_usd * vestToSteemPower(balanceVests)
         balanceUsd += Coins.findOne({ 'id': 'steem' }).price_usd * balanceSteem
         balanceUsd += Coins.findOne({ 'id': 'steem-dollars' }).price_usd * balanceSbd
@@ -203,7 +230,7 @@ Template.registerHelper('EstimateAccount', function (user) {
     }
     else {
         return 0
-    
+
     }
 })
 
@@ -211,7 +238,7 @@ Template.registerHelper('isSubscribed', function (following) {
     var sub = Subs.findOne({ follower: MainUser.find().fetch()[0].name, following: following })
     if (sub) return true
     return false;
-  })
+})
 
 
 
@@ -228,8 +255,8 @@ Template.registerHelper('DisplaySteemPower', function (vesting_shares, delegated
         var SP = 0;
         SP = SP + Number(vestToSteemPower(vesting_shares.split(' ')[0]))
         SP = SP - Number(vestToSteemPower(delegated.split(' ')[0]))
-        if(received_vesting_shares)
-        SP = SP + Number(vestToSteemPower(received_vesting_shares.split(' ')[0]))
+        if (received_vesting_shares)
+            SP = SP + Number(vestToSteemPower(received_vesting_shares.split(' ')[0]))
         return parseFloat(SP).toFixed(3) + ' STEEM'
     }
 })
@@ -289,12 +316,20 @@ Template.registerHelper('mainuser', function () {
     }
 })
 
+Template.registerHelper('visibleContents', function () {
+    return Session.get('visiblecontent')
+})
+
 Template.registerHelper('userdata', function () {
     return Session.get('userdata')
 })
 
 Template.registerHelper('drafts', function () {
     return Session.get('userdata').drafts
+})
+
+Template.registerHelper('unfiltered', function () {
+        return Session.get('unfiltered')
 })
 
 Template.registerHelper('currentSearch', function () {
@@ -325,19 +360,16 @@ Template.registerHelper('isBlacklisted', function (user_permlink) {
 
 
 Template.registerHelper('MainUserRate', function (project) {
-    if (!project || !project.active_votes  || !project.net_votes) return
-    if(project.active_votes.length)
-    {
+    if (!project || !project.active_votes || !project.net_votes) return
+    if (project.active_votes.length) {
         for (var i = 0; i < project.active_votes.length; i++) {
             if (project.active_votes[i].voter == localStorage.username
                 && parseInt(project.active_votes[i].percent) > 0)
                 return parseFloat(project.active_votes[i].percent / 100).toFixed(0)
         }
     }
-    else
-    {
-        if(project.net_votes.length)
-        {
+    else {
+        if (project.net_votes.length) {
             for (var i = 0; i < project.net_votes.length; i++) {
                 if (project.net_votes[i].voter == localStorage.username
                     && parseInt(project.net_votes[i].percent) > 0)

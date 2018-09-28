@@ -1,66 +1,100 @@
 <template name="profilecard">
-    {{#with currentAuthor}}
-    <div class="ui card">
+    <div class="ui top attached tabular menu borderless">
+        <a class="item active"  data-tab="eight">
+            Author
+        </a>
+    </div>
+    <div class="ui tab active borderless npdg" data-tab="eight">
+        <div class="ui cards">
+            <div class="ui card" style="box-shadow: 0px 0px 7px #00000069;">
                 <div class="container">
-                        <div class="control">
-                            <div id="shape"></div>
-                        </div>
+                    <div class="control">
+                        <div id="shape"></div>
                     </div>
-        <div class="content">
-            <a href="/@{{name}}" class="header" data-tooltip="Author name and Reputation">
-                {{#if isWhitelisted name}}
-                {{name}} <i class="ui icon check green"></i>
-                {{else}}
-                {{name}} 
-                {{/if}}
-            </a>
+                </div>
+                <div class="content">
+                    <a href="/@{{name}}" class="header">
+                        {{#if isWhitelisted name}}
+                        @{{name}} <i class="ui icon check green"></i>
+                        {{else}}
+                        @{{name}}
+                        {{/if}}
+                    </a>
+                    <div class="date">
+                        Reputation : {{displayReputation reputation}}
+                    </div>
+                    <div class="date">
+                        {{follower_count}} Followers
+                    </div>
+                    <div class="date">
+                        {{following_count}} Following
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="date">Joined on : {{DisplayTimeCreated created}}</div>
+                    <div class="date">Last vote : {{DisplayTimeFrom last_vote_time}}</div>
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $("#shape").roundSlider({
+                                value: '{{DisplayVotingPower voting_power last_vote_time 2}}',
+                                sliderType: "min-range",
+                                readOnly: true,
+                                editableTooltip: false,
+                                handleShape: "dot",
+                                handleSize: "+6",
+                                tooltipFormat: function (e) {
+                                    return '{{DisplayVotingPower voting_power last_vote_time 2}}' + ' %';
+                                }
+                            });
+                            $(".rs-inner").css('background', 'url(https://steemitimages.com/u/{{name}}/avatar) no-repeat').css('background-size', 'cover');
+                        });
+                    </script>
+                    <div class="ui divider"></div>
+                    <div class="description">
+                        {{#if json_metadata.profile.about}}
+                        {{json_metadata.profile.about}}
+                        {{/if}}
+                    </div>
+                    <div class="ui divider"></div>
+                    {{#if isFollowing name}}
+                    <a class="ui mini button black fluid unfollow" onclick="Unfollow('{{name}}')">Unfollow</a>
+                    <script>
+                        Unfollow = function (name) {
+                            steemconnect.unfollow(name, function (error) {
+                                if (error) {
 
-            <div class="date">Reputation : {{displayReputation reputation}}</div>
-            <div class="date">Joined on : {{DisplayTimeCreated created}}</div>
-            <div class="date">Last vote : {{DisplayTimeFrom last_vote_time}}</div>
-            <!-- <div class="ui divider"></div> -->
-            <!-- <span class="date">SteemPower : {{DisplaySteemPower vesting_shares delegated_vesting_shares received_vesting_share}}</span> 
-                <span class="date">Value :  {{EstimateAccount this}}$</span>  -->
-            <!-- <span class="date">VotingPower : {{DisplayVotingPower voting_power last_vote_time 2}} %</span>  -->
-
-            <!-- <h3>VotingPower</h3> -->
-
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    $("#shape").roundSlider({
-                        value: '{{DisplayVotingPower voting_power last_vote_time 2}}',
-                        sliderType: "min-range",
-                        readOnly: true,
-                        editableTooltip: false,
-                        handleShape: "dot",
-                        handleSize: "+6",
-                        tooltipFormat: function (e) {
-                            return '{{DisplayVotingPower voting_power last_vote_time 2}}' + ' %';
+                                } else {
+                                    Followers.loadFollowers(name, function (error) {
+                                        if (error) {
+                                            console.log(error)
+                                        }
+                                    })
+                                }
+                            }
+                            )
                         }
-                    });
-                    $(".rs-inner").css('background','url(https://steemitimages.com/u/{{name}}/avatar) no-repeat');
-                });
-            </script>
-            <div class="ui divider"></div>
+                    </script>
+                    {{else}}
+                    <a class="ui mini button teal fluid follow" onclick="Follow('{{name}}')">Follow</a>
+                    <script>
+                        Follow = function (name) {
+                            steemconnect.follow(name, function (error) {
+                                if (error) {
 
-            <div class="description">
-                {{#if json_metadata.profile.about}}
-                {{json_metadata.profile.about}}
-                {{/if}}
+                                } else {
+                                    Followers.loadFollowers(name, function (error) {
+                                        if (error) {
+                                            console.log(error)
+                                        }
+                                    })
+                                }
+                            }
+                            )
+                        }
+                    </script>
+                    {{/if}}
+                </div>
             </div>
         </div>
-        <div class="ui divider"></div>
-        <div class="extra content">
-            <a class="ui mini button fluid">
-                <i class="user icon"></i>
-                {{follower_count}} Followers
-            </a>
-            <div class="ui divider"></div>
-            <a class="ui mini button fluid">
-                <i class="user icon"></i>
-                {{following_count}} Following
-            </a>
-        </div>
     </div>
-    {{/with}}
+
 </template>

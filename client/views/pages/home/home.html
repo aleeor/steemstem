@@ -1,31 +1,174 @@
 <template name="home">
-    <div class="ui container fluid">
-        <div class="ui two column stackable grid padded home">
-            <div class="thirteen wide column">
-                <div class="ui top attached tabular menu">
-                    <a class="item active" name="upvoted" data-tab="first">Featured</a>
-                    <div class="item">
-                        <div class="ui filter checkbox">
-                            <input type="checkbox" name="example">
-                            <label>Show all posts</label>
+    {{#if equals currentSearch 'steemstem'}}
+    <div class="ui container fluid mtop3n">
+        <div class="ui three column grid padded large screen only">
+            <div class="col33 npdg">
+                <div class="ui two column grid padded">
+                    <div class="col50 npdg">
+                        {{#with promoted.[0]}}
+                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                            <div class="top_news_content">
+                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                                <h4 class="top_news_title">
+                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <div class="post_date">
+                                        <span>by {{author}}</span>
+                                    </div>
+                                </h4>
+                            </div>
                         </div>
+                        {{/with}}
+                    </div>
+                    <div class="col50 npdg">
+                        {{#with promoted.[1]}}
+                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                            <div class="top_news_content">
+                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                                <h4 class="top_news_title">
+                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <div class="post_date">
+                                        <span>by {{author}}</span>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                        {{/with}}
                     </div>
                 </div>
-                <div class="ui bottom attached tab segment active" data-tab="first">
-                    {{>maincards}}
-                    <div class="ui loadmore segment button fluid teal padded">
-                        <i class="angle up icon"></i> View more
-                        <i class="angle up icon"></i>
+                <div class="col100 npdg">
+                    {{#with promoted.[2]}}
+                    <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                        <div class="top_news_content">
+                            <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                            <h2 class="top_news_title">
+                                <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                <div class="post_date">
+                                    <span>by {{author}}</span>
+                                </div>
+                            </h2>
+                        </div>
+                    </div>
+                    {{/with}}
+                </div>
+            </div>
+            <div class="col33 npdg">
+                {{#with promoted.[3]}}
+                <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                    <div class="top_news_content">
+                        <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                        <h2 class="top_news_title">
+                            <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                            <div class="post_date">
+                                <span>by {{author}}</span>
+                            </div>
+                        </h2>
+                    </div>
+                </div>
+                {{/with}}
+            </div>
+            <div class="col33 npdg">
+                <div class="ui two column grid row padded">
+                    <div class="col50 npdg">
+                        {{#with promoted.[4]}}
+                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                            <div class="top_news_content">
+                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                                <h4 class="top_news_title">
+                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <div class="post_date">
+                                        <span>by {{author}}</span>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                        {{/with}}
+                        {{#with promoted.[5]}}
+                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                            <div class="top_news_content">
+                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                                <h4 class="top_news_title">
+                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <div class="post_date">
+                                        <span>by {{author}}</span>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                        {{/with}}
+                    </div>
+                    <div class="col50 npdg">
+                        {{#with promoted.[6]}}
+                        <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                            <div class="top_news_content">
+                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
+                                <h2 class="top_news_title">
+                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <div class="post_date">
+                                        <span>by {{author}}</span>
+                                    </div>
+                                </h2>
+                            </div>
+                        </div>
+                        {{/with}}
                     </div>
                 </div>
             </div>
-            <div class="three wide column">
-                <div class="ui top attached tabular menu">
+        </div>
+    </div>
+    {{/if}}
+    <div class="ui container mtop2">
+        <div class="ui two column stackable grid home mtop0">
+            <div class="twelve wide column">
+                <div class="ui top attached tabular menu borderless npdg">
+                    <a class="item active" name="upvoted" data-tab="first">
+                        {{#if unfiltered}}
+                        All
+                        {{else}}
+                        Featured
+                        {{/if}}
+                    </a>
+                    {{#if equals currentSearch 'steemstem'}}
+                    <div class="ui left floated item">
+                        <h5>#notag</h5>
+                    </div>
+                    {{else}}
+                    <div class="ui left floated item">
+                        <h5>#{{currentSearch}}</h5>
+                    </div>
+                    {{/if}}
+                    <div class="item right floated" style="padding-right:0px;">
+                        <div class="ui filter checkbox">
+                            <input type="checkbox" name="example">
+                            <label>
+                                <h5>Show all posts</h5>
+                            </label>
+                        </div>
+                        {{#if isGridView}}
+                        <div class="ui black icon button switch" style="margin-left:1em;margin-top: -18px;">
+                            <i class="th list icon"></i>
+                        </div>
+                        {{else}}
+                        <div class="ui black icon button switch" style="margin-left:1em;margin-top: -18px;">
+                            <i class="grid layout icon"></i>
+                        </div>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="ui bottom attached tab active borderless" style="padding:0px;" data-tab="first">
+                    {{#if isGridView}}
+                    {{>maincards}}
+                    {{else}}
+                    {{>mainlist}}
+                    {{/if}}
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="ui top attached tabular menu borderless">
                     <a class="item active" data-tab="fifth">Whitelisted</a>
                 </div>
-                <div class="ui bottom attached tab segment active" data-tab="fifth">
-                    <div class="ui divided items">
-                        {{#each whitelistedContent}} {{> horizontalpost}} {{/each}}
+                <div class="ui bottom attached tab active borderless npdg" data-tab="fifth">
+                    <div class="ui divided cards">
+                        {{#each whitelistedContent}} {{> card}} {{/each}}
                     </div>
                 </div>
             </div>

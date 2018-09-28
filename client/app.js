@@ -10,13 +10,32 @@ FlowRouter.wait();
 
 BlazeLayout.setRoot('body');
 
-var sc2 = sc2sdk.Initialize({
-    baseURL: 'https://steemconnect.com', 
-    app: 'fundition.org',
-    callbackURL: 'http://testdev.fundition.io/login',
-    accessToken: 'access_token',
-    //scope: ['vote','comment']
-});
+var dev = false
+
+if(dev)
+{
+    console.log('DEV VERSION')
+    var sc2 = sc2sdk.Initialize({
+        baseURL: 'https://steemconnect.com', 
+        app: 'factit.app',
+        callbackURL: 'http://localhost:3000/login',
+        accessToken: 'access_token',
+        //scope: ['vote','comment']
+    });
+    
+}
+else
+{
+    var sc2 = sc2sdk.Initialize({
+        baseURL: 'https://steemconnect.com', 
+        app: 'steemstem-app',
+        callbackURL: 'https://www.steemstem.io/#!/login',
+        accessToken: 'access_token',
+        scope: ['vote','comment']
+    });
+    
+}
+
 window.sc2 = sc2
 
 window.steem = steem;
@@ -40,6 +59,52 @@ Meteor.startup(function () {
         }
     });
 
+
+    if(Session.get('settings'))
+    {
+        sessionStorage.setItem('settings',JSON.stringify(Session.get('settings')))
+        sessionStorage.setItem('customtags',JSON.stringify(Session.get('customtags')))
+    }
+   
+    if(!Session.get('settings') && sessionStorage.getItem('settings'))
+    {
+        Session.set('settings', JSON.parse(sessionStorage.getItem('settings')))
+        Session.set('customtags', JSON.parse(sessionStorage.getItem('customtags')))
+    }
+    //LOAD GLOBAL PROPERTIES
+    var sendDate = (new Date()).getTime();
+    steem.api.getDynamicGlobalProperties(function (err, result) {
+        if (result) {
+            var receiveDate = (new Date()).getTime();
+            var responseTimeMs = receiveDate - sendDate;
+            console.log('Global Properties loaded from steemit.api in : ' + responseTimeMs + "ms")
+            localStorage.setItem('steemProps', JSON.stringify(result))
+        }
+        else {
+            steem.api.setOptions({ url: 'https://rpc.buildteam.io' });
+            steem.api.getDynamicGlobalProperties(function (err, result) {
+                if (result) {
+                    var receiveDate = (new Date()).getTime();
+                    var responseTimeMs = receiveDate - sendDate;
+                    console.log('Global Properties loaded from rpc.buildteam in : ' + responseTimeMs + "ms")
+                    localStorage.setItem('steemProps', JSON.stringify(result))
+                }
+                else {
+                    steem.api.setOptions({ url: 'https://rpc.steemviz.com/' });
+                    steem.api.getDynamicGlobalProperties(function (err, result) {
+                        if (result) {
+                            var receiveDate = (new Date()).getTime();
+                            var responseTimeMs = receiveDate - sendDate;
+                            console.log('Global Properties loaded from rpc.steemviz in : ' + responseTimeMs + "ms")
+                            localStorage.setItem('steemProps', JSON.stringify(result))
+
+                        }
+                    })
+                }
+            })
+        }
+    })
+
     //LOAD SETTINGS FROM STEEMSTEM.SETUP ACCOUNT
     steem.api.getAccounts(['steemstem.setup'], function (error, result) {
         if (!result) {
@@ -58,47 +123,12 @@ Meteor.startup(function () {
                 var link = result[i].json_metadata.steemstem_settings.featured[b].split('/')
                 Content.getContent(link[0], link[1], function (error) {
                     if (error) {
-                        console.log(error)
+                        console.log('Error while loading content from the Steem Blockchain')
                     }
                 })
             }
         }
     });
-
-    //LOAD GLOBAL PROPERTIES
-    var sendDate = (new Date()).getTime();
-    steem.api.getDynamicGlobalProperties(function (err, result) {
-        if (result) {
-            var receiveDate = (new Date()).getTime();
-            var responseTimeMs = receiveDate - sendDate;
-            console.log('Global Properties loaded in : ' + responseTimeMs + "ms")
-            localStorage.setItem('steemProps', JSON.stringify(result))
-        }
-        else {
-            steem.api.setOptions({ url: 'https://rpc.buildteam.io' });
-            steem.api.getDynamicGlobalProperties(function (err, result) {
-                if (result) {
-                    var receiveDate = (new Date()).getTime();
-                    var responseTimeMs = receiveDate - sendDate;
-                    console.log('Global Properties loaded in : ' + responseTimeMs + "ms")
-                    localStorage.setItem('steemProps', JSON.stringify(result))
-                }
-                else {
-                    steem.api.setOptions({ url: 'https://rpc.steemviz.com/' });
-                    steem.api.getDynamicGlobalProperties(function (err, result) {
-                        if (result) {
-                            var receiveDate = (new Date()).getTime();
-                            var responseTimeMs = receiveDate - sendDate;
-                            console.log('Global Properties loaded in : ' + responseTimeMs + "ms")
-                            localStorage.setItem('steemProps', JSON.stringify(result))
-
-                        }
-                    })
-                }
-            })
-        }
-    })
-
 
     var factaccounts = [
         { name: 'steemcomment-1', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIiwicHJveHkiOiJmYWN0aXQuYXBwIiwidXNlciI6InN0ZWVtY29tbWVudC0xIiwic2NvcGUiOlsib2ZmbGluZSIsImNvbW1lbnQiXSwiaWF0IjoxNTI0NjU2NDE2LCJleHAiOjE1MjUyNjEyMTZ9.X6DCNSdEewHQxaAmuzBx6MVmV1dzSCnit7DGgP_XbrA' },
@@ -112,24 +142,14 @@ Meteor.startup(function () {
     }
 
     
-    AccountHistory.getAccountHistory('steemstem',-1,500, function (error) {
+    AccountHistory.getAccountHistory('steemstem',-1,450, function (error) {
        if (error)
-           console.log(error)
+           console.log('Error : cannot communicate with the Steem Blockchain')
     })
 
     Session.set('currentVotingPercentage', 50)
-    Session.set('visiblecontent',18)
+    Session.set('visiblecontent',12)
 
-    
-
-    window.loadLanguage(function(result){
-        if(result)
-        console.log(result)
-    })
-
-    FlowRouter.initialize({ hashbang: true }, function () {
-    });
-    Content.chainLoad()
     console.log(
         `%c WARNING !!!`,
         "background: #db2828; color: white; font-size: 18px; padding: 3px 3px;"
@@ -139,17 +159,25 @@ Meteor.startup(function () {
         "background: white; color: black; font-size: 16px; padding: 3px 3px;"
     );
     console.log(
-        `%c More informations on : https://steemstem.io`,
+        `%c SteemStem OpenSource v0.1 : https://github.com/SteemStem-io/steemstem`,
         "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
     );
     console.log(
-        `%c All rights : https://steemit.com/@futureshock`,
+        `%c More informations on : https://steemstem.io/aboutus`,
         "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
     );
     console.log(
-        `%c Made with love by : @planetenamek & @hightouch`,
+        `%c Made with love by : @hightouch & @planetenamek from @futureshock`,
         "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
     );
+
+    window.loadLanguage(function(result){
+        if(result)
+        console.log(result)
+    })
+
+    FlowRouter.initialize({ hashbang: true }, function () {
+    });
 })
 
 

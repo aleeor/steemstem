@@ -1,5 +1,5 @@
 Template.dropdownprofile.rendered = function () {
-    $('.ui.dropdown').dropdown()
+    $('.ui.dropdown.profile').dropdown()
   }
 
   Template.dropdownprofile.events({

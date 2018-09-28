@@ -1,38 +1,29 @@
 <template name="content">
 	{{#with currentArticle}}
-	<div class="ui grid padded">
-		<div class="ui card fluid segment container">
+	<div class="ui cards">
+		<div class="ui card fluid borderless" >
+			<h1 class="steemstem title" >{{title}}</h1>
+			<div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span>
+			</div>
+			{{#if json_metadata.tags}}
+			<span class="ui top right attached label childopacity">{{#each json_metadata.tags}}
+				{{#unless equals this 'steemstem'}}
+				<a href="/{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>{{/unless}}{{/each}}
+			</span>
+			{{/if}}
 			<div class="content">
-				<h1>{{title}}</h1>
-				<div class="detail">Created on : {{DisplayTimeCreated created}}</div>
-				<hr>
 				<div class="description">
-					<p class="description">{{{remarkableFormatter body}}}</p>
+					{{{remarkableFormatter body}}}
 				</div>
+				<div class="ui divider"></div>
+				<div class="right floated">
+						<div class="header">Share : {{>share}}</div>
+					</div>
 			</div>
-			<div class="extra content">
-				<div class="header">RELATED TAGS</div>
-				{{#if json_metadata.tags}}
-				<div class="content">
-					{{#each json_metadata.tags}} {{#unless equals this 'steemstem'}}
-					<a class="ui label {{colorfromcategory this}}" href="">{{this}}</a>
-					{{/unless}} {{/each}}
-				</div>
-				{{/if}}
-			</div>
-			<div class="extra content">
-				<!-- <span class="left floated">
-					<div class="header">PAYOUT</div>
-					<i class="dollar sign icon"></i> {{displayPayout pending_payout_value total_payout_value curator_payout_value}}</span>
-				<span class="right floated">
-					<div class="header">LIKES</div>
-				</span> -->
+			<div class="ui big label black fluid npdg noradius">
 				{{>upvote}}
-			</div>
-			<div class="extra content">
-				{{>share}}
 			</div>
 		</div>
 	</div>
-	<br> {{/with}}
+	{{/with}}
 </template>

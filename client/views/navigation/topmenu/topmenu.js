@@ -1,6 +1,17 @@
 
 
 Template.topmenu.rendered = function () {
+  $('.ui.dropdown.language').dropdown({
+    useLabels: false,
+    onChange: function (value, text, $selectedItem) {
+      sessionStorage.setItem('lang',value)
+      Session.set('lang',value)
+      loadtranslations(value, function (error) {
+        if (error)
+          console.log(error)
+      })
+    }
+  })
   // fix main menu to page on passing
   $('.main.menu').visibility({
     type: 'fixed'
@@ -9,19 +20,25 @@ Template.topmenu.rendered = function () {
     type: 'fixed',
     offset: 200
   });
-  loadMenu()
-  // lazy load images
-  // $('.image').visibility({
-  //   type: 'image',
-  //   transition: 'vertical flip in',
-  //   duration: 500
-  // });
+
+
+  $('.menu .item').tab()
+
+  if(sessionStorage.getItem('lang'))
+  {
+    Session.set('lang',sessionStorage.getItem('lang'))
+    $(".ui.dropdown.language").dropdown("set selected",Session.get('lang'))
+  }
+  else{
+    var userLang = navigator.language || navigator.userLanguage;
+    sessionStorage.setItem('lang',userLang.substring(0, 2))
+    Session.set('lang',userLang.substring(0, 2))
+    $(".ui.dropdown.language").dropdown("set selected", userLang.substring(0, 2))
+  }
+  
+
 
   // show dropdown on hover
-  $('.main.menu  .ui.dropdown').dropdown({
-    on: 'hover'
-  });
-
   $('.ui.dropdown.steemstem').dropdown({});
   $('.ui.sidebar').sidebar('setting', 'transition', 'overlay')
 
@@ -74,43 +91,3 @@ Template.topmenu.events({
 })
 
 
-function StopSlFunction() {
-  clearTimeout(atr);
-}
-
-var atr;
-
-function loadMenu() {
-  atr = setTimeout(function () {
-    $('.menu .item').tab()
-
-    if(sessionStorage.getItem('lang'))
-    {
-      Session.set('lang',sessionStorage.getItem('lang'))
-      $(".ui.dropdown.language").dropdown("set selected",sessionStorage.getItem('lang'))
-    }
-    else{
-      var userLang = navigator.language || navigator.userLanguage;
-      sessionStorage.setItem('lang',userLang.substring(0, 2))
-      Session.set('lang',sessionStorage.getItem('lang'))
-      $(".ui.dropdown.language").dropdown("set selected", userLang.substring(0, 2))
-    }
-    $('.ui.dropdown.language')
-    .dropdown({
-      useLabels: false,
-      onChange: function (value, text, $selectedItem) {
-        sessionStorage.setItem('lang',value)
-        Session.set('lang',value)
-        loadtranslations(value, function (error) {
-          if (error)
-            console.log(error)
-        })
-      }
-    })
-    StopSlFunction()
-  }, 1500);
-}
-
-function StopSlFunction() {
-  clearTimeout(atr);
-}

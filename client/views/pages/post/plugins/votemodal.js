@@ -50,13 +50,15 @@ Template.votemodal.init = function () {
                 //console.log(result)
                 $("#confirmbutton").removeClass('loading')
                 $('.ui.vote.modal').modal('hide')
-                Content.getContent(author,permlink,function(error){
+                Content.reloadContent(author,permlink,function(error){
                     if(error)
                     console.log(error)
                 })
             }
             else {
-
+                event.preventDefault()
+                sessionStorage.setItem('currentroute', FlowRouter.current().path)
+                window.location.href = sc2.getLoginURL()
             }
         });
     }

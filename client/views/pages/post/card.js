@@ -1,5 +1,5 @@
-Template.post.rendered = function () {
-    $('.image.post')
+Template.card.rendered = function () {
+    $('.image.card')
         .visibility({
             type: 'image',
             transition: 'fade in',
@@ -10,21 +10,21 @@ Template.post.rendered = function () {
         .popup();
 }
 
-Template.post.helpers({
+Template.card.helpers({
 })
 
-Template.post.events({
+Template.card.events({
     'click .image': function (event) {
         event.preventDefault()
         FlowRouter.go('/@' + this.author + '/' + this.permlink)
     },
-    'click .meta': function (event) {
+    'click .description': function (event) {
         event.preventDefault()
         FlowRouter.go('/@' + this.author + '/' + this.permlink)
     },
     'click .header': function (event) {
         event.preventDefault()
-        FlowRouter.go('/@' + this.author + '/' + this.permlink)
+        FlowRouter.go('#!/@' + this.author + '/' + this.permlink)
     },
     'click .button.actipop': function (event) {
         event.stopPropagation();
@@ -33,7 +33,7 @@ Template.post.events({
     'click #user': function (event) {
         event.stopPropagation();
         event.preventDefault()
-        FlowRouter.go('/@' + this.author)
+        FlowRouter.go('#!/@' + this.author)
     },
     'click  #vote': function (event) {
         event.preventDefault()

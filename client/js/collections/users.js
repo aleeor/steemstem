@@ -9,9 +9,9 @@ MainUser.add = function (username, cb) {
         }
         for (var i = 0; i < result.length; i++) {
             try {
-                result[i].json_metadata = JSON.parse(result.json_metadata)
+                result[i].json_metadata = JSON.parse(result[i].json_metadata)
             } catch (error) {
-                //console.log(error)
+
             }
             if (MainUser.findOne()) {
                 MainUser.remove({})

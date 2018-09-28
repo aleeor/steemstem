@@ -1,7 +1,9 @@
 import moment from 'moment'
 
 Template.home.helpers({
-
+  isGridView: function () {
+    return Session.get('gridview')
+}
 })
 
 Template.home.rendered = function () {
@@ -17,7 +19,7 @@ Template.home.rendered = function () {
       Session.set('unfiltered',false)
     }
   })
-;
+  Session.set('gridview',false)
 }
 
 Template.home.events({
@@ -28,8 +30,8 @@ Template.home.events({
     // else Session.set('currentFilter', event.target.name)
 
   },
-  'click .loadmore': function (event) {
-    var visible = Session.get('visiblecontent')
-    Session.set('visiblecontent',visible+12)    
+  'click .switch': function (event) {
+    event.preventDefault()
+    Session.set('gridview',!Session.get('gridview'))
   }
 })

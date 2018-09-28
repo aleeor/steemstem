@@ -7,3 +7,7 @@ Template.profilecard.rendered = function () {
     //     });
     // });
 }
+
+Template.profile.events({
+
+})

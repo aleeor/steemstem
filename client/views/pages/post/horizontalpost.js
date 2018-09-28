@@ -18,7 +18,19 @@ Template.horizontalpost.helpers({
 })
 
 Template.horizontalpost.events({
-    'click .h.item': function (event) {
+    'click .image': function (event) {
+        event.preventDefault()
+        FlowRouter.go('/@' + this.author + '/' + this.permlink)
+    },
+    'click .meta': function (event) {
+        event.preventDefault()
+        FlowRouter.go('/@' + this.author + '/' + this.permlink)
+    },
+    'click .header': function (event) {
+        event.preventDefault()
+        FlowRouter.go('/@' + this.author + '/' + this.permlink)
+    },
+    'click .wrapper': function (event) {
         event.preventDefault()
         FlowRouter.go('/@' + this.author + '/' + this.permlink)
     },
@@ -29,5 +41,13 @@ Template.horizontalpost.events({
         $('article').append(Blaze.toHTMLWithData(Template.votemodal, { project: this }));
         $('.ui.vote.modal.' + this.permlink).modal('setting', 'transition', 'scale').modal('show')
         Template.votemodal.init()
+    },
+    'click .text.post': function (event) {
+        event.preventDefault()
+        FlowRouter.go('/@' + this.author + '/' + this.permlink)
+    },
+    'click .title.post': function (event) {
+        event.preventDefault()
+        FlowRouter.go('/@' + this.author + '/' + this.permlink)
     },
 })

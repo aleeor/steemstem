@@ -56,12 +56,14 @@ steemconnect = {
     },
     follow: function (following, cb) {
         sc2.setAccessToken(localStorage.accesstoken);
+        var follower = localStorage.username
         sc2.follow(follower, following, function (err, result) {
             cb(err, result)
         })
     },
     unfollow: function (unfollowing, cb) {
         sc2.setAccessToken(localStorage.accesstoken);
+        var unfollower = localStorage.username
         sc2.unfollow(unfollower, unfollowing, function (err, result) {
             cb(err, result)
         })

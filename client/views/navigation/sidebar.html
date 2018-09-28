@@ -1,46 +1,41 @@
 <template name="sidebar">
-    <div class="ui sidebar small inverted vertical menu">
+    <div class="ui sidebar inverted vertical menu">
         <div class="item">
-            <img class="ui fluid small image" src="./images/banner/steemstemlogoback.png"> 
+            <img class="ui fluid small image" src="./images/banner/steemstemlogoback.png">
         </div>
-        <a id="feed" class="item">
-            <i class="home icon"></i>  Home
+        <a id="feed" href="/" class="item">
+            <i class="home icon"></i> Home
         </a>
-        <div class="ui inverted vertical menu">
         <div class="item">
-            {{#with mainuser}}
-            <i  class="user icon"></i> {{name}} 
-            {{/with}} 
             {{#with guestuser}}
-            <i href="/{{guestuser}}" class="user icon"></i> {{guestuser}} 
-             {{/with}}
+            <i href="/{{guestuser}}"></i>Welcome, {{guestuser}}
+            {{/with}}
+            {{#with mainuser}}
+            Welcome, {{name}}
+            <div class="ui inverted vertical menu">
+                <a id="blog" href="/@{{name}}" class="item"> <i class="user icon"></i>My Blog</a>
+                <a id="comments" href="/@{{name}}/comments" class="item"> <i class="comment icon"></i>Comments</a>
+                <a id="replies" href="/@{{name}}/replies" class="item"> <i class="comments icon"></i>Replies</a>
+                <a id="rewards" href="/@{{name}}/rewards" class="item"> <i class="trophy icon"></i>Rewards</a>
+                <a id="wallet" href="/@{{name}}/wallet" class="item"> <i class="credit card outline icon"></i>Wallet</a>
+            </div>
+            {{/with}}
+            <!-- <div id="logout" class="item logout"> <i class="sign out icon"></i>{{translator 'COMMON_LOGOUT'}}</div> -->
         </div>
         {{#with mainuser}}
-        <a id="blog" href="/@{{name}}" class="item">My Blog</a>
-        <a id="comments" href="/@{{name}}/comments" class="item">Comments</a>
-        <a id="replies" href="/@{{name}}/replies" class="item">Replies</a>
-        <a id="rewards" href="/@{{name}}/rewards" class="item">Rewards</a>
-        <a id="wallet" href="/@{{name}}/wallet" class="item">Wallet</a>
-        {{/with}} 
-    </div>
+        <a href="/create" class="item">
+            <i class="pencil icon"></i> New post
+        </a>
+        {{/with}}
         {{#unless mainuser}}
         <a class="item" id="login">
-                {{translator 'COMMON_LOGIN'}}
+            {{translator 'COMMON_LOGIN'}}
         </a>
         <a class="item" id="signup" href="/signup">
             {{translator 'COMMON_SIGNUP'}}
         </a>
-        {{/unless}} 
-        
-        {{#with mainuser}}
-        <a href="/create" class="item">
-              <i class="edit icon"></i>  New post
-            </a>
-            <div class="ui divider"></div>
-        <a class="item" id="logout">
-            <i class="external icon"></i>    {{translator 'COMMON_LOGOUT'}}
-        </a>
-        {{/with}} 
+        {{/unless}}
+
         {{#unless mainuser}}
         {{#if guestuser}}
         <a class="item" id="guest-logout">
@@ -51,7 +46,7 @@
             Continue as Guest
         </a>
         {{/if}}
-        {{/unless}} 
+        {{/unless}}
         <div class="item">
             {{bindsearch}}
             <div class="ui right aligned category search item">
@@ -62,11 +57,16 @@
                 <div class="results"></div>
             </div>
         </div>
+        {{#with mainuser}}
+        <a class="item" id="logout">
+            <i class="external icon"></i> {{translator 'COMMON_LOGOUT'}}
+        </a>
+        {{/with}}
         <div class="item">
             {{#each customTags}}
             <div>
-            <a id="tag">#{{category}}</a>
-        </div>
+                <a id="tag">#{{category}}</a>
+            </div>
             {{/each}}
         </div>
     </div>

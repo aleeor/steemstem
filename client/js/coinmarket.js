@@ -7,7 +7,11 @@ coinmarket = {
             if (xtr.readyState == 4) {
                 if (xtr.status == 200) {
                     if (xtr.responseText) {
-                        var ticker = JSON.parse(xtr.responseText)[0]
+                        try {
+                            var ticker = JSON.parse(xtr.responseText)[0]
+                        } catch (error) {
+                            console.log(error)
+                        }                       
                         Coins.insert(ticker)
                         Session.set('sbdprice',ticker.price_usd)
                     }
@@ -25,7 +29,11 @@ coinmarket = {
             if (xtr.readyState == 4) {
                 if (xtr.status == 200) {
                     if (xtr.responseText) {
-                        var ticker = JSON.parse(xtr.responseText)[0]
+                        try {
+                            var ticker = JSON.parse(xtr.responseText)[0]
+                        } catch (error) {
+                            console.log(error)
+                        } 
                         Coins.insert(ticker)
                         Session.set('steemprice',ticker.price_usd)
                     }
