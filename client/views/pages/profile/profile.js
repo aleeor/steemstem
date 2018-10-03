@@ -23,7 +23,18 @@ Template.profile.rendered = function () {
         $('.menu.profile .item').tab('change tab', 'first')
     }
   }
+  Session.set('visiblecontent',12)
+  $('.ui.blog.bottom')
+  .visibility({
+      once: false,
+      observeChanges: true,
+      onBottomVisible: function () {
+              Session.set('visiblecontent', Session.get('visiblecontent') + 8)
+      }
+  })
 }
+
+
 
 
 Template.profile.events({

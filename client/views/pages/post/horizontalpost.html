@@ -1,14 +1,14 @@
 <template name="horizontalpost">
     <div class="item" style="margin:0em;box-shadow: 0px 0px 7px #00000069;">
         <div class="content" style="padding: 1em;">
-            <a href="/@{{author}}/{{permlink}}" class="header">{{title}}</a>
+            <a href="#!/@{{author}}/{{permlink}}" class="header">{{title}}</a>
             <span class="tags">{{#each json_metadata.tags}}
                 {{#unless equals this 'steemstem'}}
-                <a href="/{{this}}" class="ui mini {{colorByCategory this}} label">{{this}}</a>{{/unless}}{{/each}}
+                <a href="#!/{{this}}" class="ui mini {{colorByCategory this}} label">{{this}}</a>{{/unless}}{{/each}}
             </span>
             <div class="meta">
                 <!-- <img class="ui avatar image" src="https://steemitimages.com/u/{{author}}/avatar"> -->
-                <span class="category"> <a href="/@{{author}}">by {{#if
+                <span class="category"> <a href="#!/@{{author}}">by {{#if
                         isWhitelisted author}}{{author}} ({{displayReputation author_reputation}})
                         <i class="ui icon check green"></i>
                         {{else}}{{author}} ({{displayReputation author_reputation}}) {{/if}}</a> </span>

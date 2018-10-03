@@ -1,9 +1,8 @@
 PersonalHistory = new Mongo.Collection(null)
 var moment = require('moment')
 
-PersonalHistory.getPersonalHistory = function (username, cb) {
-    if (!Session.get('settings').blacklist.includes(username)) {
-        steem.api.getAccountHistory(username, -1, 1000, function (error, result) {
+PersonalHistory.getPersonalHistory = function (username,limit, cb) {
+        steem.api.getAccountHistory(username, -1, limit, function (error, result) {
             if (result) {
                 for (i = 0; result.length > i; i++) {
                     PersonalHistory.filterhistory(result[i], username)
@@ -14,7 +13,6 @@ PersonalHistory.getPersonalHistory = function (username, cb) {
                 cb(true)
             }
         })
-    }
 }
 
 

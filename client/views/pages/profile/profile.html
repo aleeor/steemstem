@@ -21,7 +21,7 @@
                     <a id="rewards" class="item" data-tab="fourth">Rewards</a>
                     <a id="wallet" class="item" data-tab="fifth">Wallet</a>
                 </div>
-                <div class="ui bottom attached active tab borderless" data-tab="first" style="padding-top: 0px;">
+                <div class="ui bottom attached active tab borderless blog" data-tab="first" style="padding-top: 0px;">
                     {{#if currentAuthorBlog}}
                     <div class="ui items blog">
                         {{#each currentAuthorBlog}}
@@ -41,6 +41,16 @@
                         Loading content...
                     </div>
                     {{/if}}
+                    {{#unless isLoadedFull currentAuthorBlog}}
+                    <div class="ui container">
+                        <div class="ui segment grid padded centered fluid borderless">
+                            <div class="ui active dimmer inverted">
+                                <h4 class="ui text loader">Adding Content...</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {{/unless}}
+
                 </div>
                 <div class="ui bottom attached tab borderless" data-tab="second">
                     {{>usercomments}}

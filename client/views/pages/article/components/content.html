@@ -8,7 +8,7 @@
 			{{#if json_metadata.tags}}
 			<span class="ui top right attached label childopacity">{{#each json_metadata.tags}}
 				{{#unless equals this 'steemstem'}}
-				<a href="/{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>{{/unless}}{{/each}}
+				<a href="#!/{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>{{/unless}}{{/each}}
 			</span>
 			{{/if}}
 			<div class="content">
@@ -20,7 +20,7 @@
 						<div class="header">Share : {{>share}}</div>
 					</div>
 			</div>
-			<div class="ui big label black fluid npdg noradius">
+			<div class="ui big label fluid npdg noradius">
 				{{>upvote}}
 			</div>
 		</div>

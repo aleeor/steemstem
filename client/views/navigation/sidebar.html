@@ -8,16 +8,16 @@
         </a>
         <div class="item">
             {{#with guestuser}}
-            <i href="/{{guestuser}}"></i>Welcome, {{guestuser}}
+            <i href="#!/{{guestuser}}"></i>Welcome, {{guestuser}}
             {{/with}}
             {{#with mainuser}}
             Welcome, {{name}}
             <div class="ui inverted vertical menu">
-                <a id="blog" href="/@{{name}}" class="item"> <i class="user icon"></i>My Blog</a>
-                <a id="comments" href="/@{{name}}/comments" class="item"> <i class="comment icon"></i>Comments</a>
-                <a id="replies" href="/@{{name}}/replies" class="item"> <i class="comments icon"></i>Replies</a>
-                <a id="rewards" href="/@{{name}}/rewards" class="item"> <i class="trophy icon"></i>Rewards</a>
-                <a id="wallet" href="/@{{name}}/wallet" class="item"> <i class="credit card outline icon"></i>Wallet</a>
+                <a id="blog" href="#!/@{{name}}" class="item"> <i class="user icon"></i>My Blog</a>
+                <a id="comments" href="#!/@{{name}}/comments" class="item"> <i class="comment icon"></i>Comments</a>
+                <a id="replies" href="#!/@{{name}}/replies" class="item"> <i class="comments icon"></i>Replies</a>
+                <a id="rewards" href="#!/@{{name}}/rewards" class="item"> <i class="trophy icon"></i>Rewards</a>
+                <a id="wallet" href="#!/@{{name}}/wallet" class="item"> <i class="credit card outline icon"></i>Wallet</a>
             </div>
             {{/with}}
             <!-- <div id="logout" class="item logout"> <i class="sign out icon"></i>{{translator 'COMMON_LOGOUT'}}</div> -->
@@ -62,12 +62,26 @@
             <i class="external icon"></i> {{translator 'COMMON_LOGOUT'}}
         </a>
         {{/with}}
+
         <div class="item">
+            Categories
+            <div class="ui divider"></div>
             {{#each customTags}}
             <div>
-                <a id="tag">#{{category}}</a>
+                <a href="/{{category}}" id="tag">#{{category}}</a>
             </div>
             {{/each}}
+        </div>
+        <a class="item about" href="/aboutus">About Us</a>
+        <a class="item faq" href="/faq">FAQ</a>
+        <a class="item tos" href="/tos">Terms of Service</a>
+        <div class="item" style="    position: absolute;
+        bottom: 0px;"> Supported by <div><a target="_blank" href="https://utopian.io"> Utopian<img style="margin-bottom: -4px;"
+                        width="16" height="16" src="./images/utopian.png"></a></div>
+            <div><a target="_blank" href="https://fundition.io"> Fundition <img style="    border-radius: 20px;margin-bottom: -2px;" width="12"
+                        height="12" src="./images/fundition.png"></a></div>
+                        <div><a target="_blank" href="http://curiesteem.com/"> Curie <img style="    border-radius: 20px;margin-bottom: -2px;" width="12"
+                            height="12" src="./images/curie.jpg"></a></div>
         </div>
     </div>
 

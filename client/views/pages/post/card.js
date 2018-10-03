@@ -30,7 +30,7 @@ Template.card.events({
         event.stopPropagation();
         event.preventDefault()
     },
-    'click #user': function (event) {
+    'click .author_name': function (event) {
         event.stopPropagation();
         event.preventDefault()
         FlowRouter.go('#!/@' + this.author)

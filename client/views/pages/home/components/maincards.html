@@ -17,16 +17,6 @@
         {{>card}}
         <div class="ui divider"></div>
         {{/each}}
-        <div class="ui divider"></div>
-        <div class="ui large centered inline text loader">
-            Adding more content...
-        </div>
-        {{#if canLoadMore steemStemContent}}
-        <div class="ui loadmore segment button fluid teal mini padded">
-            <i class="angle up icon"></i> View more
-            <i class="angle up icon"></i>
-        </div>
-        {{/if}}
         {{else}}
         {{#if equals currentSearch 'steemstem'}}
         <div class="ui container">

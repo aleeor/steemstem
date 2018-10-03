@@ -9,6 +9,16 @@ Template.dropdownprofile.rendered = function () {
       localStorage.removeItem('username')
       localStorage.removeItem('accesstoken')
       localStorage.removeItem('expireat')
-    }
+    },
+    'click #blog': function (event) {
+      event.stopPropagation();
+      event.preventDefault()
+      FlowRouter.go('#!/@' + this.name)
+  },
+  'click #create': function (event) {
+    event.stopPropagation();
+    event.preventDefault()
+    FlowRouter.go('#!/create')
+}
   })
   

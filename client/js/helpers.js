@@ -44,12 +44,6 @@ Template.registerHelper('translator', function (code) {
     return translate(code);
 });
 
-Template.registerHelper('xssFormatter', function (text) {
-    if (!text) return text;
-    var converter = new showdown.Converter({ parseImgDimensions: true }),
-        html = converter.makeHtml(text);
-    return html;
-})
 
 Template.registerHelper('remarkableFormatter', function (text) {
     text = steemMarkdown(text)
@@ -74,21 +68,10 @@ Template.registerHelper('remarkableFormatter', function (text) {
 
         className: ''
     });
-
-    return autolinker.link(text);
+    autolinker.link(text);
+    return text 
 })
 
-function parseURL($string) {
-    var __imgRegex = /^https?[^ \!@\$\^&\(\)\+\=]+(\.png|\.jpeg|\.gif|\.jpg)$/;
-    var exp = __imgRegex;
-    return $string.replace(exp, function (match) {
-        __imgRegex.lastIndex = 0;
-        if (__imgRegex.test(match)) {
-            return match;
-        }
-    }
-    )
-}
 
 Template.registerHelper('isFollowing', function (following) {
     var followers = Followers.findOne({ follower: MainUser.find().fetch()[0].name, following: following })
@@ -232,6 +215,12 @@ Template.registerHelper('EstimateAccount', function (user) {
         return 0
 
     }
+})
+
+Template.registerHelper('isLoadedFull', function (coll) {
+    if(Session.get('visiblecontent') > coll.length)
+    return true
+    else return false
 })
 
 Template.registerHelper('isSubscribed', function (following) {

@@ -8,6 +8,9 @@ Template.profilecard.rendered = function () {
     // });
 }
 
-Template.profile.events({
-
+Template.profilecard.events({
+    'click .header.name': function (event) {
+        event.preventDefault()
+        FlowRouter.go('/@' + this.name)
+    },
 })

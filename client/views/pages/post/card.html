@@ -7,10 +7,10 @@
                 <i class="clock outline icon"></i> {{DisplayTimeFrom created}}
             </span> 
         <div class="content">
-            <a href="/@{{author}}/{{permlink}}" class="header">{{title}}</a>
+            <a href="#!/@{{author}}/{{permlink}}" class="header">{{title}}</a>
             <div class="meta" style="cursor: pointer;">
                 <!-- <img class="ui avatar image" src="https://steemitimages.com/u/{{author}}/avatar"> -->
-                <span class="category"> <a href="/@{{author}}">by {{#if
+                <span class="category"> <a class="author_name" href="#!/@{{author}}">by {{#if
                     isWhitelisted author}}{{author}} ({{displayReputation author_reputation}})
                     <i class="ui icon check green"></i>
                     {{else}}{{author}} ({{displayReputation author_reputation}}) {{/if}}</a> </span>
@@ -18,7 +18,7 @@
             <div class="description" style="margin-bottom: 0.5em;">{{shortDescription (xssShortFormatter (remarkableFormatter body))}}</div>
             <span class="tags">{{#each json_metadata.tags}}
                     {{#unless equals this 'steemstem'}}
-                    <a href="/{{this}}" class="ui mini {{colorByCategory this}} label noradius">{{this}}</a>{{/unless}}{{/each}}
+                    <a href="#!/{{this}}" class="ui mini {{colorByCategory this}} label noradius">{{this}}</a>{{/unless}}{{/each}}
                 </span>
         </div>
         <div class="ui big label fluid npdg noradius">

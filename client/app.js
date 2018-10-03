@@ -1,5 +1,5 @@
 import './buffer';
-import './main.html';
+import './app.html';
 import { Session } from 'meteor/session';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -12,37 +12,57 @@ BlazeLayout.setRoot('body');
 
 var dev = false
 
-if(dev)
-{
+if (dev) {
     console.log('DEV VERSION')
     var sc2 = sc2sdk.Initialize({
-        baseURL: 'https://steemconnect.com', 
+        baseURL: 'https://steemconnect.com',
         app: 'factit.app',
         callbackURL: 'http://localhost:3000/login',
         accessToken: 'access_token',
         //scope: ['vote','comment']
     });
-    
+
 }
-else
-{
+else {
     var sc2 = sc2sdk.Initialize({
-        baseURL: 'https://steemconnect.com', 
+        baseURL: 'https://steemconnect.com',
         app: 'steemstem-app',
         callbackURL: 'https://www.steemstem.io/#!/login',
-        accessToken: 'access_token',
-        scope: ['vote','comment']
+        accessToken: 'access_token'
     });
-    
+
 }
 
 window.sc2 = sc2
 
 window.steem = steem;
 
-
+Session.set('settings', false)
+//LOAD SETTINGS FROM STEEMSTEM.SETUP ACCOUNT
+steem.api.getAccounts(['steemstem.setup'], function (error, result) {
+    if (!result) {
+        return
+    }
+    for (var i = 0; i < result.length; i++) {
+        try {
+            result[i].json_metadata = JSON.parse(result[i].json_metadata)
+        } catch (error) {
+            console.log(error)
+        }
+        Session.set('settings', result[i].json_metadata.steemstem_settings)
+        Session.set('customtags', result[i].json_metadata.steemstem_settings.tags)
+        for (var b = 0; b < result[i].json_metadata.steemstem_settings.featured.length; b++) {
+            var link = result[i].json_metadata.steemstem_settings.featured[b].split('/')
+            Promoted.getContent(link[0], link[1],"promoted", function (error) {
+                if (error) {
+                    console.log('Error while loading content from the Steem Blockchain')
+                }
+            })
+        }
+    }
+});
 Meteor.startup(function () {
-    Session.set('settings',false)
+
 
     coinmarket.steemdollars()
     coinmarket.steem()
@@ -60,14 +80,12 @@ Meteor.startup(function () {
     });
 
 
-    if(Session.get('settings'))
-    {
-        sessionStorage.setItem('settings',JSON.stringify(Session.get('settings')))
-        sessionStorage.setItem('customtags',JSON.stringify(Session.get('customtags')))
+    if (Session.get('settings')) {
+        sessionStorage.setItem('settings', JSON.stringify(Session.get('settings')))
+        sessionStorage.setItem('customtags', JSON.stringify(Session.get('customtags')))
     }
-   
-    if(!Session.get('settings') && sessionStorage.getItem('settings'))
-    {
+
+    if (!Session.get('settings') && sessionStorage.getItem('settings')) {
         Session.set('settings', JSON.parse(sessionStorage.getItem('settings')))
         Session.set('customtags', JSON.parse(sessionStorage.getItem('customtags')))
     }
@@ -105,30 +123,6 @@ Meteor.startup(function () {
         }
     })
 
-    //LOAD SETTINGS FROM STEEMSTEM.SETUP ACCOUNT
-    steem.api.getAccounts(['steemstem.setup'], function (error, result) {
-        if (!result) {
-            return
-        }
-        for (var i = 0; i < result.length; i++) {
-            try {
-                result[i].json_metadata = JSON.parse(result[i].json_metadata)
-            } catch (error) {
-                console.log(error)
-            }
-            Session.set('settings', result[i].json_metadata.steemstem_settings)
-            Session.set('customtags', result[i].json_metadata.steemstem_settings.tags)
-            for (var b = 0; b < result[i].json_metadata.steemstem_settings.featured.length; b++)
-            {
-                var link = result[i].json_metadata.steemstem_settings.featured[b].split('/')
-                Content.getContent(link[0], link[1], function (error) {
-                    if (error) {
-                        console.log('Error while loading content from the Steem Blockchain')
-                    }
-                })
-            }
-        }
-    });
 
     var factaccounts = [
         { name: 'steemcomment-1', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYXBwIiwicHJveHkiOiJmYWN0aXQuYXBwIiwidXNlciI6InN0ZWVtY29tbWVudC0xIiwic2NvcGUiOlsib2ZmbGluZSIsImNvbW1lbnQiXSwiaWF0IjoxNTI0NjU2NDE2LCJleHAiOjE1MjUyNjEyMTZ9.X6DCNSdEewHQxaAmuzBx6MVmV1dzSCnit7DGgP_XbrA' },
@@ -141,14 +135,14 @@ Meteor.startup(function () {
         Session.set('guestuser', localStorage.guestuser)
     }
 
-    
-    AccountHistory.getAccountHistory('steemstem',-1,450, function (error) {
-       if (error)
-           console.log('Error : cannot communicate with the Steem Blockchain')
+
+    AccountHistory.getAccountHistory('steemstem', -1, 1500, function (error) {
+        if (error)
+            console.log('Error : cannot communicate with the Steem Blockchain')
     })
 
     Session.set('currentVotingPercentage', 50)
-    Session.set('visiblecontent',12)
+    Session.set('visiblecontent', 12)
 
     console.log(
         `%c WARNING !!!`,
@@ -171,9 +165,9 @@ Meteor.startup(function () {
         "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
     );
 
-    window.loadLanguage(function(result){
-        if(result)
-        console.log(result)
+    window.loadLanguage(function (result) {
+        if (result)
+            console.log(result)
     })
 
     FlowRouter.initialize({ hashbang: true }, function () {

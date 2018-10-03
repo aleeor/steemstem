@@ -8,9 +8,8 @@
                         {{#with promoted.[0]}}
                         <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                             <div class="top_news_content">
-                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                                 <h4 class="top_news_title">
-                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                                     <div class="post_date">
                                         <span>by {{author}}</span>
                                     </div>
@@ -23,9 +22,8 @@
                         {{#with promoted.[1]}}
                         <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                             <div class="top_news_content">
-                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                                 <h4 class="top_news_title">
-                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                                     <div class="post_date">
                                         <span>by {{author}}</span>
                                     </div>
@@ -39,9 +37,8 @@
                     {{#with promoted.[2]}}
                     <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                         <div class="top_news_content">
-                            <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                             <h2 class="top_news_title">
-                                <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                                 <div class="post_date">
                                     <span>by {{author}}</span>
                                 </div>
@@ -55,9 +52,8 @@
                 {{#with promoted.[3]}}
                 <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                     <div class="top_news_content">
-                        <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                         <h2 class="top_news_title">
-                            <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                            <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                             <div class="post_date">
                                 <span>by {{author}}</span>
                             </div>
@@ -72,9 +68,8 @@
                         {{#with promoted.[4]}}
                         <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                             <div class="top_news_content">
-                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                                 <h4 class="top_news_title">
-                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                                     <div class="post_date">
                                         <span>by {{author}}</span>
                                     </div>
@@ -85,9 +80,8 @@
                         {{#with promoted.[5]}}
                         <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                             <div class="top_news_content">
-                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                                 <h4 class="top_news_title">
-                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                                     <div class="post_date">
                                         <span>by {{author}}</span>
                                     </div>
@@ -100,9 +94,8 @@
                         {{#with promoted.[6]}}
                         <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
                             <div class="top_news_content">
-                                <div class="top_news_category cat-links"><a href="/{{json_metadata.tags.[1]}}">{{json_metadata.tags.[1]}}</a></div>
                                 <h2 class="top_news_title">
-                                    <a href="/@{{author}}/{{permlink}}">{{title}}</a>
+                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
                                     <div class="post_date">
                                         <span>by {{author}}</span>
                                     </div>
@@ -154,13 +147,22 @@
                         {{/if}}
                     </div>
                 </div>
-                <div class="ui bottom attached tab active borderless" style="padding:0px;" data-tab="first">
+                <div class="ui bottom cnt attached tab active borderless " style="padding:0px;" data-tab="first">
                     {{#if isGridView}}
                     {{>maincards}}
                     {{else}}
                     {{>mainlist}}
                     {{/if}}
                 </div>
+                {{#unless isLoadedFull steemStemContent}}
+                <div class="ui container">
+                    <div class="ui segment grid padded centered fluid borderless">
+                        <div class="ui active dimmer inverted">
+                            <h4 class="ui text loader">Adding Content...</h4>
+                        </div>
+                    </div>
+                </div>
+                {{/unless}}
             </div>
             <div class="four wide column">
                 <div class="ui top attached tabular menu borderless">

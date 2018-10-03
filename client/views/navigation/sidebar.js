@@ -5,19 +5,20 @@ Template.sidebar.rendered = function () {
       }
     })
   }
-  if(Content.find().fetch())
-  {
+  if (Content.find().fetch()) {
     $('.ui.search').search({
-      source : Content.find().fetch(),
-      searchFields   : [
+      source: Content.find().fetch(),
+      searchFields: [
         'title'
       ],
       fields: {
-        results : 'title',
-        title   : 'name',
-        url     : 'html_url'
+        results: 'title',
+        title: 'name',
+        url: 'html_url'
       },
-      fullTextSearch: false
+      minCharacters: 3,
+      selectFirstResult: false,
+      fullTextSearch: 'exact'
     })
   }
   // $(document).on('input', '#sidebarsearch', function () {
@@ -34,32 +35,32 @@ Template.sidebar.rendered = function () {
 }
 
 Template.sidebar.helpers({
-  bindsearch:function(){
-      $('.ui.search').search({
-        source : Content.find().fetch(),
-        searchFields   : [
-          'title','body','category','json_metadata.tags'
-        ],
-        fields: {
-          categories : 'results',   
-          categoryName    : 'category',        // name of category (category view)
-          categoryResults : 'results',     // array of results (category view)
-          category    : 'category',        // name of category (category view)
-          title           : 'title',       // result title
-          results         : 'results', 
-          actionText: 'text',        // "view more" text
-          actionURL: 'surl',          // "view more" url
-          url: 'surl'          // "view more" url 
-        },
-        // type: 'category',
-        fullTextSearch: true,
-        onSelect: function(result,response) {
-          event.preventDefault() 
-          console.log(result,response)
-          FlowRouter.go('/home')
-        }
-      })
-    }
+  bindsearch: function () {
+    $('.ui.search').search({
+      source: Content.find().fetch(),
+      searchFields: [
+        'title', 'body', 'category', 'json_metadata.tags'
+      ],
+      fields: {
+        categories: 'results',
+        categoryName: 'category',        // name of category (category view)
+        categoryResults: 'results',     // array of results (category view)
+        category: 'category',        // name of category (category view)
+        title: 'title',       // result title
+        results: 'results',
+        actionText: 'text',        // "view more" text
+        actionURL: 'surl',          // "view more" url
+        url: 'surl'          // "view more" url 
+      },
+      // type: 'category',
+      fullTextSearch: true,
+      onSelect: function (result, response) {
+        event.preventDefault()
+        console.log(result, response)
+        FlowRouter.go('/home')
+      }
+    })
+  }
 })
 
 Template.sidebar.events({
@@ -79,24 +80,35 @@ Template.sidebar.events({
     localStorage.removeItem('accesstoken')
     localStorage.removeItem('expireat')
   },
-  'click #guest-logout' : function(event) {
+  'click #guest-logout': function (event) {
     event.preventDefault()
-    Session.set('guestuser',false)
+    Session.set('guestuser', false)
     localStorage.removeItem('guestuser')
   },
-  'click #guest-login': function(event) {
+  'click #guest-login': function (event) {
     event.preventDefault()
     $('.ui.basic.modal')
       .modal('show')
-    ;
-    if(localStorage.guestuser)
-    {
+      ;
+    if (localStorage.guestuser) {
       Session.set('guestuser', localStorage.guestuser)
     }
-    else{
-      localStorage.setItem('guestuser','Guest Mode')
+    else {
+      localStorage.setItem('guestuser', 'Guest Mode')
       Session.set('guestuser', localStorage.guestuser)
     }
+  },
+  'click a .item.about': function (event) {
+    event.preventDefault()
+    FlowRouter.go('/aboutus' + this.author + '/' + this.permlink)
+  },
+  'click a .item.faq': function (event) {
+    event.preventDefault()
+    FlowRouter.go('/faq' + this.author + '/' + this.permlink)
+  },
+  'click a .item.tos': function (event) {
+    event.preventDefault()
+    FlowRouter.go('/tos')
   }
 })
 

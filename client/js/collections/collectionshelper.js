@@ -1,29 +1,26 @@
 Template.registerHelper('steemStemContent', function () {
-    if(Content.find().fetch())
-    {
-        if (Session.get('currentSearch')) {
-            if (Session.get('unfiltered')) {
-                return Content.find(
-                    {
-                        "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang')
-                    },
-                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-            }
-            else {
-                return Content.find(
-                    { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang') },
-                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-            }
+    if (Session.get('currentSearch')) {
+        if (Session.get('unfiltered')) {
+            return Content.find(
+                {
+                    "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang')
+                },
+                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
         }
         else {
-            if (Session.get('unfiltered')) {
-                return Content.find({ language: Session.get('lang') },
-                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-            }
-            else {
-                return Content.find({ type: 'steemstem', language: Session.get('lang') },
-                    { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-            }
+            return Content.find(
+                { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang') },
+                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+        }
+    }
+    else {
+        if (Session.get('unfiltered')) {
+            return Content.find({ language: Session.get('lang') },
+                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+        }
+        else {
+            return Content.find({ type: 'steemstem', language: Session.get('lang') },
+                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
         }
     }
 })
@@ -38,39 +35,24 @@ Template.registerHelper('whitelistedContent', function () {
             }
 
         }
-        contents.sort(function(a,b){
+        contents.sort(function (a, b) {
             var da = new Date(a.created).getTime();
             var db = new Date(b.created).getTime();
-            
+
             return da > db ? -1 : da < db ? 1 : 0
-          });
+        });
         return contents
     }
 })
 
 Template.registerHelper('currentSuggestions', function () {
-    if (Session.get('lang') && Content.find(
-        {
-            type: 'steemstem', author: Session.get('user')
-        },
-        { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch() >= 1
-    ) {
-        return Content.find(
-            {
-                type: 'steemstem', author: Session.get('user')
-            },
-            { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-    }
-
-    else {
-        return Content.find({ type: 'steemstem', author: Session.get('user') },
-            { sort: { upvoted: -1, created: -1 }, limit: 6 }
-        ).fetch()
-    }
+    return Content.find({ type: 'blog', author: Session.get('user') },
+        { sort: { active_votes: -1 }, limit: 6 }
+    ).fetch()
 })
 
 Template.registerHelper('promoted', function () {
-    return Promoted.find({},{ sort: { created: -1 }}).fetch()
+    return Promoted.find({}, { sort: { created: -1 } }).fetch()
 })
 
 Template.registerHelper('currentArticle', function () {
@@ -113,13 +95,5 @@ Template.registerHelper('currentAuthorHistory', function (limit) {
 })
 
 Template.registerHelper('currentAuthorBlog', function (comment) {
-    if (!Content.findOne({ type: 'blog', from: Session.get('user') })) {
-        Blog.getContentByBlog(Session.get('user'), 20, 'blog', function (error) {
-            if (error) {
-                console.log(error)
-            }
-        })
-    }
-    else
-        return Content.find({ type: 'blog', from: Session.get('user') }, { sort: { created: -1 } }).fetch()
+    return Content.find({ type: 'blog', from: Session.get('user') }, { sort: { created: -1 }, limit: Session.get('visiblecontent') }).fetch()
 })

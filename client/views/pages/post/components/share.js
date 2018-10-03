@@ -12,7 +12,7 @@ Template.share.events({
     'click .google.button': function (event) {
         event.stopPropagation();
     },
-    'click a .steemit.button': function (event) {
+    'click .steemit.button': function (event) {
         event.stopPropagation();
         event.preventDefault()
         

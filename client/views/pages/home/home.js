@@ -12,14 +12,25 @@ Template.home.rendered = function () {
   .checkbox({
     // check all children
     onChecked: function() {
+    Session.set('visiblecontent',12)
     Session.set('unfiltered',true)
     },
     // uncheck all children
     onUnchecked: function() {
+      Session.set('visiblecontent',12)
       Session.set('unfiltered',false)
     }
   })
   Session.set('gridview',false)
+  Session.set('visiblecontent',12)
+  $('.ui.bottom.cnt')
+  .visibility({
+      once: false,
+      observeChanges: true,
+      onBottomVisible: function () {
+              Session.set('visiblecontent', Session.get('visiblecontent') + 8)
+      }
+  })
 }
 
 Template.home.events({

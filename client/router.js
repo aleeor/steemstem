@@ -11,12 +11,6 @@ FlowRouter.route('/', {
         Session.set('currentSearch', false)
         Session.set('currentTag', false)
         Session.set('isonreply', false)
-        // Content.getContentByBlog('steemstem',36,'steemstem',function (error) {
-        //     if (error) {
-        //         console.log(error)
-        //     }
-        // })
-        Session.set('visiblecontent',18)
         if(!sessionStorage.tos)
         {
             $('.ui.tos.modal').remove()
@@ -91,12 +85,17 @@ FlowRouter.route('/@:user', {
             }
         })
         if(!PersonalHistory.findOne({author:params.user}))
-        PersonalHistory.getPersonalHistory(params.user, function (error) {
+        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
             if (error) {
                 console.log(error)
             }
         })
         Followers.loadFollowers(params.user, function (error) {
+            if (error) {
+                console.log(error)
+            }
+        })
+        Blog.getContentByBlog(params.user, 100, 'blog', function (error) {
             if (error) {
                 console.log(error)
             }
@@ -117,7 +116,7 @@ FlowRouter.route('/@:user/comments', {
             }
         })
         if(!PersonalHistory.findOne({author:params.user}))
-        PersonalHistory.getPersonalHistory(params.user, function (error) {
+        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
             if (error) {
                 console.log(error)
             }
@@ -143,7 +142,7 @@ FlowRouter.route('/@:user/replies', {
             }
         })
         if(!PersonalHistory.findOne({author:params.user}))
-        PersonalHistory.getPersonalHistory(params.user, function (error) {
+        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
             if (error) {
                 console.log(error)
             }
@@ -169,7 +168,7 @@ FlowRouter.route('/@:user/rewards', {
             }
         })
         if(!PersonalHistory.findOne({author:params.user}))
-        PersonalHistory.getPersonalHistory(params.user, function (error) {
+        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
             if (error) {
                 console.log(error)
             }
@@ -195,7 +194,7 @@ FlowRouter.route('/@:user/wallet', {
             }
         })
         if(!PersonalHistory.findOne({author:params.user}))
-        PersonalHistory.getPersonalHistory(params.user, function (error) {
+        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
             if (error) {
                 console.log(error)
             }
@@ -215,7 +214,6 @@ FlowRouter.route('/:tag', {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         Session.set('currentSearch',params.tag)
         Session.set('isonreply', false)
-        Session.set('visiblecontent',18)
     }
 });
 
@@ -226,11 +224,13 @@ FlowRouter.route('/@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
+        Session.set('visiblecontent',12)
         Session.set('isonreply', true)
+        console.log(params.permlink)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         if (!Content.findOne({ permlink: params.permlink })) {
-            Content.getContent(params.user, params.permlink, function (error) {
+            Content.getContent(params.user, params.permlink,"article", function (error) {
                 if (error) {
                     console.log(error)
                 }
@@ -248,7 +248,7 @@ FlowRouter.route('/@:user/:permlink', {
                 console.log(error)
             }
         })
-        Blog.getContentByBlog(params.user, 20, 'blog', function (error) {
+        Blog.getContentByBlog(params.user, 30, 'blog', function (error) {
             if (error) {
                 console.log(error)
             }
@@ -273,7 +273,7 @@ FlowRouter.route('//@:user/:permlink', {
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         if (!Content.findOne({ permlink: params.permlink })) {
-            Content.getContent(params.user, params.permlink, function (error) {
+            Content.getContent(params.user, params.permlink,"article", function (error) {
                 if (error) {
                     console.log(error)
                 }
@@ -291,12 +291,12 @@ FlowRouter.route('//@:user/:permlink', {
                 console.log(error)
             }
         })
-        PersonalHistory.getPersonalHistory(params.user, function (error) {
+        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
             if (error) {
                 console.log(error)
             }
         })
-        Blog.getContentByBlog(params.user, 20, 'blog', function (error) {
+        Blog.getContentByBlog(params.user, 30, 'blog', function (error) {
             if (error) {
                 console.log(error)
             }
