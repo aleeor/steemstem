@@ -13,7 +13,7 @@ window.loadLanguage = function(cb) {
   if(navigator.language || navigator.userLanguage)
   {
     culture =  navigator.language || navigator.userLanguage; 
-    this.console.log(culture)
+    this.console.log(`%c Detected language: ` + culture,"font-size: 11px; padding: 1px 1px;")
     loadtranslations(culture, function() {
       cb(null)
     });
@@ -21,7 +21,7 @@ window.loadLanguage = function(cb) {
   else{
     window.loadLanguage(function(result){
       if(!result)
-      console.log(result)
+      console.log(`%c Detected language: `+ result, "font-size: 11px; padding: 1px 1px;")
   })
   }
 }
