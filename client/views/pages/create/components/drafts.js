@@ -20,12 +20,23 @@ Template.drafts.events({
 })
 
 Template.drafts.addToDraft = function(form){
-    var drafts = []
-    if(Session.get('userdata'))
-    userdata =  Session.get('userdata')
     var draft = {title:form.title.value,body:form.body.value,tags:form.tags.value,last_update:Date.now()}
-    drafts.push(draft)
-    userdata.drafts = drafts
+    var userdata =  Session.get('userdata')
+
+    if(userdata !== undefined)
+    {
+        var drafts = []
+        if ('drafts' in userdata)
+            drafts = userdata.drafts
+        drafts.push(draft)
+        userdata.drafts = drafts
+    }
+    else
+    {
+        userdata = []
+        userdata.push({ key:   'drafts', value:  [draft] } );
+    }
+
     steemconnect.updateUserMetadata(userdata,function(error){
         if(error)
         {

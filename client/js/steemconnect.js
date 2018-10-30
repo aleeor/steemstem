@@ -104,6 +104,5 @@ steemconnect = {
             }
             else cb(true)
           });
-      
     }
 }

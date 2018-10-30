@@ -74,6 +74,7 @@ Template.registerHelper('remarkableFormatter', function (text) {
 
 
 Template.registerHelper('isFollowing', function (following) {
+    if(!MainUser.findOne()) return false;
     var followers = Followers.findOne({ follower: MainUser.find().fetch()[0].name, following: following })
     if (followers) return true
     return false;
@@ -310,11 +311,15 @@ Template.registerHelper('visibleContents', function () {
 })
 
 Template.registerHelper('userdata', function () {
-    return Session.get('userdata')
+        return Session.get('userdata')
 })
 
 Template.registerHelper('drafts', function () {
-    return Session.get('userdata').drafts
+    if(Session.get('userdata'))
+    {
+        if ('drafts' in Session.get('userdata'))
+            return Session.get('userdata').drafts
+    }
 })
 
 Template.registerHelper('unfiltered', function () {

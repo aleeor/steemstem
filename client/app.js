@@ -144,25 +144,25 @@ Meteor.startup(function () {
     Session.set('currentVotingPercentage', 50)
     Session.set('visiblecontent', 12)
 
+//    console.log(
+//        `%c WARNING !!!`,
+//        "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
+//    );
+//    console.log(
+//        `%c THIS FEATURE IS DESIGNED FOR DEVELOPERS. ANYTHING YOU PASTE OR TYPE HERE CAN COMPROMISE YOUR ACCOUNT AND YOUR PRIVATE KEYS.`,
+//        "background: white; color: black; font-size: 12px; padding: 3px 3px;"
+//    );
     console.log(
-        `%c WARNING !!!`,
-        "background: #db2828; color: white; font-size: 18px; padding: 3px 3px;"
-    );
-    console.log(
-        `%c THIS FEATURE IS DESIGNED FOR DEVELOPERS. ANYTHING YOU PASTE OR TYPE HERE CAN COMPROMISE YOUR ACCOUNT AND YOUR PRIVATE KEYS.`,
-        "background: white; color: black; font-size: 16px; padding: 3px 3px;"
-    );
-    console.log(
-        `%c SteemStem OpenSource v0.1 : https://github.com/SteemStem-io/steemstem`,
-        "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
+        `%c SteemStem OpenSource v0.2 : https://github.com/SteemStem-io/steemstem`,
+        "font-size: 11px; padding: 1px 1px;"
     );
     console.log(
         `%c More informations on : https://steemstem.io/aboutus`,
-        "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
+        "font-size: 11px; padding: 1px 1px;"
     );
     console.log(
-        `%c Made with love by : @hightouch & @planetenamek from @futureshock`,
-        "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
+        `%c Created with love by @hightouch & @planetenamek from @futureshock. Maintained and further developed by @lemouth.`,
+        "font-size: 11px; padding: 1px 1px;"
     );
 
     window.loadLanguage(function (result) {

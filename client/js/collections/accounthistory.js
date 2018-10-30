@@ -26,15 +26,17 @@ AccountHistory.filterhistory = function (transaction) {
             return
         else {
             if (result.json_metadata) {
-                try {
-                    result.json_metadata = JSON.parse(result.json_metadata)
-                } catch (error) {
-                    //console.log(error)
+                try { result.json_metadata = JSON.parse(result.json_metadata) } catch (error) { }
+                result.search = ''
+                var ntags = 0
+                if('tags' in result.json_metadata)
+                {
+                    result.search = result.json_metadata.tags.join(' ')
+                    ntags = result.json_metadata.tags.length
                 }
-                result.search = result.json_metadata.tags.join(' ')
                 result.surl = Content.CreateUrl(result.author, result.permlink)
                 result.type = 'steemstem'
-                for (var t = 0; t < result.json_metadata.tags.length; t++) {
+                for (var t = 0; t < ntags; t++) {
                     if (!result.language)
                         result.language = FilterLanguage(result.json_metadata.tags[t])
                     else {
@@ -44,7 +46,7 @@ AccountHistory.filterhistory = function (transaction) {
                 if (!result.language)
                     result.language = 'en'
                     result.upvoted = transaction[1].op[0].weight
-                    result._id = result.id    
+                    result._id = result.id
                     Content.upsert({ _id: result._id }, result)
             }
         }
