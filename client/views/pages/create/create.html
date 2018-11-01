@@ -1,39 +1,40 @@
 <template name="create">
-    <div class="ui unstackable grid container">
-        <div id="articleside" class="eleven wide column">
-            <form id="newarticle" class="ui form">
-                <div class="field mfield">
-                    <label>TITLE</label>
-                    <input type="text" name="title" placeholder="Type your title">
-                </div>
-                <div class="field">
-                    <label>ARTICLE</label>
-                    <textarea id="summernote" type="text"  name="body"></textarea>
-                </div>
-                <div class="ui fluid multiple search selection dropdown">
-                    <input id="tags" name="tags" type="hidden" placeholder="Set ">
-                    <div class="text"></div>
-                </div>
-                <div class="ui tag message red hidden">MAX 4 TAG</div>
-                <div class="field">
-                        <div class="ui error message"></div>
-                    </div>
-            </form>
-            <div class="ui grid padded two column">
-                <div class="column">
-                        <!-- <div class="ui button reset red left floated">RESET</div> -->
-                    <div class="ui button save blue left floated">SAVE AS DRAFT</div>
-                </div>
-                <div class="column">
-                    <!-- <div class="ui button edit teal right floated">EDIT</div> -->
-                    <div class="ui button submit teal right floated">SUBMIT</div>
-                </div>
-            </div>
-            <div id="postprob" class="ui red message hidden"></div>
-        </div>
-        <div class="five wide column">
+   <div class="ui container">
+     <div class="ui grid two column stackable padded">
+       <div id="articleside" class="eleven wide column">
+         <form id="newarticle" class="ui form">
+           <div class="field mfield">
+             <label>TITLE</label>
+             <input type="text" name="title" placeholder="Type your title">
+           </div>
+           <div class="field">
+             <label>ARTICLE</label>
+             <textarea id="summernote" type="text"  name="body"></textarea>
+           </div>
+           <div class="ui fluid multiple search selection dropdown">
+             <input id="tags" name="tags" type="hidden" placeholder="Set ">
+             <div class="text"></div>
+           </div>
+           <div class="ui tag message red hidden">MAX 4 TAG</div>
+           <div class="field">
+             <div class="ui error message"></div>
+           </div>
+         </form>
+         <div class="ui grid padded two column">
+           <div class="column">
+             <!-- <div class="ui button reset red left floated">RESET</div> -->
+             <div class="ui button save blue left floated">SAVE AS DRAFT</div>
+           </div>
+           <div class="column">
+             <!-- <div class="ui button edit teal right floated">EDIT</div> -->
+             <div class="ui button submit teal right floated">SUBMIT</div>
+           </div>
+         </div>
+         <div id="postprob" class="ui red message hidden"></div>
+       </div>
+       <div class="five wide column">
          {{>drafts}}
-        </div>
-    </div>
-
+       </div>
+     </div>
+   </div>
 </template>
