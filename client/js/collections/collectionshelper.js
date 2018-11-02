@@ -1,28 +1,36 @@
 Template.registerHelper('steemStemContent', function () {
-    if (Session.get('currentSearch')) {
-        if (Session.get('unfiltered')) {
-            return Content.find(
-                {
-                    "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang')
-                },
-                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-        }
-        else {
-            return Content.find(
-                { type: 'steemstem', search: new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang') },
-                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-        }
+  if (Session.get('currentSearch'))
+  {
+    if (Session.get('unfiltered'))
+    {
+      return Content.find(
+        {
+          "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang'), parent_author: ""
+        },
+        { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
     }
-    else {
-        if (Session.get('unfiltered')) {
-            return Content.find({ language: Session.get('lang') },
-                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-        }
-        else {
-            return Content.find({ type: 'steemstem', language: Session.get('lang') },
-                { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
-        }
+    else
+    {
+      return Content.find(
+        { type: 'steemstem', parent_author: "", search: new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang') },
+        { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
     }
+  }
+  else
+  {
+    if (Session.get('unfiltered'))
+    {
+      return Content.find(
+        { language: Session.get('lang'), parent_author: "" },
+        { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+    }
+    else
+    {
+      return Content.find(
+        { type: 'steemstem', language: Session.get('lang'), parent_author: "" },
+        { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+    }
+  }
 })
 
 Template.registerHelper('whitelistedContent', function () {

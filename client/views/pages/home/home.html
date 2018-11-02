@@ -1,179 +1,158 @@
 <template name="home">
-    {{#if equals currentSearch 'steemstem'}}
+  {{#if equals currentSearch 'steemstem'}}
     <div class="ui container fluid mtop3n">
-        <div class="ui three column grid padded large screen only">
-            <div class="col33 npdg">
-                <div class="ui two column grid padded">
-                    <div class="col50 npdg">
-                        {{#with promoted.[0]}}
-                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                            <div class="top_news_content">
-                                <h4 class="top_news_title">
-                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                                    <div class="post_date">
-                                        <span>by {{author}}</span>
-                                    </div>
-                                </h4>
-                            </div>
-                        </div>
-                        {{/with}}
-                    </div>
-                    <div class="col50 npdg">
-                        {{#with promoted.[1]}}
-                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                            <div class="top_news_content">
-                                <h4 class="top_news_title">
-                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                                    <div class="post_date">
-                                        <span>by {{author}}</span>
-                                    </div>
-                                </h4>
-                            </div>
-                        </div>
-                        {{/with}}
-                    </div>
+      <div class="ui three column grid padded large screen only">
+        <div class="col33 npdg">
+          <div class="ui two column grid padded">
+            <div class="col50 npdg">
+              {{#with promoted.[0]}}
+                <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                  <div class="top_news_content">
+                    <h4 class="top_news_title">
+                      <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                      <div class="post_date"><span>by {{author}}</span></div>
+                    </h4>
+                  </div>
                 </div>
-                <div class="col100 npdg">
-                    {{#with promoted.[2]}}
-                    <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                        <div class="top_news_content">
-                            <h2 class="top_news_title">
-                                <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                                <div class="post_date">
-                                    <span>by {{author}}</span>
-                                </div>
-                            </h2>
-                        </div>
-                    </div>
-                    {{/with}}
-                </div>
+              {{/with}}
             </div>
-            <div class="col33 npdg">
-                {{#with promoted.[3]}}
+            <div class="col50 npdg">
+              {{#with promoted.[1]}}
+                <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                  <div class="top_news_content">
+                    <h4 class="top_news_title">
+                      <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                        <div class="post_date"><span>by {{author}}</span></div>
+                    </h4>
+                  </div>
+                </div>
+              {{/with}}
+            </div>
+          </div>
+          <div class="col100 npdg">
+            {{#with promoted.[2]}}
+              <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                <div class="top_news_content">
+                  <h2 class="top_news_title">
+                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                    <div class="post_date"><span>by {{author}}</span></div>
+                  </h2>
+                </div>
+              </div>
+            {{/with}}
+          </div>
+        </div>
+        <div class="col33 npdg">
+          {{#with promoted.[3]}}
+            <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+              <div class="top_news_content">
+                <h2 class="top_news_title">
+                  <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                  <div class="post_date"><span>by {{author}}</span></div>
+                </h2>
+              </div>
+            </div>
+          {{/with}}
+        </div>
+        <div class="col33 npdg">
+          <div class="ui two column grid row padded">
+            <div class="col50 npdg">
+              {{#with promoted.[4]}}
+                <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                  <div class="top_news_content">
+                    <h4 class="top_news_title">
+                      <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                      <div class="post_date"><span>by {{author}}</span></div>
+                    </h4>
+                  </div>
+                </div>
+              {{/with}}
+              {{#with promoted.[5]}}
+                <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
+                  <div class="top_news_content">
+                    <h4 class="top_news_title">
+                      <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                        <div class="post_date"><span>by {{author}}</span></div>
+                    </h4>
+                  </div>
+                </div>
+              {{/with}}
+            </div>
+            <div class="col50 npdg">
+              {{#with promoted.[6]}}
                 <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                    <div class="top_news_content">
-                        <h2 class="top_news_title">
-                            <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                            <div class="post_date">
-                                <span>by {{author}}</span>
-                            </div>
-                        </h2>
-                    </div>
+                  <div class="top_news_content">
+                    <h2 class="top_news_title">
+                      <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
+                        <div class="post_date"><span>by {{author}}</span></div>
+                    </h2>
+                  </div>
                 </div>
-                {{/with}}
+              {{/with}}
             </div>
-            <div class="col33 npdg">
-                <div class="ui two column grid row padded">
-                    <div class="col50 npdg">
-                        {{#with promoted.[4]}}
-                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                            <div class="top_news_content">
-                                <h4 class="top_news_title">
-                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                                    <div class="post_date">
-                                        <span>by {{author}}</span>
-                                    </div>
-                                </h4>
-                            </div>
-                        </div>
-                        {{/with}}
-                        {{#with promoted.[5]}}
-                        <div class="top_news_low_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                            <div class="top_news_content">
-                                <h4 class="top_news_title">
-                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                                    <div class="post_date">
-                                        <span>by {{author}}</span>
-                                    </div>
-                                </h4>
-                            </div>
-                        </div>
-                        {{/with}}
-                    </div>
-                    <div class="col50 npdg">
-                        {{#with promoted.[6]}}
-                        <div class="top_news_high_item" style="background: url('{{imgFromBody this}}') 50% 50% no-repeat; background-size: cover;">
-                            <div class="top_news_content">
-                                <h2 class="top_news_title">
-                                    <a href="#!/@{{author}}/{{permlink}}">{{title}}</a>
-                                    <div class="post_date">
-                                        <span>by {{author}}</span>
-                                    </div>
-                                </h2>
-                            </div>
-                        </div>
-                        {{/with}}
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-    {{/if}}
-    <div class="ui container mtop2">
-        <div class="ui two column stackable grid home mtop0">
-            <div class="twelve wide column">
-                <div class="ui top attached tabular menu borderless npdg">
-                    <a class="item active" name="upvoted" data-tab="first">
-                        {{#if unfiltered}}
-                        All
-                        {{else}}
-                        Featured
-                        {{/if}}
-                    </a>
-                    {{#if equals currentSearch 'steemstem'}}
-                    <div class="ui left floated item">
-                        <h5>#notag</h5>
-                    </div>
-                    {{else}}
-                    <div class="ui left floated item">
-                        <h5>#{{currentSearch}}</h5>
-                    </div>
-                    {{/if}}
-                    <div class="item right floated" style="padding-right:0px;">
-                        <div class="ui filter checkbox">
-                            <input type="checkbox" name="example">
-                            <label>
-                                <h5>Show all posts</h5>
-                            </label>
-                        </div>
-                        {{#if isGridView}}
-                        <div class="ui black icon button switch" style="margin-left:1em;margin-top: -18px;">
-                            <i class="th list icon"></i>
-                        </div>
-                        {{else}}
-                        <div class="ui black icon button switch" style="margin-left:1em;margin-top: -18px;">
-                            <i class="grid layout icon"></i>
-                        </div>
-                        {{/if}}
-                    </div>
-                </div>
-                <div class="ui bottom cnt attached tab active borderless " style="padding:0px;" data-tab="first">
-                    {{#if isGridView}}
-                    {{>maincards}}
-                    {{else}}
-                    {{>mainlist}}
-                    {{/if}}
-                </div>
-                {{#unless isLoadedFull steemStemContent}}
-                <div class="ui container">
-                    <div class="ui segment grid padded centered fluid borderless">
-                        <div class="ui active dimmer inverted">
-                            <h4 class="ui text loader">Adding Content...</h4>
-                        </div>
-                    </div>
-                </div>
-                {{/unless}}
+  {{/if}}
+
+  <div class="ui container mtop2">
+    <div class="ui two column stackable grid home mtop0">
+      <div class="twelve wide column">
+        <div class="ui top attached tabular menu borderless npdg">
+          <a class="item active" name="upvoted" data-tab="first">
+            {{#if unfiltered}}
+              All
+            {{else}}
+              Featured
+            {{/if}}
+          </a>
+          {{#if equals currentSearch 'steemstem'}}
+            <div class="ui left floated item"><h5>#steemstem</h5></div>
+          {{else}}
+            <div class="ui left floated item"><h5>#{{currentSearch}}</h5></div>
+          {{/if}}
+          <div class="item right floated" style="padding-right:0px;">
+            <div class="ui filter checkbox">
+              <input type="checkbox" name="example">
+              <label><h5>Show all posts</h5></label>
             </div>
-            <div class="four wide column">
-                <div class="ui top attached tabular menu borderless">
-                    <a class="item active" data-tab="fifth">Whitelisted</a>
-                </div>
-                <div class="ui bottom attached tab active borderless npdg" data-tab="fifth">
-                    <div class="ui divided cards">
-                        {{#each whitelistedContent}} {{> card}} {{/each}}
-                    </div>
-                </div>
-            </div>
+            {{#if isGridView}}
+              <div class="ui black icon button switch" style="margin-left:1em;margin-top: -18px;">
+                <i class="th list icon"></i>
+              </div>
+            {{else}}
+              <div class="ui black icon button switch" style="margin-left:1em;margin-top: -18px;">
+                <i class="grid layout icon"></i>
+              </div>
+            {{/if}}
+          </div>
         </div>
+        <div class="ui bottom cnt attached tab active borderless " style="padding:0px;" data-tab="first">
+          {{#if isGridView}}
+            {{>maincards}}
+          {{else}}
+            {{>mainlist}}
+          {{/if}}
+        </div>
+        {{#unless isLoadedFull steemStemContent}}
+          <div class="ui container">
+            <div class="ui segment grid padded centered fluid borderless">
+              <div class="ui active dimmer inverted"><h4 class="ui text loader">Adding Content...</h4></div>
+            </div>
+          </div>
+        {{/unless}}
+      </div>
+      <div class="four wide column">
+        <div class="ui top attached tabular menu borderless">
+          <a class="item active" data-tab="fifth">Whitelisted</a>
+        </div>
+        <div class="ui bottom attached tab active borderless npdg" data-tab="fifth">
+          <div class="ui divided cards">
+            {{#each whitelistedContent}} {{> card}} {{/each}}
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
