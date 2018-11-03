@@ -38,7 +38,7 @@ Template.registerHelper('whitelistedContent', function () {
         var whitelist = Session.get('settings').whitelist
         var contents = [];
         for (i = 0; i < whitelist.length; i++) {
-            if (Content.findOne({ type: 'steemstem', author: whitelist[i] }, { sort: { created: -1 } })) {
+            if (Content.findOne({ type: 'steemstem', author: whitelist[i] , parent_author: "" }, { sort: { created: -1 } })) {
                 contents.push(Content.findOne({ author: whitelist[i] }))
             }
 
