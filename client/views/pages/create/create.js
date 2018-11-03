@@ -100,76 +100,74 @@ Template.create.events({
 
 
 
-Template.create.createProject = function(form){
-    var permlink;
-    var title = form.title.value
-    var body = form.body.value
-    var tags = form.tags.value
-    tags = tags.split(',')
-    tags.push('steemstemtest')
-    if(sessionStorage.editpermlink)
-    {
-        permlink = sessionStorage.editpermlink
-    }
-    else{
-        permlink = title.replace(/\s+/g, '-').toLowerCase().slice(0,20)
+Template.create.createProject = function(form)
+{
+  var permlink;
+  var title = form.title.value
+  var body = form.body.value
+  var tags = form.tags.value
 
-    }
-    var author = localStorage.username
-    var json_metadata = {
-        tags: tags,
-        app: 'steemstem'
-    }
-    if(sessionStorage.editpermlink)
-    {
-        permlink =  sessionStorage.editpermlink
-        var percent_steem_dollars = 10000
-        var project_to_publish = [
-            ['comment',
-                {
-                    parent_author: '',
-                    parent_permlink: tags[0],
-                    author: author,
-                    permlink: projectnumber,
-                    title: title,
-                    body: body,
-                    json_metadata: JSON.stringify(json_metadata)
-                }
-            ]
-        ];
-        return project_to_publish
-    }
-    else{
-        var percent_steem_dollars = 10000
-        var project_to_publish = [
-            ['comment',
-                {
-                    parent_author: '',
-                    parent_permlink: tags[0],
-                    author: author,
-                    permlink: permlink,
-                    title: title.replace(/[^a-zA-Z0-9]/g,' '),
-                    body: body,
-                    json_metadata: JSON.stringify(json_metadata)
-                }
-            ],
-            ['comment_options', {
-                author: author,
-                permlink: permlink,
-                max_accepted_payout: '1000000.000 SBD',
-                percent_steem_dollars: percent_steem_dollars,
-                allow_votes: true,
-                allow_curation_rewards: true,
-                extensions: [
-                    [0, {
-                        beneficiaries:  [
-                            { account: 'steemstem', weight: 1500 }  
-                          ] }]
-                ]
-            }]
-        ];
-        return project_to_publish
-    }
+  if(tags=="") { tags=['steemstem'] }
+  else         { tags = tags.split(','); tags.push('steemstem') }
+
+  if(sessionStorage.editpermlink) { permlink = sessionStorage.editpermlink }
+  else
+  {
+        permlink = title.replace(/[^a-zA-Z0-9]/g,' '),
+        permlink = permlink.replace(/\s+/g, '-').toLowerCase().slice(0,20)
+  }
+  var author = localStorage.username
+  var json_metadata = {
+    tags: tags,
+    app: 'steemstem'
+  }
+  if(sessionStorage.editpermlink)
+  {
+    permlink =  sessionStorage.editpermlink
+    var percent_steem_dollars = 10000
+    var project_to_publish = [
+      ['comment',
+        {
+          parent_author: '',
+          parent_permlink: tags[0],
+          author: author,
+          permlink: projectnumber,
+          title: title,
+          body: body,
+          json_metadata: JSON.stringify(json_metadata)
+        }
+      ]
+    ];
+    return project_to_publish
+  }
+  else
+  {
+    var percent_steem_dollars = 10000
+    var project_to_publish = [
+      ['comment',
+        {
+          parent_author: '',
+          parent_permlink: tags[0],
+          author: author,
+          permlink: permlink,
+          title: title,
+          body: body,
+          json_metadata: JSON.stringify(json_metadata)
+        }
+      ],
+      ['comment_options', {
+        author: author,
+        permlink: permlink,
+        max_accepted_payout: '1000000.000 SBD',
+        percent_steem_dollars: percent_steem_dollars,
+        allow_votes: true,
+        allow_curation_rewards: true //,
+        //extensions: [  [0, { beneficiaries:  [ { account: 'steemstem', weight: 1500 } ] } ]  ]
+       }
+       ]
+     ];
+     return project_to_publish
+  }
 }
 
 
@@ -190,22 +188,28 @@ Template.create.loadDraft = function (draft) {
     event.preventDefault()
 }
 
-Template.create.submitproject = function (project) {
-        steemconnect.send(project,
-            function (error, result) {
-                if (error) {
-                    $('#postprob').removeClass("hidden")
-                    $('#postprob').text(error)
-                    if(error.error_description)
-                    $('#postprob').text(error.error_description)
-                    console.log(error.error_description)
-                } else {
-                    $('#postprob').addClass("hidden")
-                    $('.ui.button.submit').removeClass('loading')
-                    FlowRouter.go('#!/@' + project[0][1].author + '/' + project[0][1].permlink)
-                }
-            }
-        )
+Template.create.submitproject = function (project)
+{
+  steemconnect.send(project,
+    function (error, result)
+    {
+      if (error)
+      {
+        $('#postprob').removeClass("hidden")
+        $('#postprob').text(error)
+        console.log("Error with steemconnect:", error.error_description)
+        console.log("status of the submission stuff:", project)
+        if(error.error_description)
+          $('#postprob').text(error.error_description)
+      }
+      else
+      {
+        $('#postprob').addClass("hidden")
+        $('.ui.button.submit').removeClass('loading')
+        FlowRouter.go('#!/@' + project[0][1].author + '/' + project[0][1].permlink)
+      }
+    }
+ )
 }
 
 const cloudName = 'drrz8xekm';
