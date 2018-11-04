@@ -143,6 +143,7 @@ Content.chainLoad = function ()
       }
     }
   }
+  Content.getCreatedContent('steemstem', 10, 'featured', function (error) { if (error) { console.log(error) } })
 }
 
 Content.CreateUrl = function (author, permlink) {
