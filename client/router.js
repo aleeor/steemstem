@@ -11,6 +11,8 @@ FlowRouter.route('/', {
         Session.set('currentSearch', false)
         Session.set('currentTag', false)
         Session.set('isonreply', false)
+        Session.set('isonedit', false)
+        Session.set('editlink', '')
         if(!sessionStorage.tos)
         {
             $('.ui.tos.modal').remove()
@@ -54,7 +56,6 @@ FlowRouter.route('/create', {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", topmenu: "topmenu" });
     }
 });
-
 
 FlowRouter.route('/login', {
     name: 'login',
@@ -226,7 +227,6 @@ FlowRouter.route('/@:user/:permlink', {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         Session.set('visiblecontent',12)
         Session.set('isonreply', true)
-        console.log(params.permlink)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         if (!Content.findOne({ permlink: params.permlink })) {

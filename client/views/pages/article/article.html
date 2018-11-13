@@ -1,42 +1,98 @@
 <template name="article">
-    <div class="ui container">
-        <div class="ui grid two column stackable">
-            <div class="three wide column">
-                {{#with currentAuthor}}
-                {{>profilecard}}
-                {{/with}}
+  <div class="ui container">
+    {{#if isOnEdit}}
+      <div class="ui grid two column stackable padded">
+        <div class="three wide column"></div>
+        <div id="articleside" class="nine wide column">
+          <form id="newarticle" class="ui form">
+            <div class="field mfield">
+              <label>TITLE</label>
+              <input type="text" name="title" value="{{currentArticle.title}}">
             </div>
-            <div id="articleside" class="nine wide column">
-                {{>content}}
-                <div class="row">
-                    {{>comments}}
+            <div class="field">
+              <label>ARTICLE</label>
+              <textarea id="summernote" type="text" name="body"></textarea>
+            </div>
+            <div class="field mfield">
+              <label>TAGS</label>
+                <div class="ui fluid multiple search selection dropdown">
+                  <input id="tags" name="tags" type="hidden">
+                  <div class="text"></div>
                 </div>
             </div>
-            <div class="four wide column">
-                <div class="ui top attached tabular menu borderless">
-                    <a class="item active" data-tab="seventh">
-                        {{#if currentSuggestions}} <h5>Popular from this author</h5>
-                        {{else}}
-                        <h5>Our suggestions</h5>
-                        {{/if}}
-                    </a>
-                </div>
-                <div class="ui bottom attached tab active borderless npdg"  data-tab="seventh">
-                    <div class="ui divided cards">
-                        {{#if currentSuggestions}}
-                        {{#each currentSuggestions}}
-                        {{#unless equals this.permlink currentArticle.permlink}}
-                        {{> card}}
-                        {{/unless}}
-                        {{/each}}
-                        {{else}}
-                        {{#each whitelistedContent}}
-                        {{> card}}
-                        {{/each}}
-                        {{/if}}
-                    </div>
-                </div>
+            <div class="ui mini to message yellow hidden">
+              Reaching the tag number limit:
+              the (automatically omitted) #steemstem tag
+              plus four user-defined tags. <br /><br />
+              Any extra tag to be added will be ignored.
             </div>
+            <div class="ui field">
+              <div class="ui error message"></div>
+            </div>
+          </form>
+          {{loadNote currentArticle.body currentArticle.json_metadata.tags}}
+          <div class="ui grid padded two column">
+            <div class="column">
+              <div class="ui button reset red left floated">CANCEL</div>
+            </div>
+            <div class="column">
+              <div class="ui button submit teal right floated">SUBMIT</div>
+            </div>
+          </div>
+          <div id="postprob" class="ui red message hidden"></div>
+          <div id="commentsside" class="row">
+            <div class="ui comments segment container">
+              <h3 class="ui dividing header">Comments</h3>
+              {{#if loadComments }}
+                {{#each loadComments}}
+                  {{>comment}} <br />
+                {{/each}}
+              {{else}}
+                No comment has been written yet.<br />
+              {{/if}}
+            </div>
+          </div>
         </div>
-    </div>
+        <div class="four wide column"></div>
+      </div>
+    {{else}}
+      <div class="ui grid two column stackable">
+        <div class="three wide column">
+          {{#with currentAuthor}}
+            {{>profilecard}}
+          {{/with}}
+        </div>
+        <div id="articleside" class="nine wide column">
+          {{>content}}
+          <div class="row">
+            {{>comments}}
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="ui top attached tabular menu borderless">
+            <a class="item active" data-tab="seventh">
+              {{#if currentSuggestions}} <h5>Popular from this author</h5>
+              {{else}} <h5>Our suggestions</h5>
+              {{/if}}
+            </a>
+          </div>
+          <div class="ui bottom attached tab active borderless npdg" data-tab="seventh">
+            <div class="ui divided cards">
+              {{#if currentSuggestions}}
+                {{#each currentSuggestions}}
+                  {{#unless equals this.permlink currentArticle.permlink}}
+                    {{> card}}
+                  {{/unless}}
+                {{/each}}
+              {{else}}
+                {{#each whitelistedContent}}
+                  {{> card}}
+                {{/each}}
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
 </template>

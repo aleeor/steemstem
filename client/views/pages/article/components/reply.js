@@ -1,5 +1,5 @@
 Template.reply.rendered = function () {
-    $('.ui.form').hide();
+    $('.ui.form.replyform').hide();
 }
 
 Template.reply.helpers({
@@ -11,7 +11,7 @@ Template.reply.helpers({
 
 Template.reply.events({
 	'click .reply-action': function(event){
-    $('.ui.form').hide();
+    $('.ui.form.replyform').hide();
 	 var element = ".reply-" + this.data.permlink;
 	 $(element).show();
 	},

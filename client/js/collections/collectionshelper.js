@@ -33,24 +33,27 @@ Template.registerHelper('steemStemContent', function () {
   }
 })
 
-Template.registerHelper('whitelistedContent', function () {
-    if (Content.find().fetch()) {
-        var whitelist = Session.get('settings').whitelist
-        var contents = [];
-        for (i = 0; i < whitelist.length; i++) {
-            if (Content.findOne({ type: 'steemstem', author: whitelist[i] , parent_author: "" }, { sort: { created: -1 } })) {
-                contents.push(Content.findOne({ author: whitelist[i] }))
-            }
-
-        }
-        contents.sort(function (a, b) {
-            var da = new Date(a.created).getTime();
-            var db = new Date(b.created).getTime();
-
-            return da > db ? -1 : da < db ? 1 : 0
-        });
-        return contents
+Template.registerHelper('whitelistedContent', function ()
+{
+  if (Content.find().fetch())
+  {
+    var whitelist = Session.get('settings').whitelist
+    var contents = [];
+    for (i = 0; i < whitelist.length; i++)
+    {
+      white_content = Content.findOne({ type: 'steemstem', author: whitelist[i] , parent_author: "" }, { sort: { created: -1 } })
+      if (white_content)
+      {
+        contents.push(white_content)
+      }
     }
+    contents.sort(function (a, b) {
+      var da = new Date(a.created).getTime();
+      var db = new Date(b.created).getTime();
+      return da > db ? -1 : da < db ? 1 : 0
+    });
+    return contents
+  }
 })
 
 Template.registerHelper('currentSuggestions', function () {

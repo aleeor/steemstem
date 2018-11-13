@@ -1,29 +1,32 @@
 <template name="content">
-	{{#with currentArticle}}
-	<div class="ui cards">
-		<div class="ui card fluid borderless" >
-			<h1 class="steemstem title" >{{title}}</h1>
-			<div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span>
-			</div>
-			{{#if json_metadata.tags}}
-			<span class="ui top right attached label childopacity">{{#each json_metadata.tags}}
-				{{#unless equals this 'steemstem'}}
-				<a href="#!/{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>{{/unless}}{{/each}}
-			</span>
-			{{/if}}
-			<div class="content">
-				<div class="description">
-					{{{remarkableFormatter body}}}
-				</div>
-				<div class="ui divider"></div>
-				<div class="right floated">
-						<div class="header">Share : {{>share}}</div>
-					</div>
-			</div>
-			<div class="ui big label fluid npdg noradius">
-				{{>upvote}}
-			</div>
-		</div>
-	</div>
-	{{/with}}
+  {{#with currentArticle}}
+  <div class="ui cards">
+    <div class="ui card fluid borderless" >
+      <h1 class="steemstem title" >{{title}}</h1>
+      <div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span></div>
+      {{#if json_metadata.tags}}
+        <span class="ui top right attached label childopacity">
+          {{#each json_metadata.tags}}
+            {{#unless equals this 'steemstem'}}
+              <a href="#!/{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>
+            {{/unless}}
+          {{/each}}
+        </span>
+      {{/if}}
+      <div class="content">
+        <div class="description"> {{{remarkableFormatter body}}} </div>
+        <div class="ui divider"></div>
+        {{#if equals currentAuthor.name mainuser.name}}
+          <div class="left floated">
+            {{ >edit data=this}}
+          </div>
+        {{/if}}
+        <div class="right floated">
+            <div class="header">Share: {{>share}}</div>
+        </div>
+      </div>
+      <div class="ui big label fluid npdg noradius">{{>upvote}}</div>
+    </div>
+  </div>
+  {{/with}}
 </template>

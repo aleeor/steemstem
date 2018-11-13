@@ -127,22 +127,6 @@ Content.reloadContent = function (author, permlink, cb)
 
 Content.chainLoad = function ()
 {
-  if (Session.get('customtags'))
-  {
-    var tags = Session.get('customtags')
-    for (i = 0; i < tags.length; i++)
-    {
-      if (tags[i].category != "home")
-      {
-        Content.getCreatedContent(tags[i].category, 10, 'featured', function (error) { if (error) { console.log(error) } })
-        if (tags[i].subcategories)
-        {
-          for (s = 0; s < tags[i].subcategories.length; s++)
-            Content.getCreatedContent(tags[i].subcategories[s], 10, 'featured', function (error) { if (error) { console.log(error) } })
-        }
-      }
-    }
-  }
   Content.getCreatedContent('steemstem', 10, 'featured', function (error) { if (error) { console.log(error) } })
 }
 

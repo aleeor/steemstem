@@ -11,12 +11,20 @@
              <label>ARTICLE</label>
              <textarea id="summernote" type="text"  name="body"></textarea>
            </div>
-           <div class="ui fluid multiple search selection dropdown">
-             <input id="tags" name="tags" type="hidden" placeholder="Set ">
-             <div class="text"></div>
+           <div class="field mfield">
+             <label>TAGS</label>
+             <div class="ui fluid multiple search selection dropdown">
+               <input id="tags" name="tags" type="hidden">
+               <div class="default text">Set tags...</div>
+             </div>
            </div>
-           <div class="ui tag message red hidden">MAX 4 TAG</div>
-           <div class="field">
+           <div class="ui mini to message yellow hidden">
+             Reaching the tag number limit:
+             the (potentially automatically added) #steemstem tag
+             plus four user-defined tags. <br /><br />
+             Any extra tag will be ignored.
+           </div>
+           <div class="ui field">
              <div class="ui error message"></div>
            </div>
          </form>
