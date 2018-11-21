@@ -240,15 +240,34 @@ Template.registerHelper('DisplayVotingPower', function (votingPower, lastVoteTim
 })
 
 
-Template.registerHelper('DisplaySteemPower', function (vesting_shares, delegated, received_vesting_shares) {
-    if (vesting_shares || delegated || received_vesting_shares) {
-        var SP = 0;
-        SP = SP + Number(vestToSteemPower(vesting_shares.split(' ')[0]))
-        SP = SP - Number(vestToSteemPower(delegated.split(' ')[0]))
-        if (received_vesting_shares)
-            SP = SP + Number(vestToSteemPower(received_vesting_shares.split(' ')[0]))
-        return parseFloat(SP).toFixed(3) + ' STEEM'
-    }
+Template.registerHelper('DisplaySteemPower', function (vesting_shares)
+{
+  var SP = 0;
+  if (vesting_shares) SP = Number(vestToSteemPower(vesting_shares.split(' ')[0]))
+  return parseFloat(SP).toFixed(3) + ' STEEM'
+})
+
+Template.registerHelper('DisplayDelegatedSteemPower', function (delegated)
+{
+  var SP = 0;
+  if (delegated) SP = SP - Number(vestToSteemPower(delegated.split(' ')[0]))
+  return parseFloat(SP).toFixed(3) + ' STEEM'
+})
+
+Template.registerHelper('DisplayReceivedSteemPower', function (received_vesting_shares)
+{
+  var SP = 0;
+  if (received_vesting_shares) SP = SP + Number(vestToSteemPower(received_vesting_shares.split(' ')[0]))
+  return parseFloat(SP).toFixed(3) + ' STEEM'
+})
+
+Template.registerHelper('DisplayEffectiveSteemPower', function (vesting_shares, delegated, received_vesting_shares)
+{
+  var SP = 0;
+  if (vesting_shares)          SP = SP + Number(vestToSteemPower(vesting_shares.split(' ')[0]))
+  if (delegated)               SP = SP - Number(vestToSteemPower(delegated.split(' ')[0]))
+  if (received_vesting_shares) SP = SP + Number(vestToSteemPower(received_vesting_shares.split(' ')[0]))
+  return parseFloat(SP).toFixed(3) + ' STEEM'
 })
 
 
