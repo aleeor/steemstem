@@ -24,6 +24,31 @@
              plus four user-defined tags. <br /><br />
              Any extra tag will be ignored.
            </div>
+
+           <div class="field mfield">
+             <div class="ui button add-beneficiary gray right floated"><i class="user icon"></i>Add a beneficiary</div>
+             <label>BENEFICIARIES (optional).</label>
+             <p style="font-size:10pt; margin-top:-5px;">
+               Do not hesitate to share with SteemSTEM a fraction of the rewards of this post.
+             </p>
+             <input id="beneficiaries" name="beneficiaries" type="hidden">
+             {{#if loadBeneficiaries}}
+               {{#each beneficiary in loadBeneficiaries}}
+                 <div class="ui compact medium message teal floated">
+                   {{DisplayBeneficiary beneficiary}}:
+                   <b>{{DisplayShare beneficiary}}</b><i class="percent icon"></i>
+                   <i id='edit-beneficiary' aria-hidden="true" class="fitted link edit outline icon" name={{DisplayBeneficiary beneficiary}}-{{DisplayShare beneficiary}}></i>
+                   <i id='remove-beneficiary' aria-hidden="true" class="fitted link trash alternate outline icon" name={{DisplayBeneficiary beneficiary}}></i>
+                 </div>
+               {{/each}}
+             {{else}}
+                No added beneficiary.<br />
+             {{/if}}
+           </div>
+           <div class="ui mini maxbeneficiaries message yellow hidden">
+             More than 100% of the post rewards are to be shared. The amounts will be scaled down to 100%.
+           </div>
+
            <div class="ui field">
              <div class="ui error message"></div>
            </div>

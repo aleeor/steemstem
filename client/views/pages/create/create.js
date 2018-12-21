@@ -101,6 +101,35 @@ Template.create.events(
     else { $('#newarticle').form('validate form') }
   },
 
+  // Add beneficiary
+  'click .ui.button.add-beneficiary': function (event)
+  {
+    Session.set('beneficiary-edit',false)
+    event.preventDefault()
+    draft ={}
+    draft.title = document.getElementById('newarticle').title.value
+    draft.body = document.getElementById('newarticle').body.value
+    draft.tags= document.getElementById('newarticle').tags.value
+    draft.beneficiaries= document.getElementById('newarticle').beneficiaries.value
+    if(draft.beneficiaries!='')
+    {
+      beneficiary_array = draft.beneficiaries.split(',')
+      beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+      {
+        if (index % 2 === 0) result.push(array.slice(index, index + 2));
+        return result;
+      }, []);
+      draft.beneficiaries = beneficiary_array
+    }
+    $('.ui.beneficiary.modal').remove()
+    $('article').append(Blaze.toHTMLWithData(Template.beneficiarymodal, {data:this}));
+    $('.ui.beneficiary.modal').modal('setting', 'transition', 'scale').modal('show')
+    Session.set('beneficiary','')
+    Session.set('shares','')
+    Session.set('current-draft', draft)
+    Template.beneficiarymodal.init()
+  },
+
   // Reset button (unused)
   'click .ui.button.reset': function (event)
   {
@@ -118,6 +147,65 @@ Template.create.events(
   {
     event.preventDefault()
     Template.drafts.addToDraft(document.getElementById('newarticle'))
+  },
+
+  // Edit an existing beneficiary
+  'click #edit-beneficiary': function(event)
+  {
+    Session.set('beneficiary-edit',true)
+    event.preventDefault()
+    draft ={}
+    draft.title = document.getElementById('newarticle').title.value
+    draft.body = document.getElementById('newarticle').body.value
+    draft.tags= document.getElementById('newarticle').tags.value
+    draft.beneficiaries= document.getElementById('newarticle').beneficiaries.value
+    if(draft.beneficiaries!='')
+    {
+      beneficiary_array = draft.beneficiaries.split(',')
+      beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+      {
+        if (index % 2 === 0) result.push(array.slice(index, index + 2));
+        return result;
+      }, []);
+      draft.beneficiaries = beneficiary_array
+    }
+    $('.ui.beneficiary.modal').remove()
+    $('article').append(Blaze.toHTMLWithData(Template.beneficiarymodal, {data:this}));
+    $('.ui.beneficiary.modal').modal('setting', 'transition', 'scale').modal('show')
+
+    var beneficiary = event.target.getAttribute('name').split('-')
+    var current_benef = beneficiary
+    var current_share = beneficiary.pop()
+    Session.set('beneficiary',current_benef.join('-'))
+    Session.set('shares',current_share)
+    Session.set('current-draft', draft)
+    Template.beneficiarymodal.init()
+  },
+
+  // Removing an existing beneficiary
+  'click #remove-beneficiary': function(event)
+  {
+    event.preventDefault()
+    draft ={}
+    draft.title = document.getElementById('newarticle').title.value
+    draft.body = document.getElementById('newarticle').body.value
+    draft.tags= document.getElementById('newarticle').tags.value
+    draft.beneficiaries= document.getElementById('newarticle').beneficiaries.value
+    if(draft.beneficiaries!='')
+    {
+      beneficiary_array = draft.beneficiaries.split(',')
+      beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+      {
+        if (index % 2 === 0) result.push(array.slice(index, index + 2));
+        return result;
+      }, []);
+      draft.beneficiaries = beneficiary_array
+    }
+
+    var beneficiary = event.target.getAttribute('name')
+    draft.beneficiaries = draft.beneficiaries.filter( (x) => { return x[0]!==beneficiary; });
+    document.getElementById('newarticle').beneficiaries.value = draft.beneficiaries
+    Session.set('current-draft', draft)
   }
 })
 
@@ -225,6 +313,8 @@ Template.create.loadDraft = function (draft)
     }
   }
   else { $('.ui.multiple.dropdown').dropdown("set selected", draft.tags) }
+  form.beneficiaries.value = draft.beneficiaries
+  Session.set('current-draft',draft)
   event.preventDefault()
 }
 
@@ -299,3 +389,21 @@ Template.create.handleFiles = function (files)
 {
   for (var i = 0; i < files.length; i++) { Template.create.uploadFile(files[i]); }
 };
+
+Template.create.helpers(
+{
+  // Loading the list with all beneficiaries attached to a post 
+  loadBeneficiaries: function()
+  {
+    draft = Session.get('current-draft')
+    if(draft) { return draft.beneficiaries }
+  },
+
+  // Function allowing to display a single beneficiary
+  DisplayBeneficiary: function(beneficiary) { return beneficiary[0] },
+
+  // Function allowing to display a share of a single beneficiary
+  DisplayShare: function(beneficiary) { return beneficiary[1] }
+
+})
+

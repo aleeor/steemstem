@@ -53,6 +53,7 @@ FlowRouter.route('/aboutus', {
 FlowRouter.route('/create', {
     name: 'create',
     action: function (params, queryParams) {
+        Session.set('beneficiary-list', [])
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", topmenu: "topmenu" });
     }
 });
