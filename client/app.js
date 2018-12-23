@@ -153,7 +153,7 @@ Meteor.startup(function () {
 //        "background: white; color: black; font-size: 12px; padding: 3px 3px;"
 //    );
     console.log(
-        `%c SteemStem OpenSource v0.4.11 : https://github.com/SteemStem-io/steemstem`,
+        `%c SteemStem OpenSource v0.4.12: https://github.com/SteemStem-io/steemstem`,
         "font-size: 11px; padding: 1px 1px;"
     );
     console.log(

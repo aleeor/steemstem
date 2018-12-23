@@ -37,8 +37,7 @@ Template.create.rendered = function () {
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
             ['table', ['table']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen']],
+            ['insert', ['link', 'picture']]
         ],
         callbacks: {
             onImageUpload: function (files) {

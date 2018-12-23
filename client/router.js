@@ -210,7 +210,7 @@ FlowRouter.route('/@:user/wallet', {
 });
 
 FlowRouter.route('/:tag', {
-    name: 'create',
+    name: 'tag',
     action: function (params, queryParams) {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         Session.set('currentSearch',params.tag)
