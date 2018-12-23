@@ -216,6 +216,20 @@ Template.create.createProject = function(form)
   var title = form.title.value
   var body = form.body.value
   var tags = form.tags.value
+  var beneficiaries = form.beneficiaries.value
+  if(beneficiaries!='')
+  {
+    beneficiary_array = beneficiaries.split(',')
+    beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+    {
+      if (index % 2 === 0) result.push(array.slice(index, index + 2));
+      return result;
+    }, []);
+    beneficiaries = beneficiary_array
+  }
+  beneficiaries_dico = []
+  for (i=0; i < beneficiaries.length; i++)
+    beneficiaries_dico.push({ account: beneficiaries[i][0], weight: parseInt(beneficiaries[i][1])*100 })
 
   // Getting the tags
   if(tags=="") { tags=['steemstem'] }
@@ -256,30 +270,44 @@ Template.create.createProject = function(form)
   else
   {
     var percent_steem_dollars = 10000
-    var project_to_publish = [
-      ['comment',
-        {
-          parent_author: '',
-          parent_permlink: tags[0],
-          author: author,
-          permlink: permlink,
-          title: title,
-          body: body,
-          json_metadata: JSON.stringify(json_metadata)
-        }
-      ],
-      ['comment_options', {
-        author: author,
-        permlink: permlink,
-        max_accepted_payout: '1000000.000 SBD',
-        percent_steem_dollars: percent_steem_dollars,
-        allow_votes: true,
-        allow_curation_rewards: true //,
-        //extensions: [  [0, { beneficiaries:  [ { account: 'steemstem', weight: 1500 } ] } ]  ]
-       }
-       ]
-     ];
-     return project_to_publish
+    if(beneficiaries_dico.length==0)
+    {
+      project_to_publish = [
+        ['comment',
+          {
+             parent_author: '', parent_permlink: tags[0], author: author, permlink: permlink, title: title,
+             body: body, json_metadata: JSON.stringify(json_metadata)
+          }
+        ],
+        ['comment_options',
+          {
+             author: author, permlink: permlink, max_accepted_payout: '1000000.000 SBD',
+             percent_steem_dollars: percent_steem_dollars, allow_votes: true, allow_curation_rewards: true
+          }
+        ]
+      ];
+      return project_to_publish
+    }
+    else
+    {
+      var project_to_publish = [
+        ['comment',
+          {
+            parent_author: '', parent_permlink: tags[0], author: author, permlink: permlink, title: title,
+            body: body, json_metadata: JSON.stringify(json_metadata)
+          }
+        ],
+        ['comment_options',
+          {
+            author: author, permlink: permlink, max_accepted_payout: '1000000.000 SBD',
+            percent_steem_dollars: percent_steem_dollars, allow_votes: true, allow_curation_rewards: true,
+            extensions: [  [0, { beneficiaries: beneficiaries_dico } ]  ]
+          }
+        ]
+      ];
+      return project_to_publish
+    }
+
   }
 }
 
@@ -314,6 +342,17 @@ Template.create.loadDraft = function (draft)
   }
   else { $('.ui.multiple.dropdown').dropdown("set selected", draft.tags) }
   form.beneficiaries.value = draft.beneficiaries
+  Session.set('loaded-draft', draft)
+  if(draft.beneficiaries!='')
+  {
+    beneficiary_array = draft.beneficiaries.split(',')
+    beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+    {
+      if (index % 2 === 0) result.push(array.slice(index, index + 2));
+      return result;
+    }, []);
+    draft.beneficiaries = beneficiary_array
+  }
   Session.set('current-draft',draft)
   event.preventDefault()
 }

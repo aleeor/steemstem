@@ -20,7 +20,13 @@ Template.drafts.events({
 })
 
 Template.drafts.addToDraft = function(form){
-    var draft = {title:form.title.value,body:form.body.value,tags:form.tags.value,last_update:Date.now()}
+    var draft = {
+      title         : form.title.value,
+      body          : form.body.value,
+      tags          : form.tags.value,
+      beneficiaries : form.beneficiaries.value,
+      last_update : Date.now()
+    }
     var userdata =  Session.get('userdata')
 
     if(userdata !== undefined)
@@ -28,6 +34,8 @@ Template.drafts.addToDraft = function(form){
         var drafts = []
         if ('drafts' in userdata)
             drafts = userdata.drafts
+        for (var i=0; i<drafts.length; i++)
+          { if (JSON.stringify(drafts[i]) === JSON.stringify(Session.get('loaded-draft')))  { drafts.splice(i, 1); break; } }
         drafts.push(draft)
         userdata.drafts = drafts
     }
@@ -36,13 +44,13 @@ Template.drafts.addToDraft = function(form){
         userdata = []
         userdata.push({ key:   'drafts', value:  [draft] } );
     }
-
     steemconnect.updateUserMetadata(userdata,function(error){
         if(error)
         {
             console.log(error)
         }
     })
+    Template.create.loadDraft(draft)
 }
 
 Template.drafts.removeDraft = function(draft){
