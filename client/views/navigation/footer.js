@@ -1,12 +1,12 @@
-
+// Links for the about us, the FAQ and the TOS
 Template.footer.events({
     'click .item.about': function (event) {
         event.preventDefault()
-        FlowRouter.go('/aboutus' + this.author + '/' + this.permlink)
+        FlowRouter.go('/aboutus')
     },
     'click .item.faq': function (event) {
         event.preventDefault()
-        FlowRouter.go('/faq' + this.author + '/' + this.permlink)
+        FlowRouter.go('/faq')
     },
     'click .item.tos': function (event) {
         event.preventDefault()

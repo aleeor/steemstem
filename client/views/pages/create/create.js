@@ -37,8 +37,7 @@ Template.create.rendered = function () {
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
             ['table', ['table']],
-            ['insert', ['link', 'picture']],
-            ['view', ['fullscreen']],
+            ['insert', ['link', 'picture']]
         ],
         callbacks: {
             onImageUpload: function (files) {
@@ -101,6 +100,35 @@ Template.create.events(
     else { $('#newarticle').form('validate form') }
   },
 
+  // Add beneficiary
+  'click .ui.button.add-beneficiary': function (event)
+  {
+    Session.set('beneficiary-edit',false)
+    event.preventDefault()
+    draft ={}
+    draft.title = document.getElementById('newarticle').title.value
+    draft.body = document.getElementById('newarticle').body.value
+    draft.tags= document.getElementById('newarticle').tags.value
+    draft.beneficiaries= document.getElementById('newarticle').beneficiaries.value
+    if(draft.beneficiaries!='')
+    {
+      beneficiary_array = draft.beneficiaries.split(',')
+      beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+      {
+        if (index % 2 === 0) result.push(array.slice(index, index + 2));
+        return result;
+      }, []);
+      draft.beneficiaries = beneficiary_array
+    }
+    $('.ui.beneficiary.modal').remove()
+    $('article').append(Blaze.toHTMLWithData(Template.beneficiarymodal, {data:this}));
+    $('.ui.beneficiary.modal').modal('setting', 'transition', 'scale').modal('show')
+    Session.set('beneficiary','')
+    Session.set('shares','')
+    Session.set('current-draft', draft)
+    Template.beneficiarymodal.init()
+  },
+
   // Reset button (unused)
   'click .ui.button.reset': function (event)
   {
@@ -118,6 +146,65 @@ Template.create.events(
   {
     event.preventDefault()
     Template.drafts.addToDraft(document.getElementById('newarticle'))
+  },
+
+  // Edit an existing beneficiary
+  'click #edit-beneficiary': function(event)
+  {
+    Session.set('beneficiary-edit',true)
+    event.preventDefault()
+    draft ={}
+    draft.title = document.getElementById('newarticle').title.value
+    draft.body = document.getElementById('newarticle').body.value
+    draft.tags= document.getElementById('newarticle').tags.value
+    draft.beneficiaries= document.getElementById('newarticle').beneficiaries.value
+    if(draft.beneficiaries!='')
+    {
+      beneficiary_array = draft.beneficiaries.split(',')
+      beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+      {
+        if (index % 2 === 0) result.push(array.slice(index, index + 2));
+        return result;
+      }, []);
+      draft.beneficiaries = beneficiary_array
+    }
+    $('.ui.beneficiary.modal').remove()
+    $('article').append(Blaze.toHTMLWithData(Template.beneficiarymodal, {data:this}));
+    $('.ui.beneficiary.modal').modal('setting', 'transition', 'scale').modal('show')
+
+    var beneficiary = event.target.getAttribute('name').split('-')
+    var current_benef = beneficiary
+    var current_share = beneficiary.pop()
+    Session.set('beneficiary',current_benef.join('-'))
+    Session.set('shares',current_share)
+    Session.set('current-draft', draft)
+    Template.beneficiarymodal.init()
+  },
+
+  // Removing an existing beneficiary
+  'click #remove-beneficiary': function(event)
+  {
+    event.preventDefault()
+    draft ={}
+    draft.title = document.getElementById('newarticle').title.value
+    draft.body = document.getElementById('newarticle').body.value
+    draft.tags= document.getElementById('newarticle').tags.value
+    draft.beneficiaries= document.getElementById('newarticle').beneficiaries.value
+    if(draft.beneficiaries!='')
+    {
+      beneficiary_array = draft.beneficiaries.split(',')
+      beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+      {
+        if (index % 2 === 0) result.push(array.slice(index, index + 2));
+        return result;
+      }, []);
+      draft.beneficiaries = beneficiary_array
+    }
+
+    var beneficiary = event.target.getAttribute('name')
+    draft.beneficiaries = draft.beneficiaries.filter( (x) => { return x[0]!==beneficiary; });
+    document.getElementById('newarticle').beneficiaries.value = draft.beneficiaries
+    Session.set('current-draft', draft)
   }
 })
 
@@ -128,6 +215,20 @@ Template.create.createProject = function(form)
   var title = form.title.value
   var body = form.body.value
   var tags = form.tags.value
+  var beneficiaries = form.beneficiaries.value
+  if(beneficiaries!='')
+  {
+    beneficiary_array = beneficiaries.split(',')
+    beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+    {
+      if (index % 2 === 0) result.push(array.slice(index, index + 2));
+      return result;
+    }, []);
+    beneficiaries = beneficiary_array
+  }
+  beneficiaries_dico = []
+  for (i=0; i < beneficiaries.length; i++)
+    beneficiaries_dico.push({ account: beneficiaries[i][0], weight: parseInt(beneficiaries[i][1])*100 })
 
   // Getting the tags
   if(tags=="") { tags=['steemstem'] }
@@ -168,30 +269,44 @@ Template.create.createProject = function(form)
   else
   {
     var percent_steem_dollars = 10000
-    var project_to_publish = [
-      ['comment',
-        {
-          parent_author: '',
-          parent_permlink: tags[0],
-          author: author,
-          permlink: permlink,
-          title: title,
-          body: body,
-          json_metadata: JSON.stringify(json_metadata)
-        }
-      ],
-      ['comment_options', {
-        author: author,
-        permlink: permlink,
-        max_accepted_payout: '1000000.000 SBD',
-        percent_steem_dollars: percent_steem_dollars,
-        allow_votes: true,
-        allow_curation_rewards: true //,
-        //extensions: [  [0, { beneficiaries:  [ { account: 'steemstem', weight: 1500 } ] } ]  ]
-       }
-       ]
-     ];
-     return project_to_publish
+    if(beneficiaries_dico.length==0)
+    {
+      project_to_publish = [
+        ['comment',
+          {
+             parent_author: '', parent_permlink: tags[0], author: author, permlink: permlink, title: title,
+             body: body, json_metadata: JSON.stringify(json_metadata)
+          }
+        ],
+        ['comment_options',
+          {
+             author: author, permlink: permlink, max_accepted_payout: '1000000.000 SBD',
+             percent_steem_dollars: percent_steem_dollars, allow_votes: true, allow_curation_rewards: true
+          }
+        ]
+      ];
+      return project_to_publish
+    }
+    else
+    {
+      var project_to_publish = [
+        ['comment',
+          {
+            parent_author: '', parent_permlink: tags[0], author: author, permlink: permlink, title: title,
+            body: body, json_metadata: JSON.stringify(json_metadata)
+          }
+        ],
+        ['comment_options',
+          {
+            author: author, permlink: permlink, max_accepted_payout: '1000000.000 SBD',
+            percent_steem_dollars: percent_steem_dollars, allow_votes: true, allow_curation_rewards: true,
+            extensions: [  [0, { beneficiaries: beneficiaries_dico } ]  ]
+          }
+        ]
+      ];
+      return project_to_publish
+    }
+
   }
 }
 
@@ -225,6 +340,19 @@ Template.create.loadDraft = function (draft)
     }
   }
   else { $('.ui.multiple.dropdown').dropdown("set selected", draft.tags) }
+  form.beneficiaries.value = draft.beneficiaries
+  Session.set('loaded-draft', draft)
+  if(draft.beneficiaries!='')
+  {
+    beneficiary_array = draft.beneficiaries.split(',')
+    beneficiary_array =beneficiary_array.reduce(function(result, value, index, array)
+    {
+      if (index % 2 === 0) result.push(array.slice(index, index + 2));
+      return result;
+    }, []);
+    draft.beneficiaries = beneficiary_array
+  }
+  Session.set('current-draft',draft)
   event.preventDefault()
 }
 
@@ -299,3 +427,21 @@ Template.create.handleFiles = function (files)
 {
   for (var i = 0; i < files.length; i++) { Template.create.uploadFile(files[i]); }
 };
+
+Template.create.helpers(
+{
+  // Loading the list with all beneficiaries attached to a post 
+  loadBeneficiaries: function()
+  {
+    draft = Session.get('current-draft')
+    if(draft) { return draft.beneficiaries }
+  },
+
+  // Function allowing to display a single beneficiary
+  DisplayBeneficiary: function(beneficiary) { return beneficiary[0] },
+
+  // Function allowing to display a share of a single beneficiary
+  DisplayShare: function(beneficiary) { return beneficiary[1] }
+
+})
+

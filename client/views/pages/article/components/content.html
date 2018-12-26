@@ -8,7 +8,7 @@
         <span class="ui top right attached label childopacity">
           {{#each json_metadata.tags}}
             {{#unless equals this 'steemstem'}}
-              <a href="#!/{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>
+              <a href="{{this}}" class="ui top mini {{colorByCategory this}} label noradius">{{this}}</a>
             {{/unless}}
           {{/each}}
         </span>
@@ -26,6 +26,23 @@
         </div>
       </div>
       <div class="ui big label fluid npdg noradius">{{>upvote}}</div>
+      <div class="ui divider"></div>
+      {{#if GetBeneficiaries beneficiaries}}
+        <div class="row">
+          <div class="ui fluid container segment">
+            <h3 class="ui dividing header">Beneficiaries</h3>
+            <p style="font-size:10pt;">
+              {{#each beneficiary in GetBeneficiaries beneficiaries}}
+                <b>
+                  <a href="#!/@{{DisplayBeneficiary beneficiary}}">{{DisplayBeneficiary beneficiary}}</a>
+                </b>
+                {{DisplayShare beneficiary}}
+              {{/each}}
+            </p>
+          </div>
+        </div>
+        <div class="ui hidden divider"></div>
+      {{/if}}
     </div>
   </div>
   {{/with}}

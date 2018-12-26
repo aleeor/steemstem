@@ -1,3 +1,4 @@
+// Rendering of the pag
 Template.sidebar.rendered = function () {
   if (localStorage.username) {
     MainUser.add(localStorage.username, function (error) {
@@ -35,6 +36,7 @@ Template.sidebar.rendered = function () {
 }
 
 Template.sidebar.helpers({
+  // Search function
   bindsearch: function () {
     $('.ui.search').search({
       source: Content.find().fetch(),
@@ -60,9 +62,13 @@ Template.sidebar.helpers({
         FlowRouter.go('/home')
       }
     })
-  }
+  },
+
+  // Dummy function
+  more: function() { return 'more' }
 })
 
+// Different events (links)
 Template.sidebar.events({
   'click #feed': function (event) {
     event.preventDefault()

@@ -99,7 +99,7 @@ Template.transfermodal.helpers(
         descr="Move STEEM funds to a saving account (protect funds by requiring a three-day withdraw waiting period)."
         break;
       case 'powerup':
-        descr="STEEM POWER is non-transferable and requires 13 weeks to be converted back to Steem. S"
+        descr="STEEM POWER is non-transferable and requires 13 weeks to be converted back to Steem."
         break;
       case 'powerdown':
         descr="Set up a STEEM POWER withdrawal (1/13 of the powered down amount to be withdrawn once every week during 13 weeks)."
@@ -133,7 +133,7 @@ Template.transfermodal.init = function (operation)
   Session.set('memo','')
 
   // The destination field
-  if(['fromsavings-sbd', 'fromsavings-steem', 'sbd-transfer', 'sbd-savingtransfer', 'steem-transfer', 'steem-savingtransfer', 'delegate'].includes(operation))
+  if(['fromsavings-sbd', 'fromsavings-steem', 'sbd-transfer', 'sbd-savingtransfer', 'steem-transfer', 'steem-savingtransfer', 'delegate', 'powerup'].includes(operation))
   {
     $("#to").change(function ()
     {
