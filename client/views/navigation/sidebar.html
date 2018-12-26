@@ -3,7 +3,9 @@
     <div class="item">
       <img class="ui fluid small image" src="./images/banner/steemstemlogoback.png">
     </div>
+
     <a id="feed" href="/" class="item"><i class="home icon"></i> Home</a>
+
     <div class="item">
       {{#with guestuser}}<i href="#!/{{guestuser}}"></i>Welcome, {{guestuser}}{{/with}}
       {{#with mainuser}}
@@ -17,6 +19,7 @@
         </div>
       {{/with}}
     </div>
+
     {{#with mainuser}}<a href="/create" class="item"><i class="pencil icon"></i> New post</a>{{/with}}
     {{#unless mainuser}}
       <a class="item" id="login" href='/signup'>{{translator 'COMMON_LOGIN'}}</a>
@@ -27,42 +30,63 @@
         <a class="item" id="guest-login">Continue as Guest</a>
       {{/if}}
     {{/unless}}
-        <div class="item">
-            {{bindsearch}}
-            <div class="ui right aligned category search item">
-                <div class="ui transparent inverted icon input">
-                    <input class="prompt" type="text" placeholder="Search ...">
-                    <i class="search link icon"></i>
-                </div>
-                <div class="results"></div>
-            </div>
-        </div>
-        {{#with mainuser}}
-        <a class="item" id="logout">
-            <i class="external icon"></i> {{translator 'COMMON_LOGOUT'}}
-        </a>
-        {{/with}}
 
-        <div class="item">
-            Categories
-            <div class="ui divider"></div>
-            {{#each customTags}}
-            <div>
-                <a href="/{{category}}" id="tag">#{{category}}</a>
-            </div>
-            {{/each}}
+    <div class="item">
+      {{bindsearch}}
+      <div class="ui right aligned category search item">
+        <div class="ui transparent inverted icon input">
+          <input class="prompt" type="text" placeholder="Search ...">
+          <i class="search link icon"></i>
         </div>
-        <a class="item about" href="/aboutus">About Us</a>
-        <a class="item faq" href="/faq">FAQ</a>
-        <a class="item tos" href="/tos">Terms of Service</a>
-        <div class="item" style="    position: absolute;
-        bottom: 0px;"> Supported by <div><a target="_blank" href="https://utopian.io"> Utopian<img style="margin-bottom: -4px;"
-                        width="16" height="16" src="./images/utopian.png"></a></div>
-            <div><a target="_blank" href="https://fundition.io"> Fundition <img style="    border-radius: 20px;margin-bottom: -2px;" width="12"
-                        height="12" src="./images/fundition.png"></a></div>
-                        <div><a target="_blank" href="http://curiesteem.com/"> Curie <img style="    border-radius: 20px;margin-bottom: -2px;" width="12"
-                            height="12" src="./images/curie.jpg"></a></div>
-        </div>
+        <div class="results"></div>
+      </div>
     </div>
 
+    {{#with mainuser}}
+      <a class="item" id="logout"><i class="external icon"></i> {{translator 'COMMON_LOGOUT'}}</a>
+    {{/with}}
+
+    <div class="item">
+      Categories<br /><br />
+      {{#each customTags}}
+        {{#if inequals category more}}
+          <div><p><a href="/{{category}}" id="tag"># {{category}}</a></p></div>
+        {{/if}}
+        {{#if subcategories}}
+          {{#each subcategory in subcategories}}
+            <div><p><a href="/{{subcategory}}" id="tag"># {{subcategory}}</a></p></div>
+          {{/each}}
+        {{/if}}
+      {{/each}}
+    </div>
+
+    <div class='item'>
+      More about steemstem.io
+      <div class="ui inverted vertical menu">
+        <a class='item' href="/aboutus">About Us</a>
+        <a class='item' href="/faq">FAQ</a>
+        <a class='item' href="/tos">Terms of Service</a>
+      </div>
+    </div>
+
+    <div class="item" style="bottom: 0px;">
+      Supported by
+      <div class="ui inverted vertical menu">
+        <a class='item' target="_blank" href="https://utopian.io">
+          <img align='left' style='padding-right:4px' width="20" height="20" src="images/utopian.png" />
+          Utopian
+        </a>
+        <a class='item' target="_blank" href="https://fundition.io">
+          <img align='left' style="padding-right:8px;"
+            width="16" height="16" src="images/fundition.png" />
+          Fundition
+        </a>
+        <a class='item' target="_blank" href="http://curiesteem.com/">
+          <img align='left' style="border-radius:50%; padding-right:8px;"
+            width="16" height="16" src="images/curie.jpg" />
+          Curie
+        </a>
+      </div>
+    </div>
+  </div>
 </template>
