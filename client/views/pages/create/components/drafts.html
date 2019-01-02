@@ -2,23 +2,27 @@
     <div class="ui message">
         <h4>SteemSTEM Recommendations</h4>
         <ul style="list-style-type:circle">
-            <li style="margin-bottom:10px">Remember to properly credit your pictures and cite your sources.</li>
-            <li style="margin-bottom:10px">Pictures must be copyrighted for commercial use.</li>
+            <li style="margin-bottom:10px">Remember to credit your images and cite your sources.</li>
+            <li style="margin-bottom:10px">Images must be copyrighted for commercial use.</li>
             <li style="margin-bottom:10px">Be original: re-phrasing other websites is rarely considered valuable.</li>
         </ul>
     </div>
     {{#if drafts}}
     <div class="ui message items">
        <h4> Saved Drafts </h4>
+       <div class="ui grid three column stackable padded">
        {{#each drafts}}
-        <div class="ui item draft">
+        <div class="ui five column wide item draft">
             <div class="ui tiny image">
                 {{#if imgFromBody this}}
                 <img data-src="{{imgFromBody this}}">
                 {{/if}}
             </div>
             <div class="content">
-                <a class="header">{{title}}</a>
+                <div class="header">
+                  <a>{{title}}</a>
+                    <i id='remove-draft' aria-hidden="true" class="teal fitted link icon trash alternate outline"></i>
+                </div>
                 <div class="meta">
                     Updated :
                     <a>{{DisplayTimeCreated last_update}}</a>
@@ -27,11 +31,9 @@
                     {{xssShortFormatter body}}
                 </div>
             </div>
-            <div class="ui mini button icon remove">
-                <i class="icon remove"></i>
-            </div>
         </div>
         {{/each}}
+        </div>
     </div>
     {{/if}}
 </template>

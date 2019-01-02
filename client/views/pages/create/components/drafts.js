@@ -8,7 +8,7 @@ Template.drafts.rendered = function () {
 }
 
 Template.drafts.events({
-    'click .ui.mini.button.remove': function (event) {
+    'click #remove-draft': function (event) {
         event.preventDefault()
         event.stopPropagation();
         Template.drafts.removeDraft(this)

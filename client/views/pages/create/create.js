@@ -27,25 +27,45 @@ Template.create.rendered = function () {
         }
       });
 
+    // Saving the post title for the post preview method
+    $('#title').on('input',function()
+    {
+      Session.set('preview-title',document.getElementById('newarticle').title.value)
+    });
+
     // Configuration of the WYSIWYG text editor toolbar and text area
     $('#summernote').summernote({
         toolbar: [
             ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear', 'superscript', 'subscript']],
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
             ['table', ['table']],
-            ['insert', ['link', 'picture']]
+            ['insert', ['link', 'picture']],
+            ['misc', ['codeview']]
         ],
         callbacks: {
             onImageUpload: function (files) {
                 Template.create.handleFiles(files);
             }
         },
-        height: 400,
+        height: 350,
         placeholder : "Your post here..."
+    });
+
+    // Saving the post body for the preview part
+    $('#summernote').on('summernote.change', function()
+    {
+      body = $('#summernote').summernote('code')
+      body= body.replace(/\&lt;script.*\&gt;[\w\W]{1,}(.*?)[\w\W]{1,}&lt;\/script\&gt;/gi, "<b>SCRIPT REMOVED</b>");
+      Session.set('preview-body', body)
+    });
+
+    // Saving the post tags for the post preview method
+    $('#tags').on('change',function()
+    {
+      Session.set('preview-tags',document.getElementById('newarticle').tags.value)
     });
 
     // Rules for validating the form
@@ -441,7 +461,22 @@ Template.create.helpers(
   DisplayBeneficiary: function(beneficiary) { return beneficiary[0] },
 
   // Function allowing to display a share of a single beneficiary
-  DisplayShare: function(beneficiary) { return beneficiary[1] }
+  DisplayShare: function(beneficiary) { return beneficiary[1] },
 
+  // Function allowing to display the post title for the preview part
+  DisplayPostTitle: function() { return Session.get('preview-title') },
+
+  // Functin to display the post body for the preview part
+  DisplayPostBody: function()  { return Session.get('preview-body'); },
+
+  // Functin to display the post tagsfor the preview part
+  DisplayPostTags: function()
+  {
+    tags = Session.get('preview-tags').split(',');
+    if(tags=='') { return ['steemstem'] }
+    if(!tags.includes('steemstem'))
+      tags.unshift('steemstem')
+    return tags
+  }
 })
 

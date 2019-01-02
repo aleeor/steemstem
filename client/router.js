@@ -50,11 +50,16 @@ FlowRouter.route('/aboutus', {
     }
 });
 
-FlowRouter.route('/create', {
-    name: 'create',
-    action: function (params, queryParams) {
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", topmenu: "topmenu" });
-    }
+FlowRouter.route('/create',
+{
+  name: 'create',
+  action: function (params, queryParams)
+  {
+    Session.set('preview-title','')
+    Session.set('preview-body','')
+    Session.set('preview-tags','')
+    BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", topmenu: "topmenu" });
+  }
 });
 
 FlowRouter.route('/login', {
