@@ -82,10 +82,6 @@ Template.create.rendered = function () {
               {
                 type: 'minLength[5]',
                 prompt: translate('COMMON_AT_LEAST_FIVECHAR')
-              },
-              {
-                type: 'maxLength[80]',
-                prompt: translate('COMMON_AT_MOST_EIGHTYCHAR')
               }
             ]
           },
