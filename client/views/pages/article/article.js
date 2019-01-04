@@ -46,9 +46,10 @@ Template.article.rendered = function ()
       // update size when new content loads
       observeChanges: true,
       // load content on bottom edge visible
-      onBottomVisible: function () {
+      onBottomVisible: function ()
+      {
         // loads a max of 5 times 
-        if (!Comments.findOne({ 'parent_permlink': Session.get('article') }))
+        if(!Comments.findOne({ 'parent_permlink': Session.get('article') }))
           Comments.loadComments(Session.get('user'), Session.get('article'),
             function (error) { if (error) { console.log(error) } })
       }
@@ -143,7 +144,7 @@ Template.article.helpers(
     // Loading the comments
     loadComments: function()
     {
-      comments = Comments.find({ 'parent_permlink': Session.get('article') }).fetch()
+      comments = Comments.find({ 'parent_permlink': Session.get('article')}).fetch()
       if(comments) {return comments }
     }
 })

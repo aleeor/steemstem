@@ -78,10 +78,27 @@ Template.registerHelper('currentAuthor', function () {
     }
 })
 
-Template.registerHelper('currentArticleComments', function () {
-    if (Comments.find({ 'parent_permlink': Session.get('article') }).fetch()) {
-        return Comments.find({ 'parent_permlink': Session.get('article') }).fetch()
-    }
+// Getting the list of comments to an article
+Template.registerHelper('currentArticleComments', function ()
+{
+  if(Comments.find({ 'parent_permlink': Session.get('article') }).fetch())
+  {
+        comments=Comments.find({'parent_permlink': Session.get('article') }).fetch()
+        comments.sort(function(a,b) {
+          var wa1 = parseInt(a.vote_rshares)
+          var wb1 = parseInt(b.vote_rshares)
+          weight_1 = wa1 > wb1 ? -1 : wa1 < wb1 ? 1 : 0
+          wa1 = parseInt(a.net_votes)
+          wb1 = parseInt(b.net_votes)
+          weight_2 = wa1 > wb1 ? -1 : wa1 < wb1 ? 1 : 0
+          wa1 = new Date(a.created).getTime();
+          wb1 = new Date(b.created).getTime();
+          weight_3 = wa1 > wb1 ? -1 : wa1 < wb1 ? 1 : 0
+          weight = weight_1+weight_2
+          return weight<0 ? -1 : weight>0 ? 1 : weight_3
+        });
+        return comments
+  }
 })
 
 Template.registerHelper('currentCommentsSubcomments', function (comment) {
