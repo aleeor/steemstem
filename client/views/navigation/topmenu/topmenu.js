@@ -86,7 +86,8 @@ Template.topmenu.events({
     MainUser.remove({})
     localStorage.removeItem('username')
     localStorage.removeItem('accesstoken')
-    localStorage.removeItem('expireat')
+    localStorage.removeItem('expires_at')
+    localStorage.removeItem('expires_in')
   },
 })
 

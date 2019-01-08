@@ -67,14 +67,31 @@ FlowRouter.route('/login', {
     action: function (params, queryParams) {
         localStorage.clear();
         localStorage.setItem('accesstoken', queryParams.access_token)
-        localStorage.setItem('expireat', queryParams.expire_at)
+        localStorage.setItem('expires_in', queryParams.expires_in)
         localStorage.setItem('username', queryParams.username)
-        //console.log(queryParams.access_token)
+        var state=''
+        if(queryParams.state)
+        {
+          state = queryParams.state
+          command = state.substring(state.indexOf('----ssio----')+12).split('_')
+          state = state.substring(0,state.indexOf('----ssio----'))
+        }
         var time = new Date();
         FlowRouter.setQueryParams({ params: null, queryParams: null });
-        time = new Date(time.getTime() + 1000 * (localStorage.expireat - 10000));
-        localStorage.setItem('expirein', time)
-        FlowRouter.go('/')
+        time = new Date(time.getTime() + 1000 * (parseInt(localStorage.expires_in) - 10000));
+        localStorage.setItem('expires_at', time)
+        if(command)
+        {
+          switch(command[0])
+          {
+            case 'vote':
+              sc2.setAccessToken(localStorage.accesstoken);
+              sc2.vote(localStorage.username, command[1], command[2], parseInt(command[3]),
+                function (err, result) { if(err) { console.log(err)} })
+              break;
+          }
+        }
+        FlowRouter.go('/'+state)
     }
 });
 
