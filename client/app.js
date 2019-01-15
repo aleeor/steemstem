@@ -144,16 +144,8 @@ Meteor.startup(function () {
     Session.set('currentVotingPercentage', 50)
     Session.set('visiblecontent', 12)
 
-//    console.log(
-//        `%c WARNING !!!`,
-//        "background: #db2828; color: white; font-size: 12px; padding: 3px 3px;"
-//    );
-//    console.log(
-//        `%c THIS FEATURE IS DESIGNED FOR DEVELOPERS. ANYTHING YOU PASTE OR TYPE HERE CAN COMPROMISE YOUR ACCOUNT AND YOUR PRIVATE KEYS.`,
-//        "background: white; color: black; font-size: 12px; padding: 3px 3px;"
-//    );
     console.log(
-        `%c SteemStem OpenSource v0.5.27: https://github.com/SteemStem-io/steemstem`,
+        `%c SteemStem OpenSource v0.5.46: https://github.com/SteemStem-io/steemstem`,
         "font-size: 11px; padding: 1px 1px;"
     );
     console.log(
@@ -161,7 +153,11 @@ Meteor.startup(function () {
         "font-size: 11px; padding: 1px 1px;"
     );
     console.log(
-        `%c Created with love by @hightouch & @planetenamek from @futureshock. Maintained and further developed by @lemouth.`,
+        `%c Created with love by @hightouch & @planetenamek from @futureshock.`,
+        "font-size: 11px; padding: 1px 1px;"
+    );
+    console.log(
+        `%c Maintained and developed by @lemouth.`,
         "font-size: 11px; padding: 1px 1px;"
     );
 
