@@ -1,19 +1,24 @@
+// No rendering
+Template.sharemodal.rendered = function() { }
 
-Template.sharemodal.events({
-    'click .approve.steemit.button': function (event) {
-        event.preventDefault()
-        steemconnect.reblog(this.author, this.permlink, function (error, result) {
-            if (error) {
-                console.log(error)
-                if (error.description)
-                    console.log(error.description)
-            } else {
-                console.log(result)
-            }
-        }
-        )
-        $('.ui.share.modal.'+this.permlink)
-        .modal('close')
-        ;
-    }
-})
+// Modal initialization
+Template.sharemodal.init = function(author, permlink)
+{
+  // buttons
+  document.getElementById("resteem").addEventListener("click", Proceed);
+
+  // Submit button
+  function Proceed()
+  {
+    event.preventDefault()
+    steemconnect.reblog(author, permlink, function (error, result)
+    {
+      if (error) { console.log(error); if (error.description) {console.log(error.description)} }
+      else { console.log(result) }
+    })
+    $('.ui.share.modal.'+permlink).modal('close');
+  }
+}
+
+// No events
+Template.sharemodal.events({ })

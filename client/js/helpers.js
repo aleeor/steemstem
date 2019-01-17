@@ -187,7 +187,7 @@ Template.registerHelper('DisplayTimeFrom', function (date) {
 
 Template.registerHelper('DisplayTimeCreated', function (date) {
     if (!date) return
-    return moment(date).format("ll")
+    return moment(date).format("lll")
 })
 
 Template.registerHelper('displayUpvote', function (share, rewards) {
