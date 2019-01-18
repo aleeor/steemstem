@@ -14,7 +14,9 @@
         </span>
       {{/if}}
       <div class="content">
-        <div class="description"> {{{remarkableFormatter body}}} </div>
+        <div class="description">
+          {{#markdown}} {{{remarkableFormatter body}}} {{/markdown}}
+        </div>
         <div class="ui divider"></div>
         {{#if equals currentAuthor.name mainuser.name}}
           <div class="left floated">

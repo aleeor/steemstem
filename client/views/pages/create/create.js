@@ -1,3 +1,6 @@
+// Imports
+import showdown from 'showdown'
+
 // Rendering of the page
 Template.create.rendered = function () {
 
@@ -58,6 +61,10 @@ Template.create.rendered = function () {
     $('#summernote').on('summernote.change', function()
     {
       body = $('#summernote').summernote('code')
+      var converter = new showdown.Converter()
+      body = converter.makeHtml(body)
+      body = body.split('<p>').join('')
+      body = body.split('</p>').join('')
       body= body.replace(/\&lt;script.*\&gt;[\w\W]{1,}(.*?)[\w\W]{1,}&lt;\/script\&gt;/gi, "<b>SCRIPT REMOVED</b>");
       Session.set('preview-body', body)
     });
@@ -230,6 +237,10 @@ Template.create.createProject = function(form)
   var permlink;
   var title = form.title.value
   var body = form.body.value
+  var converter = new showdown.Converter()
+  body = converter.makeHtml(body)
+  body = body.split('<p>').join('')
+  body = body.split('</p>').join('')
   var tags = form.tags.value
   var beneficiaries = form.beneficiaries.value
   if(beneficiaries!='')
@@ -463,7 +474,12 @@ Template.create.helpers(
   DisplayPostTitle: function() { return Session.get('preview-title') },
 
   // Functin to display the post body for the preview part
-  DisplayPostBody: function()  { return Session.get('preview-body'); },
+  DisplayPostBody: function()
+  {
+    post_body = Session.get('preview-body');
+    return post_body
+
+  },
 
   // Functin to display the post tagsfor the preview part
   DisplayPostTags: function()
