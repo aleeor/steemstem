@@ -3,6 +3,7 @@ Content = new Mongo.Collection(null)
 Promoted = new Mongo.Collection(null)
 //contentObserver = new PersistentMinimongo2(Content, 'content');
 
+// Helper allowing to get the list of posts
 Content.getCreatedContent = function (tag, limit, type, cb)
 {
   var query = { tag: tag, limit: limit };
@@ -19,13 +20,14 @@ Content.getCreatedContent = function (tag, limit, type, cb)
           {
             if(AccountHistory.find({_id:result[i].permlink}).fetch().length>0) { result[i].type = "steemstem"}
             else { result[i].type = type}
+            if(Content.find( { permlink: result[i].permlink }).fetch().length>0) { break;}
             for (var t = 0; t < result[i].json_metadata.tags.length; t++)
             {
               if (!result[i].language)  { result[i].language = FilterLanguage(result[i].json_metadata.tags[t]) }
               else                      { break; }
             }
-            if (!result[i].language)
-                result[i].language = 'en'
+            if (!result[i].language) { result[i].language = 'en'              }
+            if (!result[i].id)       { result[i].id       = result[i].post_id }
             result[i]._id = result[i].id
             result[i].search = result[i].json_metadata.tags.join(' ')
             result[i].surl = Content.CreateUrl(result[i].author, result[i].permlink)

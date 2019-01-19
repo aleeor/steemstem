@@ -474,12 +474,7 @@ Template.create.helpers(
   DisplayPostTitle: function() { return Session.get('preview-title') },
 
   // Functin to display the post body for the preview part
-  DisplayPostBody: function()
-  {
-    post_body = Session.get('preview-body');
-    return post_body
-
-  },
+  DisplayPostBody: function()  { return Session.get('preview-body'); },
 
   // Functin to display the post tagsfor the preview part
   DisplayPostTags: function()

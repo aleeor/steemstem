@@ -24,8 +24,12 @@ Template.content.helpers({
   DisplayBeneficiary: function(beneficiary) { return beneficiary[0] },
 
   // Function allowing to display a share of a single beneficiary
-  DisplayShare: function(beneficiary) { return beneficiary[1] }
- })
+  DisplayShare: function(beneficiary) { return beneficiary[1] },
+
+  // Check whether the post has been posted with steemstem.io
+  UsingSSio: function() { return (this.json_metadata && this.json_metadata.app=='steemstem') }
+
+})
 
 // Event associated to the vote button
 Template.content.events({

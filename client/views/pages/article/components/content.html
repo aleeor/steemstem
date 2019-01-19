@@ -3,6 +3,7 @@
   <div class="ui cards">
     <div class="ui card fluid borderless" >
       <h1 class="steemstem title" >{{title}}</h1>
+      {{#if UsingSSio}}<img width='90px' src='images/postedon7.jpg' /><br />{{/if}}
       <div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span></div>
       {{#if json_metadata.tags}}
         <span class="ui top right attached label childopacity">

@@ -44,9 +44,13 @@ Template.registerHelper('translator', function (code) {
     return translate(code);
 });
 
-
+// Formatter for the posts (with some tricks to make it nicer)
 Template.registerHelper('remarkableFormatter', function (text) {
+    text = text.replace(/<span([^>]*)>/g,'ssioMUF[$1]');
+    text = text.replace(/<\/span>/g,'ENDssioMUF');
     text = steemMarkdown(text)
+    text = text.replace(/ssioMUF\[([^\]]*)\]/g,'<span $1>');
+    text = text.replace(/ENDssioMUF/g,'</span>');
     var autolinker = new Autolinker({
         urls: {
             schemeMatches: true,
