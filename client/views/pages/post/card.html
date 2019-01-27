@@ -25,7 +25,18 @@
         {{/each}}
       </span>
       {{#if UsingSSio}}
-        <p></p><p><img width='90px' src='images/postedon7.jpg' /></p>
+        {{#if SetBeneficiary}}
+          <p></p><p>
+            <img width='90px' src='images/postedon7.jpg' />
+            <img width='90px' src='images/beneficiary.jpg' />
+          </p>
+        {{else}}
+          <p></p><p><img width='90px' src='images/postedon7.jpg' /></p>
+        {{/if}}
+      {{else}}
+        {{#if SetBeneficiary}}
+          <p></p><p><img width='90px' src='images/beneficiary.jpg' /></p>
+        {{/if}}
       {{/if}}
     </div>
     <div class="ui big label fluid npdg noradius">{{>upvote}}</div>
