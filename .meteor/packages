@@ -28,3 +28,7 @@ jquery@1.11.10
 dschulz:jquery-qrcode
 postrednik:meteor-rangeslider
 markdown
+server-render
+meteorhacks:picker
+meteorhacks:ssr
+kadira:dochead

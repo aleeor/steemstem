@@ -4,6 +4,7 @@ import { Session } from "meteor/session";
 FlowRouter.route('/', {
     name: 'home',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         $('.actived').removeClass('actived')
         $('.steemstem.home').addClass('actived')
@@ -25,6 +26,7 @@ FlowRouter.route('/', {
 FlowRouter.route('/admin', {
     name: 'admin',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "admin", topmenu: "topmenu" });
     }
 });
@@ -32,6 +34,7 @@ FlowRouter.route('/admin', {
 FlowRouter.route('/faq', {
     name: 'faq',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "faq", topmenu: "topmenu" });
     }
 });
@@ -39,6 +42,7 @@ FlowRouter.route('/faq', {
 FlowRouter.route('/tos', {
     name: 'tos',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "tos", topmenu: "topmenu" });
     }
 });
@@ -46,6 +50,7 @@ FlowRouter.route('/tos', {
 FlowRouter.route('/aboutus', {
     name: 'aboutus',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "aboutus", topmenu: "topmenu" });
     }
 });
@@ -55,6 +60,7 @@ FlowRouter.route('/create',
   name: 'create',
   action: function (params, queryParams)
   {
+    DocHead.removeDocHeadAddedTags()
     Session.set('preview-title','')
     Session.set('preview-body','')
     Session.set('preview-tags','')
@@ -67,6 +73,7 @@ FlowRouter.route('/create',
 FlowRouter.route('/login', {
     name: 'login',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         localStorage.clear();
         localStorage.setItem('accesstoken', queryParams.access_token)
         localStorage.setItem('expires_in', queryParams.expires_in)
@@ -144,6 +151,7 @@ FlowRouter.route('/login', {
 FlowRouter.route('/@:user', {
     name: 'profile',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','blog')
@@ -175,6 +183,7 @@ FlowRouter.route('/@:user', {
 FlowRouter.route('/@:user/comments', {
     name: 'profile',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','comments')
@@ -201,6 +210,7 @@ FlowRouter.route('/@:user/comments', {
 FlowRouter.route('/@:user/replies', {
     name: 'profile',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','replies')
@@ -227,6 +237,7 @@ FlowRouter.route('/@:user/replies', {
 FlowRouter.route('/@:user/rewards', {
     name: 'profile',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','rewards')
@@ -253,6 +264,7 @@ FlowRouter.route('/@:user/rewards', {
 FlowRouter.route('/@:user/wallet', {
     name: 'profile',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
         Session.set('user', params.user)
         Session.set('currentprofiletab','wallet')
@@ -279,6 +291,7 @@ FlowRouter.route('/@:user/wallet', {
 FlowRouter.route('/:tag', {
     name: 'tag',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         Session.set('currentSearch',params.tag)
         Session.set('isonreply', false)
@@ -296,20 +309,28 @@ FlowRouter.route('/@:user/:permlink', {
         Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
-        if (!Content.findOne({ permlink: params.permlink })) {
-            Content.getContent(params.user, params.permlink,"article", function (error) {
-                if (error) {
-                    console.log(error)
-                }
-            })
-        }
-        // if (!Comments.findOne({ permlink: params.permlink })) {
-        //     Comments.loadComments(params.user, params.permlink, function (error) {
-        //         if (error) {
-        //             console.log(error)
-        //         }
-        //     })
-        // }
+        DocHead.removeDocHeadAddedTags()
+        if (!Content.findOne({ permlink: params.permlink }))
+          { Content.getContent(params.user, params.permlink,"article", function (error) { if (error) { console.log(error) } }) }
+        steem.api.getContent(params.user, params.permlink, function (error, result)
+        {
+          if(error) {console.log('error = ', error); }
+          else
+          {
+             var __imgRegex = /https?:\/\/(?:[-a-zA-Z0-9._]*[-a-zA-Z0-9])(?::\d{2,5})?(?:[/?#](?:[^\s"'<>\][()]*[^\s"'<>\][().,])?(?:(?:\.(?:tiff?|jpe?g|gif|png|svg|ico)|ipfs\/[a-z\d]{40,})))/gi;
+             var img = 'https://steemitimages.com/0x0/' + result.body.match(__imgRegex)[0];
+             DocHead.addMeta({property: 'og:image', content: img})
+             DocHead.addMeta({property: 'title', content: result.title})
+             DocHead.addMeta({property: 'og:title', content: result.title})
+             DocHead.addMeta({property: 'og:url', content: 'https://www.steemstem.io/#!'+result.url})
+             desc = Blaze._globalHelpers['remarkableFormatter'](result.body)
+             desc = Blaze._globalHelpers['xssShortFormatter'](desc)
+             desc = Blaze._globalHelpers['shortDescription'](desc)
+             desc = desc.split('\n').join(' ')
+             DocHead.addMeta({property: 'og:description', content: desc})
+             DocHead.addMeta({property: 'description', content: desc})
+          }
+        })
         User.add(params.user, function (error) {
             if (error) {
                 console.log(error)
@@ -335,6 +356,7 @@ FlowRouter.route('/@:user/:permlink', {
 FlowRouter.route('//@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
+        DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         Session.set('isonreply', true)
         Session.set('user', params.user)
@@ -389,8 +411,8 @@ FlowRouter.route('/:tag/@:user/:permlink', {
     }
 });
 
-
-
-
-
-
+FlowRouter.notFound = {
+    action: function() {
+       console.log('MUF', this)
+    }
+};

@@ -13,10 +13,8 @@
     {{/if}} -->
     {{#if steemStemContent}}
       {{#each steemStemContent}}
-        {{#if inequals this.author "top-quark"}}
-          {{>card}}
-          <div class="ui divider"></div>
-        {{/if}}
+        {{>card}}
+        <div class="ui divider"></div>
       {{/each}}
     {{else}}
       {{#if equals currentSearch 'steemstem'}}

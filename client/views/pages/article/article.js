@@ -188,7 +188,6 @@ Template.article.events(
 
 })
 
-
 // Getting the meta data of the post to submit on the blockchain
 Template.article.UpdateProject = function(form)
 {

@@ -44,7 +44,7 @@ Template.card.events(
   'click .header': function (event)
   {
     event.preventDefault()
-    FlowRouter.go('#!/@' + this.author + '/' + this.permlink)
+    FlowRouter.go('/@' + this.author + '/' + this.permlink)
   },
 
   // Popup
@@ -59,7 +59,7 @@ Template.card.events(
   {
     event.stopPropagation();
     event.preventDefault()
-    FlowRouter.go('#!/@' + this.author)
+    FlowRouter.go('/@' + this.author)
   },
 
   // Vote actin
