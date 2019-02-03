@@ -44,9 +44,13 @@ Template.registerHelper('translator', function (code) {
     return translate(code);
 });
 
-
+// Formatter for the posts (with some tricks to make it nicer)
 Template.registerHelper('remarkableFormatter', function (text) {
+    text = text.replace(/<span([^>]*)>/g,'ssioMUF[$1]');
+    text = text.replace(/<\/span>/g,'ENDssioMUF');
     text = steemMarkdown(text)
+    text = text.replace(/ssioMUF\[([^\]]*)\]/g,'<span $1>');
+    text = text.replace(/ENDssioMUF/g,'</span>');
     var autolinker = new Autolinker({
         urls: {
             schemeMatches: true,
@@ -68,7 +72,7 @@ Template.registerHelper('remarkableFormatter', function (text) {
 
         className: ''
     });
-    autolinker.link(text);
+//    autolinker.link(text);
     return text 
 })
 
@@ -372,25 +376,30 @@ Template.registerHelper('isBlacklisted', function (user_permlink) {
 })
 
 
-Template.registerHelper('MainUserRate', function (project) {
-    if (!project || !project.active_votes || !project.net_votes) return
-    if (project.active_votes.length) {
-        for (var i = 0; i < project.active_votes.length; i++) {
-            if (project.active_votes[i].voter == localStorage.username
-                && parseInt(project.active_votes[i].percent) > 0)
-                return parseFloat(project.active_votes[i].percent / 100).toFixed(0)
-        }
+Template.registerHelper('MainUserRate', function (project)
+{
+  if (!project || !project.active_votes || !project.net_votes) return
+  if (project.active_votes.length)
+  {
+    for (var i = 0; i < project.active_votes.length; i++)
+    {
+      if (project.active_votes[i].voter==localStorage.username && parseInt(project.active_votes[i].percent) > 0)
+      {
+        return parseFloat(project.active_votes[i].percent / 100).toFixed(0)
+      }
     }
-    else {
-        if (project.net_votes.length) {
-            for (var i = 0; i < project.net_votes.length; i++) {
-                if (project.net_votes[i].voter == localStorage.username
-                    && parseInt(project.net_votes[i].percent) > 0)
-                    return parseFloat(project.net_votes[i].percent / 100).toFixed(0)
-            }
-        }
+  }
+  else
+  {
+    if (project.net_votes.length)
+    {
+      for (var i = 0; i < project.net_votes.length; i++)
+      {
+        if (project.net_votes[i].voter == localStorage.username && parseInt(project.net_votes[i].percent) > 0)
+         return parseFloat(project.net_votes[i].percent / 100).toFixed(0)
+      }
     }
-
+  }
 })
 
 Template.registerHelper('displayPayout', function (active, total, voter) {

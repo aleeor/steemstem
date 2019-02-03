@@ -1,3 +1,6 @@
+// Imports
+import showdown from 'showdown'
+
 // Rendering of the page
 Template.create.rendered = function () {
 
@@ -58,7 +61,9 @@ Template.create.rendered = function () {
     $('#summernote').on('summernote.change', function()
     {
       body = $('#summernote').summernote('code')
-      body= body.replace(/\&lt;script.*\&gt;[\w\W]{1,}(.*?)[\w\W]{1,}&lt;\/script\&gt;/gi, "<b>SCRIPT REMOVED</b>");
+      var converter = new showdown.Converter()
+      body = converter.makeHtml(body)
+      body= body.replace(/\&lt;sc.*\&gt;[\w\W]{1,}(.*?)[\w\W]{1,}&lt;\/pt\&gt;/gi, "<b>SCRIPT REMOVED</b>");
       Session.set('preview-body', body)
     });
 
@@ -230,6 +235,8 @@ Template.create.createProject = function(form)
   var permlink;
   var title = form.title.value
   var body = form.body.value
+  var converter = new showdown.Converter()
+  body = converter.makeHtml(body)
   var tags = form.tags.value
   var beneficiaries = form.beneficiaries.value
   if(beneficiaries!='')
@@ -253,8 +260,9 @@ Template.create.createProject = function(form)
   if(sessionStorage.editpermlink) { permlink = sessionStorage.editpermlink }
   else
   {
-        permlink = title.replace(/[^a-zA-Z0-9]/g,' '),
+        permlink = title.replace(/[^a-zA-Z0-9]/g,' ')
         permlink = permlink.replace(/\s+/g, '-').toLowerCase().slice(0,20)
+        permlink = permlink+'-'+(Math.round((new Date()).getTime() / 1000)).toString();
   }
   var author = localStorage.username
   var json_metadata = {

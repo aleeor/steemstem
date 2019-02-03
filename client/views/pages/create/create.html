@@ -86,7 +86,11 @@
         <h2 class="ui header">{{DisplayPostTitle}}</h2>
 
         <!-- BODY -->
-        <div class="content">{{{DisplayPostBody}}}</div>
+        <div class='content'>
+          <div class="description">
+            {{#markdown}} {{{DisplayPostBody}}} {{/markdown}}
+          </div>
+        </div>
 
         <!-- TAGS -->
         <div class="ui divider"></div>

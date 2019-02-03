@@ -79,13 +79,13 @@ Template.article.helpers(
         $('#summernote').summernote({
           toolbar: [
             ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear', 'superscript', 'subscript']],
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
             ['table', ['table']],
-            ['insert', ['link', 'picture']]
+            ['insert', ['link', 'picture']],
+            ['misc', ['codeview']]
           ],
           callbacks:
            {onImageUpload: function (files) { Template.create.handleFiles(files);}},
@@ -187,7 +187,6 @@ Template.article.events(
   }
 
 })
-
 
 // Getting the meta data of the post to submit on the blockchain
 Template.article.UpdateProject = function(form)

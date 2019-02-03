@@ -3,6 +3,18 @@
   <div class="ui cards">
     <div class="ui card fluid borderless" >
       <h1 class="steemstem title" >{{title}}</h1>
+      {{#if UsingSSio}}
+        {{#if SetBeneficiary}}
+            <p><img width='90px' src='/images/postedon7.jpg' />
+               <img width='90px' hspace="10" src='/images/beneficiary.jpg' /></p>
+        {{else}}
+          <img width='90px' src='/images/postedon7.jpg' /><br />
+        {{/if}}
+      {{else}}
+        {{#if SetBeneficiary}}
+          <img width='90px' src='/images/beneficiary.jpg' /><br />
+        {{/if}}
+      {{/if}}
       <div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span></div>
       {{#if json_metadata.tags}}
         <span class="ui top right attached label childopacity">
@@ -14,7 +26,9 @@
         </span>
       {{/if}}
       <div class="content">
-        <div class="description"> {{{remarkableFormatter body}}} </div>
+        <div class="description">
+          {{#markdown}} {{{remarkableFormatter body}}} {{/markdown}}
+        </div>
         <div class="ui divider"></div>
         {{#if equals currentAuthor.name mainuser.name}}
           <div class="left floated">

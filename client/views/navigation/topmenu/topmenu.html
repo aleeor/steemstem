@@ -3,7 +3,7 @@
     <div class="ui container fluid">
         <a id="display-menu" class="header item mn"><i class="content icon"></i></a>
         <div class="ui grid logo padded computer only">
-          <a href="/" class="item"><img class="ui fluid small image" src="./images/banner/steemstemlogoback.png"></a>
+          <a href="/" class="item"><img class="ui fluid small image" src="/images/banner/steemstemlogoback.png"></a>
         </div>
         <div class="ui grid inverted compact menu computer only">
           <a id="tag" class="item steemstem red home top cat">home</a>
@@ -63,7 +63,7 @@
           </div>
         </div>
         <a class="item">
-          <div class="ui dropdown language inverted">
+          <div class="ui dropdown language inverted" style="width: 50px;">
             <input type="hidden" name="language" placeholder="{{translator 'COMMON_SELECT_LANGUAGE'}}">
             <i class="dropdown icon"></i>
             <div class="default text"><i class="us flag"></i></div>
@@ -78,15 +78,15 @@
             </div>
           </div>
         </a>
-      </div>
 
-      {{#unless mainuser}}
-        <a id="login" href="/signup" class="item">{{translator 'COMMON_LOGIN'}}</a>
-        <a id="signup" target="_blank" href="https://signup.steemit.com" class="item">{{translator 'COMMON_SIGNUP'}}</a>
-      {{/unless}}
-      {{#with mainuser}}
-        {{> dropdownprofile}}
-      {{/with}}
+        {{#unless mainuser}}
+          <a id="login" href="/signup" class="item">{{translator 'COMMON_LOGIN'}}</a>
+          <a id="signup" target="_blank" href="https://signup.steemit.com" class="item" style="margin-right:10px;">{{translator 'COMMON_SIGNUP'}}</a>
+        {{/unless}}
+        {{#with mainuser}}
+          {{> dropdownprofile}}
+        {{/with}}
+      </div>
     </div>
   </div>
 </template>
