@@ -36,8 +36,10 @@ Template.content.helpers({
     for(i=0; i<this.beneficiaries.length;i++)
       bnf_list.push(this.beneficiaries[i].account)
     return bnf_list.includes('steemstem')
-  }
+  },
 
+  // Markdown management
+  DisplayPostBody: function () { return kramed(this.body); }
 
 })
 

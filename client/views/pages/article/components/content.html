@@ -27,16 +27,18 @@
       {{/if}}
       <div class="content">
         <div class="description">
-          {{#markdown}} {{{remarkableFormatter body}}} {{/markdown}}
+          {{#markdown}}  {{{remarkableFormatter DisplayPostBody}}} {{/markdown}}
         </div>
-        <div class="ui divider"></div>
-        {{#if equals currentAuthor.name mainuser.name}}
-          <div class="left floated">
-            {{ >edit data=this}}
+        <div style='padding-top: 10px; clear: both;'>
+          <div class="ui divider"></div>
+          {{#if equals currentAuthor.name mainuser.name}}
+            <div class="left floated">
+              {{ >edit data=this}}
+            </div>
+          {{/if}}
+          <div class="right floated">
+              <div class="header">Share: {{>share}}</div>
           </div>
-        {{/if}}
-        <div class="right floated">
-            <div class="header">Share: {{>share}}</div>
         </div>
       </div>
       <div class="ui big label fluid npdg noradius">{{>upvote}}</div>
