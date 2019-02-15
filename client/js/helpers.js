@@ -4,8 +4,6 @@ import moment from 'moment-with-locales-es6'
 import showdown from 'showdown'
 import Remarkable from 'remarkable';
 
-var Autolinker = require('autolinker');
-
 const steemMarkdown = require('steem-markdown-only')
 
 Template.registerHelper('imgFromArray', function (project) {
@@ -51,28 +49,6 @@ Template.registerHelper('remarkableFormatter', function (text) {
     text = steemMarkdown(text)
     text = text.replace(/ssioMUF\[([^\]]*)\]/g,'<span $1>');
     text = text.replace(/ENDssioMUF/g,'</span>');
-    var autolinker = new Autolinker({
-        urls: {
-            schemeMatches: true,
-            wwwMatches: true,
-            tldMatches: true
-        },
-        email: true,
-        phone: true,
-        mention: 'steemit',
-        hashtag: 'steemit',
-        stripPrefix: false,
-        stripTrailingSlash: false,
-        newWindow: true,
-
-        truncate: {
-            length: 0,
-            location: 'end'
-        },
-
-        className: ''
-    });
-//    autolinker.link(text);
     return text 
 })
 

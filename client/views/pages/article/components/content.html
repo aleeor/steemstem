@@ -8,11 +8,11 @@
             <p><img width='90px' src='/images/postedon7.jpg' />
                <img width='90px' hspace="10" src='/images/beneficiary.jpg' /></p>
         {{else}}
-          <img width='90px' src='/images/postedon7.jpg' /><br />
+          <p><img width='90px' src='/images/postedon7.jpg' /></p>
         {{/if}}
       {{else}}
         {{#if SetBeneficiary}}
-          <img width='90px' src='/images/beneficiary.jpg' /><br />
+          <p><img width='90px' src='/images/beneficiary.jpg' /></p>
         {{/if}}
       {{/if}}
       <div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span></div>
@@ -27,7 +27,7 @@
       {{/if}}
       <div class="content">
         <div class="description">
-          {{#markdown}}  {{{remarkableFormatter DisplayPostBody}}} {{/markdown}}
+          {{#markdown}}  {{{DisplayPostBody}}} {{/markdown}}
         </div>
         <div style='padding-top: 10px; clear: both;'>
           <div class="ui divider"></div>

@@ -8,7 +8,6 @@
     "@babel/runtime": "^7.0.0-beta.42",
     "ajv": "^6.5.4",
     "autolink.js": "^0.1.1",
-    "autolinker": "^1.7.1",
     "blueimp-file-upload": "^9.21.0",
     "buffer": "^5.2.1",
     "bufferutil": "^3.0.5",
