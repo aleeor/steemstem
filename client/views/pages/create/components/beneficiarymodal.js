@@ -65,8 +65,6 @@ Template.beneficiarymodal.init = function ()
   {
     if(Session.get('beneficiary')!='' && Session.get('shares')!='')
     {
-      event.preventDefault()
-      event.stopPropagation();
       draft = Session.get('current-draft')
       if(draft.beneficiaries=='') {  draft.beneficiaries=[] }
       draft.beneficiaries = draft.beneficiaries.filter( (x) => { return x[0]!==Session.get('beneficiary'); });
