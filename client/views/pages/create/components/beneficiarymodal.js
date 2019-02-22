@@ -43,7 +43,7 @@ Template.beneficiarymodal.init = function ()
   // Control of the share field
   $("#shares").change(function ()
   {
-    if( (parseFloat($("#shares").val())>0) && (parseFloat($("#shares").val())<100) )
+    if( (parseFloat($("#shares").val())>0) && (parseFloat($("#shares").val())<=100) )
     {
       $(".shares.message.red").addClass('hidden')
       Session.set('shares',$("#shares").val())
