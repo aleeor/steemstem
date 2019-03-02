@@ -202,8 +202,6 @@ Template.transfermodal.init = function (operation)
     var coin=''; var url='';
     if( (Session.get('to') && Session.get('amount')) || (Session.get('amount') && 'powerdown'==operation))
     {
-      event.preventDefault()
-      event.stopPropagation();
       $('.ui.transfer.modal').modal('hide')
       coin = 'STEEM'
       if(['fromsavings-sbd', 'sbd-transfer', 'sbd-savingtransfer'].includes(operation)) { coin = 'SBD' }

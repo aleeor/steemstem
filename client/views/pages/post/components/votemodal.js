@@ -39,8 +39,6 @@ Template.votemodal.init = function () {
     document.getElementById("confirmbutton").addEventListener("click", confirmVote);
 
     function confirmVote() {
-        event.preventDefault()
-        event.stopPropagation();
         $("#confirmbutton").addClass('loading')
         var weight = Session.get('currentVotingPercentage') * 100
         var author = $("#confirmbutton").attr("data-author")
