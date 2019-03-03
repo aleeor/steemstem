@@ -1,7 +1,7 @@
 <template name="reply">
     <div class="actions">
         {{#if ../permlink}}
-        <a class="reply-action action-{{../permlink}}"><img style="border-radius: 15px;margin:2px;" src='images/reply.jpg' width='50' /></a>
+        <a class="reply-action action-{{../permlink}}"><div class="ui mini button submit teal floated">Leave a comment</div></a>
         <form class="ui reply-{{../permlink}} form replyform">
             <i class="window close outline icon"></i>
             <div class="field">

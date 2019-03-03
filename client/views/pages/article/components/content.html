@@ -16,7 +16,7 @@
         {{/if}}
       {{/if}}
       <div class="ui top left attached teal label"><span>Published on : {{DisplayTimeCreated created}}</span></div>
-      {{#if json_metadata.tags}}
+      {{#if HasTags json_metadata.tags}}
         <span class="ui top right attached label childopacity">
           {{#each json_metadata.tags}}
             {{#unless equals this 'steemstem'}}

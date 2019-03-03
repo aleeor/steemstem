@@ -38,6 +38,15 @@ Template.content.helpers({
     return bnf_list.includes('steemstem')
   },
 
+  // Do we have tags to display?
+  HasTags: function(tags)
+  {
+    if(!tags) { return false; }
+    for(i=0; i<tags.length; i++)
+      { if (tags[i]!='steemstem') { return true; } }
+    return false
+  },
+
   // Markdown management
   DisplayPostBody: function () { return kramed(this.body); }
 
