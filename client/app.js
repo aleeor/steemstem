@@ -91,6 +91,7 @@ Meteor.startup(function () {
     }
     //LOAD GLOBAL PROPERTIES
     var sendDate = (new Date()).getTime();
+    steem.api.setOptions({url:  'https://anyx.io' });
     steem.api.getDynamicGlobalProperties(function (err, result) {
         if (result) {
             var receiveDate = (new Date()).getTime();
@@ -99,7 +100,8 @@ Meteor.startup(function () {
             localStorage.setItem('steemProps', JSON.stringify(result))
         }
         else {
-            steem.api.setOptions({ url: 'https://rpc.buildteam.io' });
+//            steem.api.setOptions({ url: 'https://rpc.buildteam.io' });
+            steem.api.setOptions({ url: 'https://api.steemit.com' });
             steem.api.getDynamicGlobalProperties(function (err, result) {
                 if (result) {
                     var receiveDate = (new Date()).getTime();
@@ -145,7 +147,7 @@ Meteor.startup(function () {
     Session.set('visiblecontent', 12)
 
     console.log(
-        `%c SteemStem OpenSource v0.7.6: https://github.com/SteemStem-io/steemstem`,
+        `%c SteemStem OpenSource v0.7.7: https://github.com/SteemStem-io/steemstem`,
         "font-size: 11px; padding: 1px 1px;"
     );
     console.log(
