@@ -1,7 +1,11 @@
 <template name="reply">
-    <div class="actions">
-        {{#if ../permlink}}
-        <a class="reply-action action-{{../permlink}}"><div class="ui mini button submit teal floated">Leave a comment</div></a>
+  <div class="actions">
+    {{#if ../permlink}}
+      {{#if isroot}}
+        <a class="reply-action action-{{../permlink}}"><div class="ui mini button submit teal floated">Reply</div></a>
+      {{else}}
+        <a class="reply-action action-{{../permlink}}"><div style="margin:5px" class="ui basic mini button submit teal">Reply</div></a>
+      {{/if}}
         <form class="ui reply-{{../permlink}} form replyform">
             <i class="window close outline icon"></i>
             <div class="field">
