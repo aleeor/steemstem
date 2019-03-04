@@ -245,6 +245,10 @@ Template.create.createProject = function(form)
   beneficiaries_dico = []
   for (i=0; i < beneficiaries.length; i++)
     beneficiaries_dico.push({ account: beneficiaries[i][0], weight: parseInt(beneficiaries[i][1])*100 })
+  beneficiaries_dico.sort(function(a,b){
+    if(a["account"] < b["account"]) {return -1}
+    else { return 1}
+   });
 
   // Getting the tags
   if(tags=="") { tags=['steemstem'] }
