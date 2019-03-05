@@ -4,11 +4,11 @@
       <!-- The reply button (different for root replies and replies to comment) -->
       {{#if isroot}}
         <a class="reply-action action-{{../permlink}}">
-          <div class="ui mini button teal floated">Reply</div>
+          <div id='reply-button-{{../permlink}}' class="ui mini button teal floated">Reply</div>
         </a>
       {{else}}
         <a class="reply-action action-{{../permlink}}">
-          <div style="margin:5px" class="ui basic mini button teal">Reply</div>
+          <div id='reply-button-{{../permlink}}' style="margin:5px" class="ui basic mini button teal">Reply</div>
         </a>
       {{/if}}
 

@@ -20,6 +20,7 @@ Template.reply.events({
   'click .reply-action': function(event){
     // Hide the form and get information
     $('.ui.form.replyform').hide();
+    document.getElementById('reply-button-'+this.data.permlink).style.display = "none";
     var element = ".reply-" + this.data.permlink;
 
     // A few lines to get the content of the text area
@@ -38,6 +39,7 @@ Template.reply.events({
     var element = ".reply-" + this.data.permlink;
     Session.set('preview-reply',$('#reply-content-'+ this.data.permlink).val())
     $(element).hide();
+    document.getElementById('reply-button-'+this.data.permlink).style.display = "";
   },
 
   // Action when clicking on the submit button
@@ -59,6 +61,7 @@ Template.reply.comment = function (article) {
     {
       $('#submit-comment').removeClass('loading')
       Comments.loadComments(article.author, article.permlink, function (error) { if (error) { console.log(error) } })
+      document.getElementById('reply-button-'+this.data.permlink).style.display = "";
     }
   })
 }
