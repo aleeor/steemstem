@@ -44,6 +44,7 @@ Template.reply.events({
 
   // Action when clicking on the submit button
   'click #submit-comment': function (event) {
+    $('#submit-comment').addClass('loading')
     event.preventDefault()
     event.stopPropagation();
     Template.reply.comment(this.data)
@@ -53,7 +54,6 @@ Template.reply.events({
 // Function dedicatsed to the reply submission
 Template.reply.comment = function (article) {
   var body = $('#reply-content-'+ article.permlink).val()
-  $('#submit-comment').addClass('loading')
   var json_metadata = { tags: 'steemstem', app: 'steemstem' }
   steemconnect.comment(article.author, article.permlink, body, json_metadata, function (error, result) {
     if (error) { console.log(error); if (error.description) { console.log(error.description) } }
@@ -61,7 +61,7 @@ Template.reply.comment = function (article) {
     {
       $('#submit-comment').removeClass('loading')
       Comments.loadComments(article.author, article.permlink, function (error) { if (error) { console.log(error) } })
-      document.getElementById('reply-button-'+this.data.permlink).style.display = "";
+      document.getElementById('reply-button-'+article.permlink).style.display = "";
     }
   })
 }
