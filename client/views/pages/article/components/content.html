@@ -33,7 +33,9 @@
           <div class="ui divider"></div>
           {{#if equals currentAuthor.name mainuser.name}}
             <div class="left floated">
-              {{ >edit data=this}}
+              <div class='actions'>
+                <a class="edit-action"><div class="ui button teal floated">Edit</div></a>
+              </div>
             </div>
           {{/if}}
           <div class="right floated">

@@ -8,8 +8,18 @@
         </a>
       {{else}}
         <a class="reply-action action-{{../permlink}}">
-          <div id='reply-button-{{../permlink}}' style="margin:5px" class="ui basic mini button teal">Reply</div>
+          <div id='reply-button-{{../permlink}}' style="margin-top:5px" class="ui basic mini button teal">Reply</div>
         </a>
+        <!-- buttons connected to comment editing -->
+        {{#if equals this.data.author mainuser.name}}
+          <a class="edit-action action-{{../permlink}}">
+            <div id='edit-button-{{../permlink}}' style="margin-left:-5px; margin-top:5px"  class="ui basic mini button teal">Edit</div>
+          </a>
+          <a class='submit-edit-action'>
+            <div id='submit-edited-comment-{{../permlink}}' style="margin-left:-15px; margin-top:5px; display:none"
+              class="ui mini button primary labeled icon hidden"><i class="icon edit"></i>Update comment</div>
+          </a>
+        {{/if}}
       {{/if}}
 
       <!-- Form with the reply textarea -->
@@ -18,11 +28,11 @@
         <div class="field"><textarea id="reply-content-{{../permlink}}" placeholder="Add reply here..."></textarea></div>
         <!-- preview part -->
         <h3 class="ui header">Preview</h3>
-        <div class='content'>
-          <div class="description">
+        <div class='comment'><div class='content'>
+          <div class="text">
             {{#markdown}} {{{DisplayReplyBody}}} {{/markdown}}
           </div>
-        </div>
+        </div></div>
 
         <!-- Button to add the reply -->
         <div class="ui divider"></div>

@@ -59,6 +59,21 @@ steemconnect = {
     }
   },
 
+  // Comment
+  updatecomment: function (parentAuthor, parentPermlink, permlink, title, body, jsonMetadata, cb)
+  {
+    sessionStorage.setItem('currentroute', '@'+parentAuthor+'/'+parentPermlink)
+    localStorage.setItem('sc2_command','commentupdate_'+parentAuthor+'_'+parentPermlink+'_'+permlink+'_'+title+'_'+body+'_'+JSON.stringify(jsonMetadata))
+    if(tokentest())
+    {
+      var voter = localStorage.username
+      sc2.setAccessToken(localStorage.accesstoken);
+      sc2.comment(parentAuthor, parentPermlink, voter, permlink, title, body, jsonMetadata,
+         function (err, result) { cb(err, result) })
+      delete localStorage.sc2_command
+    }
+  },
+
   // Sending a transaction (i.e. a post here) to the blockchain
   send: function (operations, cb)
   {

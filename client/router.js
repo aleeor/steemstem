@@ -11,9 +11,7 @@ FlowRouter.route('/', {
         Session.set('currentFilter', false)
         Session.set('currentSearch', false)
         Session.set('currentTag', false)
-        Session.set('isonreply', false)
         Session.set('isonedit', false)
-        Session.set('editlink', '')
         if(!sessionStorage.tos)
         {
             $('.ui.tos.modal').remove()
@@ -106,6 +104,10 @@ FlowRouter.route('/login', {
             case 'comment':
               var permlink = Math.random(localStorage.username + command[2]).toString(36).substr(2, 9)
               sc2.comment(command[1], command[2] ,localStorage.username, permlink, permlink, command[3], JSON.parse(command[4]),
+                function (err, result) { if(err) { console.log(err)} })
+              break;
+            case 'commentupdate':
+              sc2.comment(command[1], command[2] ,localStorage.username, command[3], commandp[4], command[5], JSON.parse(command[6]),
                 function (err, result) { if(err) { console.log(err)} })
               break;
             case 'broadcast':
@@ -294,7 +296,6 @@ FlowRouter.route('/:tag', {
         DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         Session.set('currentSearch',params.tag)
-        Session.set('isonreply', false)
     }
 });
 
@@ -306,7 +307,6 @@ FlowRouter.route('/@:user/:permlink', {
     action: function (params, queryParams) {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         Session.set('visiblecontent',12)
-        Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         DocHead.removeDocHeadAddedTags()
@@ -318,8 +318,11 @@ FlowRouter.route('/@:user/:permlink', {
           else
           {
              var __imgRegex = /https?:\/\/(?:[-a-zA-Z0-9._]*[-a-zA-Z0-9])(?::\d{2,5})?(?:[/?#](?:[^\s"'<>\][()]*[^\s"'<>\][().,])?(?:(?:\.(?:tiff?|jpe?g|gif|png|svg|ico)|ipfs\/[a-z\d]{40,})))/gi;
-             var img = 'https://steemitimages.com/0x0/' + result.body.match(__imgRegex)[0];
-             DocHead.addMeta({property: 'og:image', content: img})
+             if(result.body.match(__imgRegex))
+             {
+               var img = 'https://steemitimages.com/0x0/' + result.body.match(__imgRegex)[0];
+               DocHead.addMeta({property: 'og:image', content: img})
+             }
              DocHead.addMeta({property: 'title', content: result.title})
              DocHead.addMeta({property: 'og:title', content: result.title})
              DocHead.addMeta({property: 'og:url', content: 'https://www.steemstem.io/#!'+result.url})
@@ -358,7 +361,6 @@ FlowRouter.route('//@:user/:permlink', {
     action: function (params, queryParams) {
         DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
-        Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         if (!Content.findOne({ permlink: params.permlink })) {

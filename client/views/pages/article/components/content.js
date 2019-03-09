@@ -52,14 +52,24 @@ Template.content.helpers({
 
 })
 
-// Event associated to the vote button
+// Events
 Template.content.events({
-    'click  #vote': function (event) {
-        event.preventDefault()
-        event.stopPropagation();
-        $('.ui.vote.modal').remove()
-        $('article').append(Blaze.toHTMLWithData(Template.votemodal, { project: this }));
-        $('.ui.vote.modal.' + this.permlink).modal('setting', 'transition', 'scale').modal('show')
-        Template.votemodal.init()
-    },
+  // Event associated to the vote button
+  'click  #vote': function (event) {
+      event.preventDefault()
+      event.stopPropagation();
+      $('.ui.vote.modal').remove()
+      $('article').append(Blaze.toHTMLWithData(Template.votemodal, { project: this }));
+      $('.ui.vote.modal.' + this.permlink).modal('setting', 'transition', 'scale').modal('show')
+      Template.votemodal.init()
+  },
+
+  // Action of the edit button
+  'click .edit-action': function(event)
+  {
+    Session.set('isonedit', 'true')
+    Session.set('editlink', this.permlink)
+    FlowRouter.reload();
+  }
+
 })

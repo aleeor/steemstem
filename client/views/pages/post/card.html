@@ -5,10 +5,10 @@
       <i class="clock outline icon"></i> {{DisplayTimeFrom created}}
     </span> 
     <div class="content">
-      <a href="/@{{author}}/{{permlink}}" class="header">{{title}}</a>
+      <a href="#!/@{{author}}/{{permlink}}" class="header">{{title}}</a>
       <div class="meta" style="cursor: pointer;">
         <span class="category">
-          <a class="author_name" href="/@{{author}}">
+          <a class="author_name" href="#!/@{{author}}">
             by {{author}} ({{displayReputation author_reputation}})
           </a>
           {{#if isWhitelisted author}}<i class="ui icon check green"></i>{{/if}}
@@ -20,7 +20,7 @@
       <span class="tags">
         {{#each json_metadata.tags}}
           {{#unless equals this 'steemstem'}}
-            <a href="/{{this}}" class="ui mini {{colorByCategory this}} label noradius">{{this}}</a>
+            <a href="#!/{{this}}" class="ui mini {{colorByCategory this}} label noradius">{{this}}</a>
           {{/unless}}
         {{/each}}
       </span>
