@@ -1,7 +1,6 @@
 // Rendering
 Template.reply.rendered = function () {
     $('.ui.form.replyform').hide();
-    Session.set('preview-reply','Add reply here...')
 }
 
 
@@ -11,7 +10,11 @@ Template.reply.helpers({
     isroot: function () { return (this.data.parent_author=='') },
 
     // Allow to get the content of the reply
-    DisplayReplyBody: function() { return Session.get('preview-reply') }
+    DisplayReplyBody: function()
+    {
+      if(Session.get('preview-reply-'+this.data.permlink))
+        { return kramed(Session.get('preview-reply-'+this.data.permlink)) }
+    }
 })
 
 // Events (on click)
@@ -19,15 +22,17 @@ Template.reply.events({
   // Action when clicking on the reply button
   'click .reply-action': function(event){
     // Hide the form and get information
-    $('.ui.form.replyform').hide();
+//    $('.ui.form.replyform').hide();
     document.getElementById('reply-button-'+this.data.permlink).style.display = "none";
     var element = ".reply-" + this.data.permlink;
 
     // A few lines to get the content of the text area
-    if(!Session.get('preview-reply')) { Session.set('preview-reply','Add reply here...') }
-    $('#reply-content-'+ this.data.permlink).on('input', function() {
-      Session.set('preview-reply', kramed(this.value));
-      if(this.value=='') { Session.set('preview-reply','Add reply here...') }
+    if(!Session.get('preview-reply-'+this.data.permlink))
+      { Session.set('preview-reply-'+this.data.permlink,'Add reply here...') }
+    var link = this.data.permlink
+    $('#reply-content-'+link).on('input', function() {
+      Session.set('preview-reply-'+link, this.value);
+      if(this.value=='') { Session.set('preview-reply-'+link,'Add reply here...') }
     });
 
     // Show the reply form
@@ -55,22 +60,22 @@ Template.reply.events({
   // Action when closing the reply window (and saving its content)
   'click .window.close':function(event){
     var element = ".reply-" + this.data.permlink;
-    Session.set('preview-reply',$('#reply-content-'+ this.data.permlink).val())
+    Session.set('preview-reply-'+this.data.permlink,$('#reply-content-'+ this.data.permlink).val())
     $(element).hide();
     document.getElementById('reply-button-'+this.data.permlink).style.display = "";
   },
 
   // Action when clicking on the submit-comment button
-  'click #submit-comment': function (event) {
-    $('#submit-comment').addClass('loading')
+  'click .submit-comment-action': function (event) {
     event.preventDefault()
+    document.getElementById('submit-comment-'+this.data.permlink).classList.add('loading')
     Template.reply.comment(this.data)
   },
 
   // Action when clicking on the comment-editing validation button
   'click .submit-edit-action': function (event) {
-    document.getElementById('submit-edited-comment-'+this.data.permlink).classList.add('loading')
     event.preventDefault()
+    document.getElementById('submit-edited-comment-'+this.data.permlink).classList.add('loading')
     Template.reply.updatecomment(this.data)
   }
 
@@ -84,7 +89,7 @@ Template.reply.comment = function (article) {
     if (error) { console.log(error); if (error.description) { console.log(error.description) } }
     else
     {
-      $('#submit-comment').removeClass('loading')
+      document.getElementById('submit-comment-'+article.permlink).classList.remove('loading')
       Comments.loadComments(article.author, article.permlink, function (error) { if (error) { console.log(error) } })
       document.getElementById('reply-button-'+article.permlink).style.display = "";
     }

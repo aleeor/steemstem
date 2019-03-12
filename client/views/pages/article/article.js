@@ -228,13 +228,13 @@ Template.article.events(
   },
 
   // Submit
-  'click .ui.button.submit': function (event)
+  'click .submit-article-action': function (event)
   {
     event.preventDefault()
     if ($('#newarticle').form('is valid'))
     {
       $('#newarticle').form('validate form')
-      $('.ui.button.submit').addClass('loading')
+      document.getElementById('submit-article-button').classList.add('loading')
       var project = Template.article.UpdateProject(document.getElementById('newarticle'))
       if(project) { Template.create.submitproject(project); }
     }
