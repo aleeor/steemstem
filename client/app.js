@@ -147,7 +147,7 @@ Meteor.startup(function () {
     Session.set('visiblecontent', 12)
 
     console.log(
-        `%c SteemStem OpenSource v0.7.15: https://github.com/SteemStem-io/steemstem`,
+        `%c SteemStem OpenSource v0.7.16: https://github.com/SteemStem-io/steemstem`,
         "font-size: 11px; padding: 1px 1px;"
     );
     console.log(

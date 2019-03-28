@@ -1,3 +1,4 @@
+// Main function to get the list of new steemstem posts
 Template.registerHelper('steemStemContent', function () {
   if (Session.get('currentSearch'))
   {
@@ -5,14 +6,16 @@ Template.registerHelper('steemStemContent', function () {
     {
       return Content.find(
         {
-          "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang'), parent_author: ""
+          "json_metadata.tags": new RegExp('.*' + Session.get('currentSearch'), 'i'),
+          language: Session.get('lang'), parent_author: ""
         },
         { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
     }
     else
     {
       return Content.find(
-        { type: 'steemstem', parent_author: "", search: new RegExp('.*' + Session.get('currentSearch'), 'i'), language: Session.get('lang') },
+        { type: 'steemstem', parent_author: "", search: new RegExp('.*' + Session.get('currentSearch'), 'i'),
+           language: Session.get('lang') },
         { sort: { upvoted: -1, created: -1 }, limit: Session.get('visiblecontent') }).fetch()
     }
   }
@@ -33,6 +36,7 @@ Template.registerHelper('steemStemContent', function () {
   }
 })
 
+// Main function to get the list of posts made by the whitelisted authors
 Template.registerHelper('whitelistedContent', function ()
 {
   if (Content.find().fetch())
@@ -41,11 +45,9 @@ Template.registerHelper('whitelistedContent', function ()
     var contents = [];
     for (i = 0; i < whitelist.length; i++)
     {
-      white_content = Content.findOne({ type: 'steemstem', author: whitelist[i] , parent_author: "" }, { sort: { created: -1 } })
-      if (white_content)
-      {
-        contents.push(white_content)
-      }
+      white_content = Content.findOne({ type: 'steemstem', author: whitelist[i] , parent_author: "" },
+        { sort: { created: -1 } })
+      if (white_content) { contents.push(white_content) }
     }
     contents.sort(function (a, b) {
       var da = new Date(a.created).getTime();
@@ -56,26 +58,27 @@ Template.registerHelper('whitelistedContent', function ()
   }
 })
 
+
+// Main fuction to get a loist of suggestions of posts written by a given author
 Template.registerHelper('currentSuggestions', function () {
-    return Content.find({ type: 'blog', author: Session.get('user') },
-        { sort: { active_votes: -1 }, limit: 6 }
-    ).fetch()
+  return Content.find({ type:'blog', author:Session.get('user') }, { sort: { active_votes: -1 }, limit: 6 }).fetch()
 })
 
-Template.registerHelper('promoted', function () {
-    return Promoted.find({}, { sort: { created: -1 } }).fetch()
-})
 
+// Get the list of promoted posts
+Template.registerHelper('promoted', function () { return Promoted.find({}, { sort: { created: -1 } }).fetch() })
+
+
+// Main function to get a specific article
 Template.registerHelper('currentArticle', function () {
-    if (Content.findOne({ 'permlink': Session.get('article') })) {
-        return Content.findOne({ 'permlink': Session.get('article') })
-    }
+    if (Content.findOne({ 'permlink': Session.get('article') }))
+      { return Content.findOne({ 'permlink': Session.get('article') }) }
 })
 
+
+// Get information on a specific author
 Template.registerHelper('currentAuthor', function () {
-    if (User.findOne({ name: Session.get('user') })) {
-        return User.findOne({ name: Session.get('user') })
-    }
+  if (User.findOne({ name: Session.get('user') })) { return User.findOne({ name: Session.get('user') }) }
 })
 
 // Getting the list of comments to an article
@@ -101,27 +104,47 @@ Template.registerHelper('currentArticleComments', function ()
   }
 })
 
+// Getting the replies to a comment
 Template.registerHelper('currentCommentsSubcomments', function (comment) {
-    if (Comments.find({ 'parent_permlink': comment.permlink }).fetch()) {
-        return Comments.find({ 'parent_permlink': comment.permlink }).fetch()
-    }
+  if (Comments.find({ 'parent_permlink': comment.permlink }).fetch())
+    { return Comments.find({ 'parent_permlink': comment.permlink }).fetch() }
 })
 
+
+// Get the list of followers to a given author
 Template.registerHelper('currentAuthorFollowers', function (comment) {
-    if (Comments.find({ 'parent_permlink': comment.permlink }).fetch()) {
-        return Comments.find({ 'parent_permlink': comment.permlink }).fetch()
-    }
+  if (Comments.find({ 'parent_permlink': comment.permlink }).fetch())
+    { return Comments.find({ 'parent_permlink': comment.permlink }).fetch() }
 })
 
+
+// Get the history associated with a given author
 Template.registerHelper('currentAuthorHistory', function (limit) {
-    if (PersonalHistory.find().fetch()) {
-        if (limit)
-            return PersonalHistory.find({}, { limit: limit }).fetch().reverse()
-        else
-            return PersonalHistory.find().fetch().reverse()
-    }
+  if (PersonalHistory.find().fetch())
+  {
+    if (limit)
+      return PersonalHistory.find({}, { limit: limit }).fetch().reverse()
+    else
+      return PersonalHistory.find().fetch().reverse()
+  }
 })
 
-Template.registerHelper('currentAuthorBlog', function (comment) {
-    return Content.find({ type: 'blog', from: Session.get('user') }, { sort: { created: -1 }, limit: Session.get('visiblecontent') }).fetch()
+// Get all blog posts from an author
+Template.registerHelper('currentAuthorBlog', function (stop=0) {
+  var author  = Session.get('user');
+  var lim     = Session.get('visiblecontent');
+  var content = Blog.find({from:author}, {sort:{created:-1}, skip:stop, limit:lim}).fetch();
+  var last    = Blog.find({from:author}, {sort:{created:1}, limit:1}).fetch()
+  if((stop+content.length)==Blog.find({from:author}).fetch().length && Session.get('Query-done'))
+    Session.set('more-blogs',false)
+  if(content.length<lim && last.length>0)
+  {
+    if(Session.get('Queried')!=last[0].permlink && !Session.get('Query-done'))
+    {
+      Blog.getContentByBlog(author,51,'blog',function(error){if(error) {console.log(error)}},
+        last[0].permlink, last[0].author);
+      Session.set('Queried', last[0].permlink)
+    }
+  }
+  return content;
 })

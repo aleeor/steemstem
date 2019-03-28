@@ -198,11 +198,12 @@ Template.registerHelper('EstimateAccount', function (user) {
     }
 })
 
+// Check whether 59 blogs posts are visible
 Template.registerHelper('isLoadedFull', function (coll) {
-    if(Session.get('visiblecontent') > coll.length)
-    return true
-    else return false
+    if(Session.get('visiblecontent') >= Math.max(coll.length,76)) { return true }
+    else { return false }
 })
+
 
 Template.registerHelper('isSubscribed', function (following) {
     var sub = Subs.findOne({ follower: MainUser.find().fetch()[0].name, following: following })
