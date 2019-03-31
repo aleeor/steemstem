@@ -184,6 +184,8 @@ FlowRouter.route('/@:user',
     $('.menu.profile .item').tab('change tab', 'first')
   }
 });
+FlowRouter.route('//@:user', {action: function(params, queryParams) { FlowRouter.go('/@'+params.user) }});
+
 
 
 // Getting all comments made by a user
