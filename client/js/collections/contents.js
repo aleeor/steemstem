@@ -127,7 +127,7 @@ Content.reloadContent = function (author, permlink, cb)
 
 Content.chainLoad = function ()
 {
-  Content.getCreatedContent('steemstem', 10, 'featured', function (error) { if (error) { console.log(error) } })
+  Content.getCreatedContent('steemstem', 100, 'featured', function (error) { if (error) { console.log(error) } })
 }
 
 Content.CreateUrl = function (author, permlink) {

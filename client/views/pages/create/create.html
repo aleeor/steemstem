@@ -93,15 +93,17 @@
         </div>
 
         <!-- TAGS -->
-        <div class="ui divider"></div>
-        <h4>
-          Tags:
-          {{#if DisplayPostTags}}
-            {{#each DisplayPostTags}}
-              <button class="ui mini disabled button grey"> {{this}}</button>
-            {{/each}}
-          {{/if}}
-        </h4>
+        <div style='padding-top: 10px; clear: both;'>
+          <div class="ui divider"></div>
+          <h4>
+            Tags:
+            {{#if DisplayPostTags}}
+              {{#each DisplayPostTags}}
+                <button class="ui mini disabled button grey"> {{this}}</button>
+              {{/each}}
+            {{/if}}
+          </h4>
+        </div>
 
         <!-- Beneficiaries -->
         <div class="ui divider"></div>

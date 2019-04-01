@@ -2,12 +2,12 @@
   <div class="ui comments segment container">
     <h3 class="ui dividing header">Comments</h3>
     {{#if currentArticleComments}}
-      Leave a comment: {{>reply data=this isRootComment=false}}
+      {{>reply data=this isRootComment=false}}
       {{#each currentArticleComments}}
         {{>comment}} 
       {{/each}} 
     {{else}} 
-      Be the first to leave a comment: {{>reply data=this isRootComment=true}} 
+      {{>reply data=this isRootComment=true}} 
     {{/if}}
   </div>
   <br>

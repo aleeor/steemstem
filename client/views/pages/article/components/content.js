@@ -36,19 +36,40 @@ Template.content.helpers({
     for(i=0; i<this.beneficiaries.length;i++)
       bnf_list.push(this.beneficiaries[i].account)
     return bnf_list.includes('steemstem')
-  }
+  },
 
+  // Do we have tags to display?
+  HasTags: function(tags)
+  {
+    if(!tags) { return false; }
+    for(i=0; i<tags.length; i++)
+      { if (tags[i]!='steemstem') { return true; } }
+    return false
+  },
+
+  // Markdown management
+  DisplayPostBody: function () { return kramed(this.body); }
 
 })
 
-// Event associated to the vote button
+// Events
 Template.content.events({
-    'click  #vote': function (event) {
-        event.preventDefault()
-        event.stopPropagation();
-        $('.ui.vote.modal').remove()
-        $('article').append(Blaze.toHTMLWithData(Template.votemodal, { project: this }));
-        $('.ui.vote.modal.' + this.permlink).modal('setting', 'transition', 'scale').modal('show')
-        Template.votemodal.init()
-    },
+  // Event associated to the vote button
+  'click  #vote': function (event) {
+      event.preventDefault()
+      event.stopPropagation();
+      $('.ui.vote.modal').remove()
+      $('article').append(Blaze.toHTMLWithData(Template.votemodal, { project: this }));
+      $('.ui.vote.modal.' + this.permlink).modal('setting', 'transition', 'scale').modal('show')
+      Template.votemodal.init()
+  },
+
+  // Action of the edit button
+  'click .edit-action': function(event)
+  {
+    Session.set('isonedit', 'true')
+    Session.set('editlink', this.permlink)
+    FlowRouter.reload();
+  }
+
 })

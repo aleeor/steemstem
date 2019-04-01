@@ -1,6 +1,8 @@
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
 
+
+// Main route
 FlowRouter.route('/', {
     name: 'home',
     action: function (params, queryParams) {
@@ -11,9 +13,7 @@ FlowRouter.route('/', {
         Session.set('currentFilter', false)
         Session.set('currentSearch', false)
         Session.set('currentTag', false)
-        Session.set('isonreply', false)
         Session.set('isonedit', false)
-        Session.set('editlink', '')
         if(!sessionStorage.tos)
         {
             $('.ui.tos.modal').remove()
@@ -23,6 +23,8 @@ FlowRouter.route('/', {
     }
 });
 
+
+// Admin panel
 FlowRouter.route('/admin', {
     name: 'admin',
     action: function (params, queryParams) {
@@ -31,6 +33,8 @@ FlowRouter.route('/admin', {
     }
 });
 
+
+// FAQ
 FlowRouter.route('/faq', {
     name: 'faq',
     action: function (params, queryParams) {
@@ -39,6 +43,8 @@ FlowRouter.route('/faq', {
     }
 });
 
+
+// TOS
 FlowRouter.route('/tos', {
     name: 'tos',
     action: function (params, queryParams) {
@@ -55,6 +61,7 @@ FlowRouter.route('/aboutus', {
     }
 });
 
+// Post creation
 FlowRouter.route('/create',
 {
   name: 'create',
@@ -67,6 +74,7 @@ FlowRouter.route('/create',
     BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "create", topmenu: "topmenu" });
   }
 });
+
 
 // Login to the app + implementation of the redirection to the previous page
 // (if the connection happens after trying to do something with an expired or non-existing token)
@@ -106,6 +114,10 @@ FlowRouter.route('/login', {
             case 'comment':
               var permlink = Math.random(localStorage.username + command[2]).toString(36).substr(2, 9)
               sc2.comment(command[1], command[2] ,localStorage.username, permlink, permlink, command[3], JSON.parse(command[4]),
+                function (err, result) { if(err) { console.log(err)} })
+              break;
+            case 'commentupdate':
+              sc2.comment(command[1], command[2] ,localStorage.username, command[3], commandp[4], command[5], JSON.parse(command[6]),
                 function (err, result) { if(err) { console.log(err)} })
               break;
             case 'broadcast':
@@ -148,38 +160,35 @@ FlowRouter.route('/login', {
 });
 
 
-FlowRouter.route('/@:user', {
-    name: 'profile',
-    action: function (params, queryParams) {
-        DocHead.removeDocHeadAddedTags()
-        BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
-        Session.set('user', params.user)
-        Session.set('currentprofiletab','blog')
-        User.add(params.user, function (error) {
-            if (error) {
-                console.log(error)
-            }
-        })
-        if(!PersonalHistory.findOne({author:params.user}))
-        PersonalHistory.getPersonalHistory(params.user,100, function (error) {
-            if (error) {
-                console.log(error)
-            }
-        })
-        Followers.loadFollowers(params.user, function (error) {
-            if (error) {
-                console.log(error)
-            }
-        })
-        Blog.getContentByBlog(params.user, 100, 'blog', function (error) {
-            if (error) {
-                console.log(error)
-            }
-        })
-        $('.menu.profile .item').tab('change tab', 'first')
-    }
+// Getting all blog posts written by a user
+FlowRouter.route('/@:user',
+{
+  name: 'profile',
+  action: function (params, queryParams) {
+    DocHead.removeDocHeadAddedTags()
+    BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "profile", topmenu: "topmenu" });
+    Session.set('user', params.user)
+    Session.set('currentprofiletab','blog')
+    Session.set('ToPass',0)
+    Session.set('MaxToPass',0)
+    Session.set('Queried','')
+    Session.set('Query-done',false)
+    Session.set('more-blogs',true)
+    User.add(params.user, function (error) { if (error) { console.log(error) } })
+    if(!PersonalHistory.findOne({author:params.user}))
+      PersonalHistory.getPersonalHistory(params.user,100, function (error) {
+            if (error) { console.log(error) }
+      })
+    Followers.loadFollowers(params.user, function (error) { if (error) { console.log(error) } })
+    Blog.getContentByBlog(params.user, 51, 'blog', function (error) { if (error) { console.log(error) } })
+    $('.menu.profile .item').tab('change tab', 'first')
+  }
 });
+FlowRouter.route('//@:user', {action: function(params, queryParams) { FlowRouter.go('/@'+params.user) }});
 
+
+
+// Getting all comments made by a user
 FlowRouter.route('/@:user/comments', {
     name: 'profile',
     action: function (params, queryParams) {
@@ -207,6 +216,8 @@ FlowRouter.route('/@:user/comments', {
     }
 });
 
+
+// Getting all replies made by a user
 FlowRouter.route('/@:user/replies', {
     name: 'profile',
     action: function (params, queryParams) {
@@ -234,6 +245,8 @@ FlowRouter.route('/@:user/replies', {
     }
 });
 
+
+// Getting all rewards got by a user
 FlowRouter.route('/@:user/rewards', {
     name: 'profile',
     action: function (params, queryParams) {
@@ -261,6 +274,8 @@ FlowRouter.route('/@:user/rewards', {
     }
 });
 
+
+// Access to a user wallet
 FlowRouter.route('/@:user/wallet', {
     name: 'profile',
     action: function (params, queryParams) {
@@ -288,25 +303,24 @@ FlowRouter.route('/@:user/wallet', {
     }
 });
 
+
+// Getting all posts from one category
 FlowRouter.route('/:tag', {
     name: 'tag',
     action: function (params, queryParams) {
         DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "home", topmenu: "topmenu" });
         Session.set('currentSearch',params.tag)
-        Session.set('isonreply', false)
     }
 });
 
 
-
-
+// Direct access to a blog post
 FlowRouter.route('/@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
         Session.set('visiblecontent',12)
-        Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         DocHead.removeDocHeadAddedTags()
@@ -318,8 +332,11 @@ FlowRouter.route('/@:user/:permlink', {
           else
           {
              var __imgRegex = /https?:\/\/(?:[-a-zA-Z0-9._]*[-a-zA-Z0-9])(?::\d{2,5})?(?:[/?#](?:[^\s"'<>\][()]*[^\s"'<>\][().,])?(?:(?:\.(?:tiff?|jpe?g|gif|png|svg|ico)|ipfs\/[a-z\d]{40,})))/gi;
-             var img = 'https://steemitimages.com/0x0/' + result.body.match(__imgRegex)[0];
-             DocHead.addMeta({property: 'og:image', content: img})
+             if(result.body.match(__imgRegex))
+             {
+               var img = 'https://steemitimages.com/0x0/' + result.body.match(__imgRegex)[0];
+               DocHead.addMeta({property: 'og:image', content: img})
+             }
              DocHead.addMeta({property: 'title', content: result.title})
              DocHead.addMeta({property: 'og:title', content: result.title})
              DocHead.addMeta({property: 'og:url', content: 'https://www.steemstem.io/#!'+result.url})
@@ -336,7 +353,7 @@ FlowRouter.route('/@:user/:permlink', {
                 console.log(error)
             }
         })
-        Blog.getContentByBlog(params.user, 30, 'blog', function (error) {
+        Blog.getContentByBlog(params.user, 20, 'blog', function (error) {
             if (error) {
                 console.log(error)
             }
@@ -351,14 +368,12 @@ FlowRouter.route('/@:user/:permlink', {
 })
 
 
-
 //TO FIX PROBLEM WITH SEARCH 
 FlowRouter.route('//@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
         DocHead.removeDocHeadAddedTags()
         BlazeLayout.render('mainlayout', { sidebar: "sidebar", main: "article", topmenu: "topmenu" });
-        Session.set('isonreply', true)
         Session.set('user', params.user)
         Session.set('article', params.permlink)
         if (!Content.findOne({ permlink: params.permlink })) {
@@ -385,7 +400,7 @@ FlowRouter.route('//@:user/:permlink', {
                 console.log(error)
             }
         })
-        Blog.getContentByBlog(params.user, 30, 'blog', function (error) {
+        Blog.getContentByBlog(params.user, 20, 'blog', function (error) {
             if (error) {
                 console.log(error)
             }
@@ -399,6 +414,8 @@ FlowRouter.route('//@:user/:permlink', {
     }
 });
 
+
+// Direct access to an article
 FlowRouter.route('/:tag/@:user/:permlink', {
     name: 'project',
     action: function (params, queryParams) {
@@ -411,6 +428,8 @@ FlowRouter.route('/:tag/@:user/:permlink', {
     }
 });
 
+
+// Error 404
 FlowRouter.notFound = {
     action: function() {
        console.log('MUF', this)

@@ -1,6 +1,3 @@
-// Imports
-import showdown from 'showdown'
-
 // Rendering of the page
 Template.create.rendered = function () {
 
@@ -28,7 +25,7 @@ Template.create.rendered = function () {
             $('.to.message.yellow').addClass('visible');
           }
         }
-      });
+    });
 
     // Saving the post title for the post preview method
     $('#title').on('input',function()
@@ -61,10 +58,8 @@ Template.create.rendered = function () {
     $('#summernote').on('summernote.change', function()
     {
       body = $('#summernote').summernote('code')
-      var converter = new showdown.Converter()
-      body = converter.makeHtml(body)
-      body= body.replace(/\&lt;sc.*\&gt;[\w\W]{1,}(.*?)[\w\W]{1,}&lt;\/pt\&gt;/gi, "<b>SCRIPT REMOVED</b>");
-      Session.set('preview-body', body)
+      body= body.replace(/\&lt;sc.*\&gt;[\w\W]{1,}(.*?)[\w\W]{1,}&lt;\/pt\&gt;/gi, "");
+      Session.set('preview-body', kramed(body))
     });
 
     // Saving the post tags for the post preview method
@@ -235,8 +230,6 @@ Template.create.createProject = function(form)
   var permlink;
   var title = form.title.value
   var body = form.body.value
-  var converter = new showdown.Converter()
-  body = converter.makeHtml(body)
   var tags = form.tags.value
   var beneficiaries = form.beneficiaries.value
   if(beneficiaries!='')
@@ -252,6 +245,10 @@ Template.create.createProject = function(form)
   beneficiaries_dico = []
   for (i=0; i < beneficiaries.length; i++)
     beneficiaries_dico.push({ account: beneficiaries[i][0], weight: parseInt(beneficiaries[i][1])*100 })
+  beneficiaries_dico.sort(function(a,b){
+    if(a["account"] < b["account"]) {return -1}
+    else { return 1}
+   });
 
   // Getting the tags
   if(tags=="") { tags=['steemstem'] }
@@ -305,7 +302,8 @@ Template.create.createProject = function(form)
         ['comment_options',
           {
              author: author, permlink: permlink, max_accepted_payout: '1000000.000 SBD',
-             percent_steem_dollars: percent_steem_dollars, allow_votes: true, allow_curation_rewards: true
+             percent_steem_dollars: percent_steem_dollars, allow_votes: true, allow_curation_rewards: true,
+             extensions: []
           }
         ]
       ];
@@ -401,7 +399,10 @@ Template.create.submitproject = function (project)
         $('#postprob').addClass("hidden")
         Session.set('isonedit', 'false')
         Session.set('editlink', '')
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) { if ((new Date().getTime() - start) > 1000) { break; } }
         FlowRouter.go('#!/@' + project[0][1].author + '/' + project[0][1].permlink)
+        FlowRouter.reload()
       }
       $('.ui.button.submit').removeClass('loading')
       return true
@@ -470,10 +471,10 @@ Template.create.helpers(
   // Function allowing to display the post title for the preview part
   DisplayPostTitle: function() { return Session.get('preview-title') },
 
-  // Functin to display the post body for the preview part
+  // Function to display the post body for the preview part
   DisplayPostBody: function()  { return Session.get('preview-body'); },
 
-  // Functin to display the post tagsfor the preview part
+  // Function to display the post tagsfor the preview part
   DisplayPostTags: function()
   {
     tags = Session.get('preview-tags').split(',');
