@@ -48,8 +48,18 @@ Template.comment.helpers(
       return voters
     }
   },
+  TotalRShares: function(comment) {
+    if(comment.net_votes > 0)
+    {
+      total=0;
+      for(i=0; i < comment.active_votes.length; i++)
+        { total += parseInt(comment.active_votes[i].rshares) }
+      return total
+    }
+  },
 
 
   // Display the payout brought in by a single voter (for the popup)
-  DisplayCommentPayout: function (shares, shares_sum,sum) { return (shares*sum/shares_sum).toFixed(3) } })
+  DisplayCommentPayout: function (shares, shares_sum,sum) { return (shares*sum/shares_sum).toFixed(3) }
+})
 

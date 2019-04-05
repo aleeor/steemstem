@@ -215,6 +215,7 @@ FlowRouter.route('/@:user/comments', {
         $('.menu.profile .item').tab('change tab', 'second')
     }
 });
+FlowRouter.route('//@:user/comments', {action: function(params, queryParams) { FlowRouter.go('/@'+params.user+'/comments') }});
 
 
 // Getting all replies made by a user
@@ -244,6 +245,7 @@ FlowRouter.route('/@:user/replies', {
         $('.menu.profile .item').tab('change tab', 'third')
     }
 });
+FlowRouter.route('//@:user/replies', {action: function(params, queryParams) { FlowRouter.go('/@'+params.user+'/replies') }});
 
 
 // Getting all rewards got by a user
@@ -273,6 +275,7 @@ FlowRouter.route('/@:user/rewards', {
         $('.menu.profile .item').tab('change tab', 'fourth')
     }
 });
+FlowRouter.route('//@:user/rewards', {action: function(params, queryParams) { FlowRouter.go('/@'+params.user+'/rewards') }});
 
 
 // Access to a user wallet
@@ -302,6 +305,7 @@ FlowRouter.route('/@:user/wallet', {
         $('.menu.profile .item').tab('change tab', 'fifth')
     }
 });
+FlowRouter.route('//@:user/wallet', {action: function(params, queryParams) { FlowRouter.go('/@'+params.user+'/wallet') }});
 
 
 // Getting all posts from one category
